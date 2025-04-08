@@ -17,6 +17,7 @@ import {
   checkFileUploadLimit,
   processFiles,
 } from "@/lib/file-handling"
+import { syncMessages, deleteMessage, updateMessage } from "@/lib/chat-store/message"
 import { API_ROUTE_CHAT } from "@/lib/routes"
 import { cn } from "@/lib/utils"
 import { Message, useChat } from "@ai-sdk/react"
@@ -302,6 +303,14 @@ export default function Chat({
       handleSubmit(undefined, options)
       setMessages((prev) => prev.filter((msg) => msg.id !== optimisticId))
       cleanupOptimisticAttachments(optimisticMessage.experimental_attachments)
+      
+      // Sync messages with IndexedDB after the AI responds
+      setTimeout(() => {
+        if (currentChatId) {
+          syncMessages(currentChatId, messages)
+            .catch(err => console.error("Failed to sync messages:", err));
+        }
+      }, 1000); // Give a slight delay to ensure the AI response is included
     } catch (error) {
       setMessages((prev) => prev.filter((msg) => msg.id !== optimisticId))
       cleanupOptimisticAttachments(optimisticMessage.experimental_attachments)
@@ -311,16 +320,34 @@ export default function Chat({
     }
   }
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     setMessages(messages.filter((message) => message.id !== id))
+    
+    // If we have a chatId, also delete from IndexedDB
+    if (chatId) {
+      try {
+        await deleteMessage(id);
+      } catch (err) {
+        console.error("Failed to delete message from database:", err);
+      }
+    }
   }
 
-  const handleEdit = (id: string, newText: string) => {
+  const handleEdit = async (id: string, newText: string) => {
     setMessages(
       messages.map((message) =>
         message.id === id ? { ...message, content: newText } : message
       )
     )
+    
+    // If we have a chatId, also update in IndexedDB
+    if (chatId) {
+      try {
+        await updateMessage(id, newText);
+      } catch (err) {
+        console.error("Failed to update message in database:", err);
+      }
+    }
   }
 
   const handleInputChange = useCallback(

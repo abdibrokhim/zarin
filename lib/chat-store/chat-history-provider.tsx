@@ -11,6 +11,7 @@ import {
 } from "./history"
 import { clearAllIndexedDBStores } from "./persist"
 import type { ChatHistory } from "./types"
+import { fetchAndCacheChats } from "@/lib/chat-store/history"
 
 interface ChatHistoryContextType {
   chats: ChatHistory[]
@@ -48,13 +49,39 @@ export function ChatHistoryProvider({
   children: React.ReactNode
 }) {
   const [chats, setChats] = useState<ChatHistory[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+
+  const fetchData = async () => {
+    try {
+      setIsLoading(true)
+      let chats: ChatHistory[]
+      if (userId) {
+        chats = await fetchAndCacheChats(userId)
+      } else {
+        chats = await getCachedChats()
+      }
+      
+      // Filter out deleted chats
+      const activeChats = chats.filter(chat => !chat._deleted);
+      
+      // Sort by created date
+      activeChats.sort((a, b) => {
+        return +new Date(b.created_at || "") - +new Date(a.created_at || "")
+      })
+      
+      setChats(activeChats)
+    } catch (error) {
+      console.error("Failed to fetch chats:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
     if (!userId) return
 
     const load = async () => {
-      const cached = await getCachedChats()
-      setChats(cached)
+      await fetchData()
     }
     load()
   }, [userId])
@@ -62,8 +89,7 @@ export function ChatHistoryProvider({
   const refresh = async () => {
     if (!userId) return
 
-    const cached = await getCachedChats()
-    setChats(cached)
+    await fetchData()
   }
 
   const updateTitle = async (id: string, title: string) => {
@@ -109,6 +135,9 @@ export function ChatHistoryProvider({
       id: optimisticId,
       title: "New Chat",
       created_at: new Date().toISOString(),
+      user_id: userId,
+      model: model || "default",
+      system_prompt: systemPrompt || ""
     }
     setChats((prev) => [...prev, optimisticChat])
 

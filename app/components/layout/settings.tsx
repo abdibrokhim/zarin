@@ -11,9 +11,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
+import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { toast } from "@/components/ui/toast"
+import { VisuallyHidden } from "@/components/ui/visually-hidden"
 import { useChatHistory } from "@/lib/chat-store/chat-history-provider"
 import { AUTH_DAILY_MESSAGE_LIMIT, MODEL_DEFAULT } from "@/lib/config"
 import { cn } from "@/lib/utils"
@@ -49,6 +50,9 @@ export function Settings({ trigger }: SettingsProps) {
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerTrigger asChild>{trigger || defaultTrigger}</DrawerTrigger>
         <DrawerContent>
+          <DrawerTitle>
+            <VisuallyHidden>Settings</VisuallyHidden>
+          </DrawerTitle>
           <SettingsContent isDrawer onClose={() => setOpen(false)} />
         </DrawerContent>
       </Drawer>
@@ -60,7 +64,9 @@ export function Settings({ trigger }: SettingsProps) {
       <DialogTrigger asChild>{trigger || defaultTrigger}</DialogTrigger>
       <DialogContent className="gap-0 p-0 sm:max-w-xl">
         <DialogHeader className="border-border border-b px-6 py-4">
-          <DialogTitle>Settings</DialogTitle>
+          <DialogTitle>
+            <VisuallyHidden>Settings</VisuallyHidden>
+          </DialogTitle>
         </DialogHeader>
         <SettingsContent onClose={() => setOpen(false)} />
       </DialogContent>

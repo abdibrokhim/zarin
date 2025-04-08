@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
+import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {
@@ -7,6 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { VisuallyHidden } from "@/components/ui/visually-hidden"
 import { ChatHistory } from "@/lib/chat-store/types"
 import {
   Check,
@@ -93,6 +94,9 @@ export function DrawerHistory({
         <TooltipContent>History</TooltipContent>
       </Tooltip>
       <DrawerContent>
+        <DrawerTitle>
+          <VisuallyHidden>Chat History</VisuallyHidden>
+        </DrawerTitle>
         <div className="flex h-full flex-col">
           <div className="border-b p-4 pb-3">
             <div className="relative">

@@ -18,6 +18,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
+import { VisuallyHidden } from "@/components/ui/visually-hidden"
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/config"
 import { Info } from "@phosphor-icons/react"
 
@@ -81,9 +82,11 @@ export function AppInfo({ trigger = defaultTrigger }: AppInfoProps) {
                 alt={`calm paint generate by ${APP_NAME}`}
                 className="h-32 w-full object-cover"
               />
-              <DrawerTitle className="hidden">{APP_NAME}</DrawerTitle>
-              <DrawerDescription className="hidden">
-                Your minimalist AI chat companion
+              <DrawerTitle>
+                <VisuallyHidden>{APP_NAME}</VisuallyHidden>
+              </DrawerTitle>
+              <DrawerDescription>
+                <VisuallyHidden>Your minimalist AI chat companion</VisuallyHidden>
               </DrawerDescription>
             </DrawerHeader>
             <div className="px-4 pb-6">
@@ -106,9 +109,11 @@ export function AppInfo({ trigger = defaultTrigger }: AppInfoProps) {
               alt={`calm paint generate by ${APP_NAME}`}
               className="h-32 w-full object-cover"
             />
-            <DialogTitle className="hidden">{APP_NAME}</DialogTitle>
-            <DialogDescription className="hidden">
-              Your minimalist AI chat companion
+            <DialogTitle>
+              <VisuallyHidden>{APP_NAME}</VisuallyHidden>
+            </DialogTitle>
+            <DialogDescription>
+              <VisuallyHidden>Your minimalist AI chat companion</VisuallyHidden>
             </DialogDescription>
           </DialogHeader>
           <div className="p-4">

@@ -24,17 +24,32 @@ export async function updateChatTitle(
   id: string,
   title: string
 ): Promise<void> {
-  const all = await getCachedChats()
-  const updated = (all as ChatHistory[]).map((c) =>
-    c.id === id ? { ...c, title } : c
-  )
-  await writeToIndexedDB("chats", updated)
+  try {
+    // Get the specific chat first
+    const all = await getCachedChats()
+    const chatToUpdate = all.find(c => c.id === id)
+    
+    if (chatToUpdate) {
+      // Update just this one chat
+      const updatedChat = { ...chatToUpdate, title }
+      await writeToIndexedDB("chats", updatedChat)
+    } else {
+      console.error(`Chat with ID ${id} not found for title update`)
+    }
+  } catch (error) {
+    console.error(`Error updating chat title for ${id}:`, error)
+    throw error
+  }
 }
 
 export async function deleteChat(id: string): Promise<void> {
-  const all = await getCachedChats()
-  await writeToIndexedDB(
-    "chats",
-    (all as ChatHistory[]).filter((c) => c.id !== id)
-  )
+  try {
+    await writeToIndexedDB(
+      "chats",
+      { id, _deleted: true }
+    )
+  } catch (error) {
+    console.error(`Error deleting chat ${id}:`, error)
+    throw error
+  }
 }

@@ -1,6 +1,6 @@
 import { Header } from "./header"
 
-export default async function LayoutApp({
+export default function LayoutApp({
   children,
 }: {
   children: React.ReactNode

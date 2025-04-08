@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { VisuallyHidden } from "@/components/ui/visually-hidden"
 import { useState } from "react"
 
 type DialogAuthProps = {
@@ -23,7 +24,7 @@ export function DialogAuth({ open, setOpen }: DialogAuthProps) {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-xl">
-            You've reached the limit for today
+            <VisuallyHidden>You've reached the limit for today</VisuallyHidden>
           </DialogTitle>
           <DialogDescription className="pt-2 text-base">
             We're using browser storage to save your chats locally.

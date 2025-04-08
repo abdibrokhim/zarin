@@ -5,7 +5,13 @@ just to make sure i was not sleeping all the time.
 
 ## v0.1.1
 
+### 9th April, 2025
+- other fixes and improvements
+- fixed indexdb issues and shitty bugs
+- fixed dialog content issues
+
 ### 8th April, 2025
+- fixed bug where the chat history was not being synced with the database
 - updated bunch of stuff
 
 

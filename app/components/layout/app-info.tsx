@@ -48,6 +48,9 @@ const InfoContent = () => (
       </a>
       .
     </p>
+    <p className="text-foreground leading-relaxed">
+      Powered by <a href="https://aimlapi.com?utm_source=abdibrokhim" target="_blank" rel="noopener noreferrer" className="underline">AI/ML API</a>
+    </p>
   </div>
 )
 

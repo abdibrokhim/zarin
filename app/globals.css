@@ -148,8 +148,15 @@
   body {
     @apply bg-background text-foreground;
   }
-}
 
+  ::selection {
+    @apply bg-primary text-primary-foreground;
+  }
+  
+  .dark ::selection {
+    @apply bg-primary text-primary-foreground;
+  }
+}
 code {
   font-family: var(--font-geist-mono);
   font-feature-settings: var(--default-mono-font-feature-settings);

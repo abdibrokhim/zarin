@@ -1,19 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server"
-import { validateCsrfToken } from "./lib/csrf"
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next()
   
-  // CSRF protection for state-changing requests
-  if (["POST", "PUT", "DELETE"].includes(request.method)) {
-    const csrfCookie = request.cookies.get("csrf_token")?.value
-    const headerToken = request.headers.get("x-csrf-token")
-
-    if (!csrfCookie || !headerToken || !validateCsrfToken(headerToken)) {
-      return new NextResponse("Invalid CSRF token", { status: 403 })
-    }
-  }
-
   // CSP for development and production
   const isDev = process.env.NODE_ENV === "development"
 

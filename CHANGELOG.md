@@ -2,7 +2,14 @@
 
 just to make sure i was not sleeping all the time.
 
-## v0.0.1
+
+## v0.1.1
+
+### 8th April, 2025
+- updated bunch of stuff
+
+
+## v0.1.0
 
 ### 8th April, 2025
 - beautifully built with [shadcnui](https://ui.shadcn.com/), [motion-premitives](https://motion-primitives.com), [prompt-kit](https://prompt-kit.com)

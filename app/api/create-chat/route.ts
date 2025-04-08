@@ -1,46 +1,27 @@
-import { checkUsage } from "@/lib/api"
 import { SYSTEM_PROMPT_DEFAULT } from "@/lib/config"
-import { validateUserIdentity } from "@/lib/server/api"
+import crypto from "crypto"
 
 export async function POST(request: Request) {
   try {
-    const { userId, title, model, isAuthenticated, systemPrompt } =
-      await request.json()
+    const { userId, title, model, systemPrompt } = await request.json()
+    
     if (!userId) {
       return new Response(JSON.stringify({ error: "Missing userId" }), {
         status: 400,
       })
     }
 
-    const supabase = await validateUserIdentity(userId, isAuthenticated)
-
-    // Only check usage but don't increment
-    await checkUsage(supabase, userId)
-
-    // Insert a new chat record in the chats table
-    const { data: chatData, error: chatError } = await supabase
-      .from("chats")
-      .insert({
-        user_id: userId,
-        title: title || "New Chat",
-        model: model,
-        system_prompt: systemPrompt || SYSTEM_PROMPT_DEFAULT,
-      })
-      .select("*")
-      .single()
-
-    if (chatError || !chatData) {
-      console.error("Error creating chat record:", chatError)
-      return new Response(
-        JSON.stringify({
-          error: "Failed to create chat record",
-          details: chatError?.message,
-        }),
-        { status: 500 }
-      )
+    // Create a chat object with a unique ID
+    const chatData = {
+      id: crypto.randomUUID(),
+      user_id: userId,
+      title: title || "New Chat",
+      model: model,
+      system_prompt: systemPrompt || SYSTEM_PROMPT_DEFAULT,
+      created_at: new Date().toISOString(),
     }
 
-    // return the new chat to write to indexedDB
+    // Return the chat data - it will be stored in IndexedDB by the client
     return new Response(JSON.stringify({ chat: chatData }), {
       status: 200,
     })
@@ -59,4 +40,4 @@ export async function POST(request: Request) {
       { status: 500 }
     )
   }
-}
+} 

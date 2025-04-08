@@ -6,6 +6,7 @@ just to make sure i was not sleeping all the time.
 ## v0.1.1
 
 ### 9th April, 2025
+- added mistral models
 - added openai models
 - other fixes and improvements
 - fixed indexdb issues and shitty bugs

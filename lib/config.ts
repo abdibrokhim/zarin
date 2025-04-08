@@ -4,7 +4,7 @@ import Gemini from "@/components/icons/gemini"
 import Grok from "@/components/icons/grok"
 import Mistral from "@/components/icons/mistral"
 import OpenAI from "@/components/icons/openai"
-import { mistral } from "@ai-sdk/mistral"
+import { createMistral } from "@ai-sdk/mistral"
 import { createOpenAI } from "@ai-sdk/openai"
 import {
   BookOpenText,
@@ -26,6 +26,7 @@ export const NON_AUTH_DAILY_MESSAGE_LIMIT = 5
 export const AUTH_DAILY_MESSAGE_LIMIT = 100
 export const REMAINING_QUERY_ALERT_THRESHOLD = 2
 export const DAILY_FILE_UPLOAD_LIMIT = 10
+export const BASE_URL = "https://api.aimlapi.com/v1"
 
 export type Model = {
   id: string
@@ -42,9 +43,15 @@ export type Model = {
 
 // Create custom OpenAI provider with the correct baseURL
 const customOpenAI = createOpenAI({
-  baseURL: 'https://api.aimlapi.com/v1',
+  baseURL: BASE_URL,
   apiKey: process.env.AIML_API_KEY,
   compatibility: 'strict',
+})
+
+// Create custom Mistral provider with the correct baseURL
+const customMistral = createMistral({
+  baseURL: BASE_URL,
+  apiKey: process.env.AIML_API_KEY,
 })
 
 export const MODELS_NOT_AVAILABLE = [
@@ -207,6 +214,47 @@ export const MODELS = [
     api_sdk: customOpenAI("gpt-4.5-preview"),
     icon: OpenAI,
   },
+  // Mistral models from the API
+  {
+    id: "mistralai/mistral-nemo",
+    name: "Mistral Nemo",
+    provider: "mistral",
+    features: [
+      {
+        id: "file-upload",
+        enabled: false,
+      },
+    ],
+    api_sdk: customMistral("mistralai/mistral-nemo"),
+    icon: Mistral,
+  },
+  {
+    id: "mistralai/Mistral-7B-Instruct-v0.3",
+    name: "Mistral 7B Instruct",
+    provider: "mistral",
+    features: [
+      {
+        id: "file-upload",
+        enabled: false,
+      },
+    ],
+    api_sdk: customMistral("mistralai/Mistral-7B-Instruct-v0.3"),
+    icon: Mistral,
+  },
+  {
+    id: "mistralai/mistral-tiny",
+    name: "Mistral Tiny",
+    provider: "mistral",
+    features: [
+      {
+        id: "file-upload",
+        enabled: false,
+      },
+    ],
+    api_sdk: customMistral("mistralai/mistral-tiny"),
+    icon: Mistral,
+  },
+  // Original Mistral models using custom provider
   {
     id: "pixtral-large-latest",
     name: "Pixtral Large",
@@ -217,7 +265,7 @@ export const MODELS = [
         enabled: true,
       },
     ],
-    api_sdk: mistral("pixtral-large-latest"),
+    api_sdk: customMistral("pixtral-large-latest"),
     icon: Mistral,
   },
   {
@@ -230,7 +278,7 @@ export const MODELS = [
         enabled: false,
       },
     ],
-    api_sdk: mistral("mistral-large-latest"),
+    api_sdk: customMistral("mistral-large-latest"),
     icon: Mistral,
   },
 ] as Model[]

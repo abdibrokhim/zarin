@@ -7,6 +7,7 @@ import { ChatHistoryProvider } from "@/lib/chat-store/chat-history-provider"
 import { ThemeProvider } from "next-themes"
 import { Toaster } from "@/components/ui/sonner"
 import { readFromIndexedDB, writeToIndexedDB } from "@/lib/chat-store/persist"
+import { Analytics } from "@vercel/analytics/react"
 
 // Create a default yaps user
 function createGuestUser(): UserProfile {

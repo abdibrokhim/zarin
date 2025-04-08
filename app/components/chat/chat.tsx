@@ -57,7 +57,7 @@ export default function Chat({
   )
   const [systemPrompt, setSystemPrompt] = useState(propSystemPrompt)
   const { createNewChat } = useChatHistory()
-  const isAuthenticated = !!user?.id
+  const isAuthenticated = false // Always false since we don't use authentication
 
   const {
     messages,
@@ -111,7 +111,7 @@ export default function Chat({
     try {
       const rateData = await checkRateLimits(uid, isAuthenticated)
 
-      if (rateData.remaining === 0 && !isAuthenticated) {
+      if (rateData.remaining === 0) {
         setHasDialogAuth(true)
         return false
       }
@@ -142,9 +142,6 @@ export default function Chat({
         )
         if (!newChat) return null
         setChatId(newChat.id)
-        if (isAuthenticated) {
-          window.history.pushState(null, "", `/c/${newChat.id}`)
-        }
         return newChat.id
       } catch (err: any) {
         let errorMessage = "Something went wrong."

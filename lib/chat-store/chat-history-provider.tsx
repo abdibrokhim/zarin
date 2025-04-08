@@ -6,7 +6,6 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { createNewChat as createNewChatFromDb } from "./chat"
 import {
   deleteChat as deleteChatFromDb,
-  fetchAndCacheChats,
   getCachedChats,
   updateChatTitle,
 } from "./history"
@@ -56,8 +55,6 @@ export function ChatHistoryProvider({
     const load = async () => {
       const cached = await getCachedChats()
       setChats(cached)
-      const fresh = await fetchAndCacheChats(userId)
-      setChats(fresh)
     }
     load()
   }, [userId])
@@ -65,8 +62,8 @@ export function ChatHistoryProvider({
   const refresh = async () => {
     if (!userId) return
 
-    const fresh = await fetchAndCacheChats(userId)
-    setChats(fresh)
+    const cached = await getCachedChats()
+    setChats(cached)
   }
 
   const updateTitle = async (id: string, title: string) => {

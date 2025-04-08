@@ -1,59 +1,76 @@
-import { createClient } from "@/lib/supabase/server"
+"use client"
+
 import { Message } from "ai"
-import { redirect } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 import Chat from "../../components/chat/chat"
 import LayoutApp from "../../components/layout/layout-app"
+import { getChat } from "@/lib/chat-store/chat"
+import { getMessages } from "@/lib/chat-store/message"
+import { SYSTEM_PROMPT_DEFAULT } from "@/lib/config"
 
-export default async function PrivatePage({
-  params,
-}: {
-  params: Promise<{ chatId: string }>
-}) {
-  const { chatId } = await params
-  const supabase = await createClient()
+export default function PrivatePage() {
+  const params = useParams()
+  const router = useRouter()
+  const chatId = params?.chatId as string
+  const [isLoading, setIsLoading] = useState(true)
+  const [chatData, setChatData] = useState<any>(null)
+  const [messages, setMessages] = useState<Message[]>([])
 
-  const { data: userData, error: userError } = await supabase.auth.getUser()
+  useEffect(() => {
+    async function loadChatData() {
+      try {
+        // Get chat metadata from IndexedDB
+        const chat = await getChat(chatId)
+        if (!chat) {
+          router.push("/")
+          return
+        }
 
-  if (userError || !userData?.user) {
-    redirect("/")
-  }
+        setChatData(chat)
 
-  const { data: chatData, error: chatError } = await supabase
-    .from("chats")
-    .select("id, title, model, system_prompt")
-    .eq("id", chatId)
-    .eq("user_id", userData.user.id)
-    .single()
+        // Get messages from IndexedDB
+        const chatMessages = await getMessages(chatId)
+        
+        // Format messages to match the AI SDK format
+        const formattedMessages: Message[] = chatMessages.map((message) => ({
+          id: String(message.id),
+          content: message.content,
+          experimental_attachments: message.attachments,
+          role: message.role,
+        }))
 
-  if (chatError || !chatData) {
-    redirect("/")
-  }
+        setMessages(formattedMessages)
+      } catch (error) {
+        console.error("Error loading chat data:", error)
+        router.push("/")
+      } finally {
+        setIsLoading(false)
+      }
+    }
 
-  const { data: messages, error: messagesError } = await supabase
-    .from("messages")
-    .select("*")
-    .eq("chat_id", chatId)
-    .order("created_at", { ascending: true })
+    if (chatId) {
+      loadChatData()
+    }
+  }, [chatId, router])
 
-  const formattedMessages: Message[] =
-    messages?.map((message) => ({
-      id: String(message.id),
-      content: message.content,
-      experimental_attachments: message.attachments,
-      role: message.role,
-    })) || []
-
-  if (messagesError || !messages) {
-    redirect("/")
+  if (isLoading) {
+    return (
+      <LayoutApp>
+        <div className="flex h-full items-center justify-center">
+          <div className="text-foreground">Loading chat...</div>
+        </div>
+      </LayoutApp>
+    )
   }
 
   return (
     <LayoutApp>
       <Chat
-        initialMessages={formattedMessages}
+        initialMessages={messages}
         chatId={chatId}
-        preferredModel={chatData.model || ""}
-        systemPrompt={chatData.system_prompt || "You are a helpful assistant."}
+        preferredModel={chatData?.model || ""}
+        systemPrompt={chatData?.system_prompt || SYSTEM_PROMPT_DEFAULT}
       />
     </LayoutApp>
   )

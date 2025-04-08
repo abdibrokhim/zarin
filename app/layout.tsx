@@ -6,10 +6,10 @@ import { ChatHistoryProvider } from "@/lib/chat-store/chat-history-provider"
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/config"
 import { ThemeProvider } from "next-themes"
 import Script from "next/script"
-import { createClient } from "../lib/supabase/server"
 import { LayoutClient } from "./layout-client"
 import { UserProvider } from "./providers/user-provider"
 import { UserProfile } from "./types/user"
+import crypto from "crypto"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,29 +26,27 @@ export const metadata: Metadata = {
   description: APP_DESCRIPTION,
 }
 
+// Create a default guest user
+function createGuestUser(): UserProfile {
+  return {
+    id: `guest_${crypto.randomUUID()}`,
+    daily_message_count: 0,
+    created_at: new Date().toISOString(),
+    display_name: "Guest User",
+    profile_image: "",
+    email: "",
+  } as UserProfile
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   const isDev = process.env.NODE_ENV === "development"
-  const supabase = await createClient()
-  const { data } = await supabase.auth.getUser()
-
-  let userProfile = null
-  if (data.user) {
-    const { data: userProfileData } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", data.user?.id)
-      .single()
-
-    userProfile = {
-      ...userProfileData,
-      profile_image: data.user?.user_metadata.avatar_url,
-      display_name: data.user?.user_metadata.name,
-    } as UserProfile
-  }
+  
+  // Create a guest user by default
+  const guestUser = createGuestUser();
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -63,8 +61,8 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <LayoutClient />
-        <UserProvider initialUser={userProfile}>
-          <ChatHistoryProvider userId={userProfile?.id}>
+        <UserProvider initialUser={guestUser}>
+          <ChatHistoryProvider userId={guestUser?.id}>
             <ThemeProvider
               attribute="class"
               defaultTheme="light"

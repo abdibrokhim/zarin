@@ -1,5 +1,4 @@
 import type { ChatHistory } from "@/lib/chat-store/types"
-import { createClient } from "@/lib/supabase/client"
 import { readFromIndexedDB, writeToIndexedDB } from "./persist"
 
 export async function getCachedChats(): Promise<ChatHistory[]> {
@@ -12,31 +11,19 @@ export async function getCachedChats(): Promise<ChatHistory[]> {
 export async function fetchAndCacheChats(
   userId: string
 ): Promise<ChatHistory[]> {
-  const supabase = createClient()
-
-  const { data, error } = await supabase
-    .from("chats")
-    .select("id, title, created_at")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false })
-
-  if (!data || error) {
-    console.error("Failed to fetch chats:", error)
-    return []
-  }
-
-  await writeToIndexedDB("chats", data)
-  return data
+  // With IndexedDB only, we just return the cached chats
+  const all = await readFromIndexedDB<ChatHistory>("chats")
+  return (all as ChatHistory[])
+    .filter((chat: any) => chat.user_id === userId)
+    .sort(
+      (a, b) => +new Date(b.created_at || "") - +new Date(a.created_at || "")
+    )
 }
 
 export async function updateChatTitle(
   id: string,
   title: string
 ): Promise<void> {
-  const supabase = createClient()
-  const { error } = await supabase.from("chats").update({ title }).eq("id", id)
-  if (error) throw error
-
   const all = await getCachedChats()
   const updated = (all as ChatHistory[]).map((c) =>
     c.id === id ? { ...c, title } : c
@@ -45,10 +32,6 @@ export async function updateChatTitle(
 }
 
 export async function deleteChat(id: string): Promise<void> {
-  const supabase = createClient()
-  const { error } = await supabase.from("chats").delete().eq("id", id)
-  if (error) throw error
-
   const all = await getCachedChats()
   await writeToIndexedDB(
     "chats",

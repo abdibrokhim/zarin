@@ -1,6 +1,5 @@
 import type { Tables } from "@/app/types/database.types"
 import { readFromIndexedDB, writeToIndexedDB } from "./persist"
-import { getMessagesFromSupabase, sendMessageToSupabase } from "./supabase"
 
 type Message = Tables<"messages">
 
@@ -10,16 +9,13 @@ export async function getMessages(chatId: string): Promise<Message[]> {
   return (all as Message[]).filter((m) => m.chat_id === chatId)
 }
 
-// Sync messages from Supabase and store locally
+// Save messages to IndexedDB
 export async function syncMessages(chatId: string): Promise<void> {
-  const remote = await getMessagesFromSupabase(chatId)
-  if (remote?.length) {
-    await writeToIndexedDB("messages", remote)
-  }
+  // This function is kept for API compatibility but now only works with IndexedDB
+  // No remote syncing needed
 }
 
-// Write message locally and remotely (optimistic)
+// Write message to IndexedDB
 export async function sendMessage(message: Message): Promise<void> {
   await writeToIndexedDB("messages", message)
-  await sendMessageToSupabase(message)
 }

@@ -8,9 +8,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog"
-import { signInWithGoogle } from "@/lib/api"
-import { createClient } from "@/lib/supabase/client"
 import { useState } from "react"
 
 type DialogAuthProps = {
@@ -19,30 +18,6 @@ type DialogAuthProps = {
 }
 
 export function DialogAuth({ open, setOpen }: DialogAuthProps) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  const supabase = createClient()
-
-  const handleSignInWithGoogle = async () => {
-    try {
-      setIsLoading(true)
-      setError(null)
-
-      const data = await signInWithGoogle(supabase)
-
-      // Redirect to the provider URL
-      if (data?.url) {
-        window.location.href = data.url
-      }
-    } catch (err: any) {
-      console.error("Error signing in with Google:", err)
-      setError(err.message || "An unexpected error occurred. Please try again.")
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-md">
@@ -51,30 +26,19 @@ export function DialogAuth({ open, setOpen }: DialogAuthProps) {
             You've reached the limit for today
           </DialogTitle>
           <DialogDescription className="pt-2 text-base">
-            Sign in below to increase your message limits.
+            We're using browser storage to save your chats locally.
+            Your chat history will be saved in your browser until you clear it.
+            Please try again tomorrow or clear your browser data if you need to reset.
           </DialogDescription>
         </DialogHeader>
-        {error && (
-          <div className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">
-            {error}
-          </div>
-        )}
         <DialogFooter className="mt-6 sm:justify-center">
           <Button
             variant="secondary"
             className="w-full text-base"
             size="lg"
-            onClick={handleSignInWithGoogle}
-            disabled={isLoading}
+            onClick={() => setOpen(false)}
           >
-            <img
-              src="https://www.google.com/favicon.ico"
-              alt="Google logo"
-              width={20}
-              height={20}
-              className="mr-2 size-4"
-            />
-            <span>{isLoading ? "Connecting..." : "Continue with Google"}</span>
+            Got it
           </Button>
         </DialogFooter>
       </DialogContent>

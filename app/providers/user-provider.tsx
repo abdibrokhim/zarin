@@ -1,7 +1,6 @@
 // app/providers/user-provider.tsx
 "use client"
 
-import { createClient } from "@/lib/supabase/client"
 import { createContext, useContext, useEffect, useState } from "react"
 import { UserProfile } from "../types/user"
 
@@ -15,6 +14,9 @@ type UserContextType = {
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
 
+// Local storage key for user data
+const USER_STORAGE_KEY = 'zarinchat_user'
+
 export function UserProvider({
   children,
   initialUser,
@@ -24,27 +26,33 @@ export function UserProvider({
 }) {
   const [user, setUser] = useState<UserProfile | null>(initialUser)
   const [isLoading, setIsLoading] = useState(false)
-  const supabase = createClient()
 
-  // Refresh user data from the server
+  // Initialize user from local storage if available
+  useEffect(() => {
+    const storedUser = localStorage.getItem(USER_STORAGE_KEY)
+    if (storedUser && !initialUser) {
+      try {
+        setUser(JSON.parse(storedUser))
+      } catch (e) {
+        console.error('Failed to parse stored user data:', e)
+        localStorage.removeItem(USER_STORAGE_KEY)
+      }
+    }
+  }, [initialUser])
+
+  // Refresh user data from local storage
   const refreshUser = async () => {
     if (!user?.id) return
 
+    // Since we're using local storage only, there's not much to refresh
+    // But we keep the function for API compatibility
     setIsLoading(true)
     try {
-      const { data, error } = await supabase
-        .from("users")
-        .select("*")
-        .eq("id", user.id)
-        .single()
-
-      if (error) throw error
-      if (data)
-        setUser({
-          ...data,
-          profile_image: data.profile_image || "",
-          display_name: data.display_name || "",
-        })
+      const storedUser = localStorage.getItem(USER_STORAGE_KEY)
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser)
+        setUser(parsedUser)
+      }
     } catch (err) {
       console.error("Failed to refresh user data:", err)
     } finally {
@@ -52,21 +60,18 @@ export function UserProvider({
     }
   }
 
-  // Update user data both in DB and local state
+  // Update user data in local storage and state
   const updateUser = async (updates: Partial<UserProfile>) => {
     if (!user?.id) return
 
     setIsLoading(true)
     try {
-      const { error } = await supabase
-        .from("users")
-        .update(updates)
-        .eq("id", user.id)
-
-      if (error) throw error
-
-      // Update local state optimistically
-      setUser((prev) => (prev ? { ...prev, ...updates } : null))
+      // Update local state
+      const updatedUser = { ...user, ...updates }
+      setUser(updatedUser)
+      
+      // Save to local storage
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(updatedUser))
     } catch (err) {
       console.error("Failed to update user:", err)
     } finally {
@@ -78,9 +83,9 @@ export function UserProvider({
   const signOut = async () => {
     setIsLoading(true)
     try {
-      const { error } = await supabase.auth.signOut()
-      if (error) throw error
-
+      // Remove from local storage
+      localStorage.removeItem(USER_STORAGE_KEY)
+      
       // Reset user state
       setUser(null)
     } catch (err) {
@@ -89,34 +94,6 @@ export function UserProvider({
       setIsLoading(false)
     }
   }
-
-  // Set up realtime subscription for user data changes
-  useEffect(() => {
-    if (!user?.id) return
-
-    const channel = supabase
-      .channel(`public:users:id=eq.${user.id}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "users",
-          filter: `id=eq.${user.id}`,
-        },
-        (payload) => {
-          setUser((previous) => ({
-            ...previous,
-            ...(payload.new as UserProfile),
-          }))
-        }
-      )
-      .subscribe()
-
-    return () => {
-      supabase.removeChannel(channel)
-    }
-  }, [user?.id, supabase])
 
   return (
     <UserContext.Provider

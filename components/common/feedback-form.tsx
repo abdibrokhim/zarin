@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/toast"
-import { createClient } from "@/lib/supabase/client"
 import { CaretLeft, SealCheck, Spinner } from "@phosphor-icons/react"
 import { AnimatePresence, motion } from "motion/react"
 import { useEffect, useState } from "react"
@@ -36,36 +35,23 @@ export function FeedbackForm({ authUserId, onClose }: FeedbackFormProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!authUserId) {
-      toast({
-        title: "Please login to submit feedback",
-        status: "error",
-      })
-      return
-    }
-
-    setStatus("submitting")
     if (!feedback.trim()) return
 
+    setStatus("submitting")
+
     try {
-      const supabase = createClient()
-
-      const { error } = await supabase.from("feedback").insert({
-        message: feedback,
-        user_id: authUserId,
-      })
-
-      if (error) {
-        toast({
-          title: `Error submitting feedback: ${error}`,
-          status: "error",
-        })
-        setStatus("error")
-        return
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 1200))
-
+      // Create a mailto link with the feedback content
+      const subject = encodeURIComponent("Feedback for Zarin Chat")
+      const body = encodeURIComponent(feedback)
+      const userId = authUserId ? encodeURIComponent(`User ID: ${authUserId}`) : "Guest User"
+      const emailBody = encodeURIComponent(`${feedback}\n\n${userId}`)
+      
+      // Open the email client
+      window.location.href = `mailto:abdibrokhim@gmail.com?subject=${subject}&body=${emailBody}`
+      
+      // Simulate delay for better UX
+      await new Promise((resolve) => setTimeout(resolve, 800))
+      
       setStatus("success")
 
       setTimeout(() => {
@@ -73,7 +59,7 @@ export function FeedbackForm({ authUserId, onClose }: FeedbackFormProps) {
       }, 2500)
     } catch (error) {
       toast({
-        title: `Error submitting feedback: ${error}`,
+        title: `Error sending feedback: ${error}`,
         status: "error",
       })
       setStatus("error")

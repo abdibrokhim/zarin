@@ -13,9 +13,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { MODELS_OPTIONS, PROVIDERS_OPTIONS } from "@/lib/config"
+import { MODELS_OPTIONS, PROVIDERS_OPTIONS, SUBSCRIPTION_URL } from "@/lib/config"
 import { cn } from "@/lib/utils"
-import { CaretDown, Check, Image } from "@phosphor-icons/react"
+import { CaretDown, Check, Crown, Image } from "@phosphor-icons/react"
 
 type ModelSelectorProps = {
   selectedModelId: string
@@ -62,6 +62,22 @@ export function ModelSelector({
           align="start"
           sideOffset={4}
         >
+          {/* Pro Banner */}
+          <a 
+            href={SUBSCRIPTION_URL} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="block"
+          >
+            <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-amber-100 to-amber-200 dark:from-amber-900/40 dark:to-amber-800/40 border-b border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-100 hover:bg-gradient-to-r hover:from-amber-200 hover:to-amber-300 dark:hover:from-amber-800/40 dark:hover:to-amber-700/40 transition-colors cursor-pointer rounded-t-md">
+              <Crown weight="fill" className="size-5 text-amber-600 dark:text-amber-400" />
+              <div className="flex flex-col">
+                <span className="font-medium">Upgrade to Pro</span>
+                <span className="text-xs text-amber-700 dark:text-amber-300">Unlock all models + higher limits</span>
+              </div>
+            </div>
+          </a>
+
           {/* Models Section */}
           <div className="text-muted-foreground px-2 py-1.5 text-sm font-medium">
             Available Models

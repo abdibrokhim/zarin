@@ -27,6 +27,7 @@ export const AUTH_DAILY_MESSAGE_LIMIT = 100
 export const REMAINING_QUERY_ALERT_THRESHOLD = 2
 export const DAILY_FILE_UPLOAD_LIMIT = 10
 export const BASE_URL = "https://api.aimlapi.com/v1"
+export const SUBSCRIPTION_URL = "https://www.patreon.com/abdibrokhim/membership"
 
 export type Model = {
   id: string

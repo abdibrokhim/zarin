@@ -69,11 +69,11 @@ export function ModelSelector({
             rel="noopener noreferrer" 
             className="block"
           >
-            <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-amber-100 to-amber-200 dark:from-amber-900/40 dark:to-amber-800/40 border-b border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-100 hover:bg-gradient-to-r hover:from-amber-200 hover:to-amber-300 dark:hover:from-amber-800/40 dark:hover:to-amber-700/40 transition-colors cursor-pointer rounded-t-md">
-              <Crown weight="fill" className="size-5 text-amber-600 dark:text-amber-400" />
+            <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-zinc-100 to-zinc-200 dark:from-zinc-900/40 dark:to-zinc-800/40 border-b border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-gradient-to-r hover:from-zinc-200 hover:to-zinc-300 dark:hover:from-zinc-800/40 dark:hover:to-zinc-700/40 transition-colors cursor-pointer rounded-t-md">
+              <Crown weight="fill" className="size-5 text-zinc-600 dark:text-zinc-400" />
               <div className="flex flex-col">
                 <span className="font-medium">Upgrade to Pro</span>
-                <span className="text-xs text-amber-700 dark:text-amber-300">Unlock all models + higher limits</span>
+                <span className="text-xs text-zinc-700 dark:text-zinc-300">Unlock all models + higher limits</span>
               </div>
             </div>
           </a>

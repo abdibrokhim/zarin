@@ -65,7 +65,7 @@ export function Settings({ trigger }: SettingsProps) {
       <DialogContent className="gap-0 p-0 sm:max-w-xl">
         <DialogHeader className="border-border border-b px-6 py-4">
           <DialogTitle>
-            <VisuallyHidden>Settings</VisuallyHidden>
+            Settings
           </DialogTitle>
         </DialogHeader>
         <SettingsContent onClose={() => setOpen(false)} />
@@ -241,56 +241,6 @@ function SettingsContent({
           </p>
         </div>
       </div>
-
-      {/* Sign Out */}
-      <div className="border-border border-t">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-medium">Account</h3>
-              <p className="text-muted-foreground text-xs">
-                Log out on this device
-              </p>
-            </div>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="flex items-center gap-2"
-              onClick={handleSignOut}
-            >
-              <SignOut className="size-4" />
-              <span>Sign out</span>
-            </Button>
-          </div>
-        </div>
-      </div>
-      {/* Delete Account, not ready yet */}
-      {/* <div className="border-border border-t">
-        <div className="px-6 py-4">
-          <div
-            className={`flex ${
-              isDrawer ? "flex-col space-y-3" : "items-center justify-between"
-            }`}
-          >
-            <div>
-              <h3 className="text-sm font-medium">Delete Account</h3>
-              <p className="text-muted-foreground max-w-xs text-xs">
-                Permanently delete your account and associated data. Deletions
-                are immediate and cannot be undone.
-              </p>
-            </div>
-            <Button
-              variant="destructive"
-              size="sm"
-              className={`${
-                isDrawer ? "mt-3 self-start" : "whitespace-nowrap"
-              }`}
-            >
-              Delete Account
-            </Button>
-          </div>
-        </div>
-      </div> */}
     </div>
   )
 }

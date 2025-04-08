@@ -8,7 +8,7 @@ import { ThemeProvider } from "next-themes"
 import { Toaster } from "@/components/ui/sonner"
 import { readFromIndexedDB, writeToIndexedDB } from "@/lib/chat-store/persist"
 
-// Create a default guest user
+// Create a default yaps user
 function createGuestUser(): UserProfile {
   // Browser-compatible UUID generation
   const generateId = () => {
@@ -23,7 +23,7 @@ function createGuestUser(): UserProfile {
     id: `guest_${generateId()}`,
     daily_message_count: 0,
     created_at: new Date().toISOString(),
-    display_name: "Guest User",
+    display_name: "Yaps User",
     profile_image: "",
     email: "",
   } as UserProfile
@@ -65,7 +65,7 @@ export function LayoutClient({
     // fetch("/api/csrf")
   }, []);
   
-  // Don't render providers until we have a guest user
+  // Don't render providers until we have a yaps user
   if (!guestUser) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -79,11 +79,11 @@ export function LayoutClient({
       <ChatHistoryProvider userId={guestUser.id}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          <Toaster position="top-center" />
+          <Toaster position="top-center" theme="dark" />
           {children}
         </ThemeProvider>
       </ChatHistoryProvider>

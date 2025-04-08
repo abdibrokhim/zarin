@@ -60,7 +60,7 @@ export function FeedbackWidget({ authUserId }: FeedbackWidgetProps) {
     try {
       // Create a mailto link with the feedback content
       const subject = encodeURIComponent("Feedback for Zarin Chat")
-      const userId = authUserId ? encodeURIComponent(`User ID: ${authUserId}`) : "Guest User"
+      const userId = authUserId ? encodeURIComponent(`User ID: ${authUserId}`) : "Yaps User"
       const emailBody = encodeURIComponent(`${feedback}\n\n${userId}`)
       
       // Open the email client

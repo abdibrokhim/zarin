@@ -15,7 +15,7 @@ export class UsageLimitError extends Error {
 const RATE_LIMIT_KEY = 'zarin_rate_limits'
 
 /**
- * Creates a guest user with a local user ID
+ * Creates a yaps user with a local user ID
  */
 export async function createGuestUser(guestId: string) {
   try {
@@ -31,7 +31,7 @@ export async function createGuestUser(guestId: string) {
     localStorage.setItem(`user_${guestId}`, JSON.stringify(userData))
     return { user: userData }
   } catch (err) {
-    console.error("Error creating guest user:", err)
+    console.error("Error creating yaps user:", err)
     throw err
   }
 }

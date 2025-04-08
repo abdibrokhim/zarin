@@ -13,11 +13,12 @@ type ChatRequest = {
   userId: string
   model: string
   systemPrompt: string
+  isAuthenticated: boolean
 }
 
 export async function POST(req: Request) {
   try {
-    const { messages, chatId, userId, model, systemPrompt } =
+    const { messages, chatId, userId, model, systemPrompt, isAuthenticated } =
       (await req.json()) as ChatRequest
 
     if (!messages || !chatId || !userId) {
@@ -27,10 +28,21 @@ export async function POST(req: Request) {
       )
     }
 
+    // Find the selected model
+    const selectedModel = MODELS.find((m) => m.id === model)
+    
+    if (!selectedModel || !selectedModel.api_sdk) {
+      console.error(`Model not found or missing API SDK: ${model}`)
+      return new Response(
+        JSON.stringify({ error: "Selected model is not available" }),
+        { status: 400 }
+      )
+    }
+    
     // Frontend will handle saving the user message to IndexedDB
     
     const result = streamText({
-      model: MODELS.find((m) => m.id === model)?.api_sdk!,
+      model: selectedModel.api_sdk,
       system: systemPrompt || "You are a helpful assistant.",
       messages,
     })

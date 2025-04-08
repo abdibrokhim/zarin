@@ -189,16 +189,6 @@ export function MessageUser({
             <PencilSimple className="size-4" />
           </button>
         </MessageAction>
-        <MessageAction tooltip="Delete" side="bottom" delayDuration={0}>
-          <button
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-transparent transition"
-            aria-label="Delete"
-            onClick={handleDelete}
-            type="button"
-          >
-            <Trash className="size-4" />
-          </button>
-        </MessageAction>
       </MessageActions>
     </MessageContainer>
   )

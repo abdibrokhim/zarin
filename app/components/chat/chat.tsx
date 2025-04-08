@@ -164,23 +164,35 @@ export default function Chat({
 
   const handleModelChange = useCallback(
     async (model: string) => {
-      if (!chatId) return
-      const oldModel = selectedModel
-
-      setSelectedModel(model)
+      // Update local state immediately for UI responsiveness
+      setSelectedModel(model);
+      
+      // If there's no active chat yet, just update the local state
+      if (!chatId) return;
+      
+      const oldModel = selectedModel;
 
       try {
-        await updateChatModel(chatId, model)
+        // Update the model in the database
+        await updateChatModel(chatId, model);
+        
+        // If there are messages, we need to notify the user that model changes will apply to new messages
+        if (messages.length > 0) {
+          toast({
+            title: "Model updated for new messages",
+            status: "info",
+          });
+        }
       } catch (err) {
-        console.error("Failed to update chat model:", err)
-        setSelectedModel(oldModel)
+        console.error("Failed to update chat model:", err);
+        setSelectedModel(oldModel);
         toast({
           title: "Failed to update chat model",
           status: "error",
-        })
+        });
       }
     },
-    [chatId]
+    [chatId, selectedModel, messages.length]
   )
 
   const handleFileUploads = async (
@@ -300,6 +312,9 @@ export default function Chat({
     }
 
     try {
+      // Logging to help debug model selection
+      console.log(`Submitting message with model: ${selectedModel}`);
+      
       handleSubmit(undefined, options)
       setMessages((prev) => prev.filter((msg) => msg.id !== optimisticId))
       cleanupOptimisticAttachments(optimisticMessage.experimental_attachments)

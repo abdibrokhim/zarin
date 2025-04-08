@@ -5,7 +5,7 @@ import Grok from "@/components/icons/grok"
 import Mistral from "@/components/icons/mistral"
 import OpenAI from "@/components/icons/openai"
 import { mistral } from "@ai-sdk/mistral"
-import { openai } from "@ai-sdk/openai"
+import { createOpenAI } from "@ai-sdk/openai"
 import {
   BookOpenText,
   Brain,
@@ -33,11 +33,19 @@ export type Model = {
   provider: string
   available?: boolean
   api_sdk?: any
+  icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>
   features?: {
     id: string
     enabled: boolean
   }[]
 }
+
+// Create custom OpenAI provider with the correct baseURL
+const customOpenAI = createOpenAI({
+  baseURL: 'https://api.aimlapi.com/v1',
+  apiKey: process.env.AIML_API_KEY,
+  compatibility: 'strict',
+})
 
 export const MODELS_NOT_AVAILABLE = [
   {
@@ -144,7 +152,7 @@ export const MODELS = [
         enabled: true,
       },
     ],
-    api_sdk: openai("gpt-4o"),
+    api_sdk: customOpenAI("gpt-4o"),
     icon: OpenAI,
   },
   {
@@ -157,7 +165,47 @@ export const MODELS = [
         enabled: true,
       },
     ],
-    api_sdk: openai("gpt-4o-mini"),
+    api_sdk: customOpenAI("gpt-4o-mini"),
+    icon: OpenAI,
+  },
+  {
+    id: "o3-mini",
+    name: "O3 Mini",
+    provider: "openai",
+    features: [
+      {
+        id: "file-upload",
+        enabled: false,
+      },
+    ],
+    api_sdk: customOpenAI("o3-mini"),
+    icon: OpenAI,
+  },
+  {
+    id: "o1",
+    name: "O1",
+    provider: "openai",
+    features: [
+      {
+        id: "file-upload",
+        enabled: false,
+      },
+    ],
+    api_sdk: customOpenAI("o1"),
+    icon: OpenAI,
+  },
+  {
+    id: "gpt-4.5-preview",
+    name: "GPT-4.5 Preview",
+    provider: "openai",
+    features: [
+      {
+        id: "file-upload",
+        enabled: true,
+      },
+    ],
+    api_sdk: customOpenAI("gpt-4.5-preview"),
+    icon: OpenAI,
   },
   {
     id: "pixtral-large-latest",
@@ -170,6 +218,7 @@ export const MODELS = [
       },
     ],
     api_sdk: mistral("pixtral-large-latest"),
+    icon: Mistral,
   },
   {
     id: "mistral-large-latest",
@@ -182,6 +231,7 @@ export const MODELS = [
       },
     ],
     api_sdk: mistral("mistral-large-latest"),
+    icon: Mistral,
   },
 ] as Model[]
 
@@ -394,6 +444,6 @@ export const SUGGESTIONS = [
   },
 ]
 
-export const SYSTEM_PROMPT_DEFAULT = `You are Zarin, a thoughtful and clear assistant. Your tone is calm, minimal, and human. You write with intention—never too much, never too little. You avoid clichés, speak simply, and offer helpful, grounded answers. When needed, you ask good questions. You don’t try to impress—you aim to clarify. You may use metaphors if they bring clarity, but you stay sharp and sincere. You're here to help the user think clearly and move forward, not to overwhelm or overperform.`
+export const SYSTEM_PROMPT_DEFAULT = `You are Zarin, a thoughtful and clear assistant. Your tone is calm, minimal, and human. You write with intention—never too much, never too little. You avoid clichés, speak simply, and offer helpful, grounded answers. When needed, you ask good questions. You don't try to impress—you aim to clarify. You may use metaphors if they bring clarity, but you stay sharp and sincere. You're here to help the user think clearly and move forward, not to overwhelm or overperform.`
 
 export const MESSAGE_MAX_LENGTH = 4000

@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/tooltip"
 import { MODELS_OPTIONS, PROVIDERS_OPTIONS } from "@/lib/config"
 import { cn } from "@/lib/utils"
-import { CaretDown, Image } from "@phosphor-icons/react"
+import { CaretDown, Check, Image } from "@phosphor-icons/react"
 
 type ModelSelectorProps = {
   selectedModelId: string
@@ -33,6 +33,11 @@ export function ModelSelector({
     (provider) => provider.id === model?.provider
   )
 
+  const handleSelectModel = (modelId: string) => {
+    console.log(`Selecting model: ${modelId}`);
+    setSelectedModelId(modelId);
+  };
+
   return (
     <TooltipProvider>
       <DropdownMenu>
@@ -40,7 +45,7 @@ export function ModelSelector({
           <Button
             variant="outline"
             className={cn(
-              "dark:bg-secondary justify-between",
+              "dark:bg-secondary justify-between min-w-[120px]",
               !model?.available && "cursor-not-allowed opacity-50",
               className
             )}
@@ -69,6 +74,7 @@ export function ModelSelector({
             const hasFileUpload = model.features?.find(
               (feature) => feature.id === "file-upload"
             )?.enabled
+            const isSelected = selectedModelId === model.id;
 
             return (
               <DropdownMenuItem
@@ -76,16 +82,17 @@ export function ModelSelector({
                 className={cn(
                   "flex items-center justify-between px-3 py-2",
                   !model.available && "cursor-not-allowed opacity-50",
-                  selectedModelId === model.id && "bg-accent"
+                  isSelected && "bg-accent font-medium"
                 )}
                 disabled={!model.available}
-                onClick={() => model.available && setSelectedModelId(model.id)}
+                onClick={() => model.available && handleSelectModel(model.id)}
               >
                 <div className="flex items-center gap-3">
                   {provider?.icon && <provider.icon className="size-5" />}
                   <span className="text-base">{model.name}</span>
                 </div>
                 <div className="flex items-center gap-2">
+                  {isSelected && <Check className="size-4 text-accent-foreground" />}
                   {hasFileUpload && (
                     <Tooltip>
                       <TooltipTrigger asChild>

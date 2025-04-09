@@ -9,7 +9,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { readFromIndexedDB, writeToIndexedDB } from "@/lib/chat-store/persist"
 import { Analytics } from "@vercel/analytics/react"
 
-// Create a default yaps user
+// Create a default Zarin User
 function createGuestUser(): UserProfile {
   // Browser-compatible UUID generation
   const generateId = () => {
@@ -24,7 +24,7 @@ function createGuestUser(): UserProfile {
     id: `guest_${generateId()}`,
     daily_message_count: 0,
     created_at: new Date().toISOString(),
-    display_name: "Yaps User",
+    display_name: "Zarin User",
     profile_image: "",
     email: "",
   } as UserProfile
@@ -66,7 +66,7 @@ export function LayoutClient({
     // fetch("/api/csrf")
   }, []);
   
-  // Don't render providers until we have a yaps user
+  // Don't render providers until we have a Zarin User
   if (!guestUser) {
     return (
       <div className="flex h-screen items-center justify-center">

@@ -28,6 +28,9 @@ export const REMAINING_QUERY_ALERT_THRESHOLD = 2
 export const DAILY_FILE_UPLOAD_LIMIT = 10
 export const BASE_URL = "https://api.aimlapi.com/v1"
 export const SUBSCRIPTION_URL = "https://www.patreon.com/abdibrokhim/membership"
+export const DISCORD_URL = "https://discord.gg/nUdcd9p8Ae"
+export const EMAIL_SUPPORT = "abdibrokhim@gmail.com"
+export const DEFAULT_USER_NAME = "Zarin User"
 
 export type Model = {
   id: string

@@ -61,7 +61,7 @@ const defaultTrigger = (
     className="bg-background/80 hover:bg-muted text-muted-foreground h-8 w-8 rounded-full"
     aria-label={`About ${APP_NAME}`}
   >
-    <Info className="size-4" />
+    <Info size={24} />
   </Button>
 )
 

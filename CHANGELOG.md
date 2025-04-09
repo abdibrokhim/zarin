@@ -6,6 +6,10 @@ just to make sure i was not sleeping all the time.
 ## v0.1.1
 
 ### 9th April, 2025
+- other bug fixes and improvements
+- replaced sign out with reinitialize user experience
+- layout changes
+- updated settings ui/ux; better performance and better design
 - added mistral models
 - added openai models
 - other fixes and improvements

@@ -1,3 +1,5 @@
+"use client"
+
 import {
   AUTH_DAILY_MESSAGE_LIMIT,
   NON_AUTH_DAILY_MESSAGE_LIMIT,
@@ -11,11 +13,11 @@ export class UsageLimitError extends Error {
   }
 }
 
-// Key for rate limit data in localStorage
-const RATE_LIMIT_KEY = 'zarin_rate_limits'
+// Key for user data in localStorage
+const USER_DATA_KEY_PREFIX = 'user_'
 
 /**
- * Creates a yaps user with a local user ID
+ * Creates a Zarin User with a local user ID
  */
 export async function createGuestUser(guestId: string) {
   try {
@@ -26,12 +28,18 @@ export async function createGuestUser(guestId: string) {
       daily_message_count: 0,
       daily_reset: new Date().toISOString(),
       created_at: new Date().toISOString(),
+      display_name: "Guest User",
+      email: "",
+      preferred_model: null,
+      profile_image: null,
+      premium: false,
+      anonymous: true,
     }
     
-    localStorage.setItem(`user_${guestId}`, JSON.stringify(userData))
+    localStorage.setItem(`${USER_DATA_KEY_PREFIX}${guestId}`, JSON.stringify(userData))
     return { user: userData }
   } catch (err) {
-    console.error("Error creating yaps user:", err)
+    console.error("Error creating Zarin User:", err)
     throw err
   }
 }
@@ -39,22 +47,15 @@ export async function createGuestUser(guestId: string) {
 /**
  * Check rate limits from local storage
  */
-export async function checkRateLimits(
-  userId: string,
-  isAuthenticated: boolean
-) {
+export async function checkRateLimits(userId: string) {
   try {
     // Get or initialize rate limit data
-    let userData = JSON.parse(localStorage.getItem(`user_${userId}`) || '{}')
-    if (!userData.daily_message_count) {
-      userData = {
-        id: userId,
-        message_count: 0,
-        daily_message_count: 0,
-        daily_reset: new Date().toISOString(),
-        created_at: new Date().toISOString(),
-      }
-      localStorage.setItem(`user_${userId}`, JSON.stringify(userData))
+    let userData = JSON.parse(localStorage.getItem(`${USER_DATA_KEY_PREFIX}${userId}`) || '{}')
+    
+    if (!userData.id) {
+      // Create a new user if none exists
+      const result = await createGuestUser(userId)
+      userData = result.user
     }
     
     // Check if we need to reset daily count
@@ -69,17 +70,16 @@ export async function checkRateLimits(
     ) {
       userData.daily_message_count = 0
       userData.daily_reset = now.toISOString()
-      localStorage.setItem(`user_${userId}`, JSON.stringify(userData))
+      localStorage.setItem(`${USER_DATA_KEY_PREFIX}${userId}`, JSON.stringify(userData))
     }
     
-    const dailyLimit = isAuthenticated
-      ? AUTH_DAILY_MESSAGE_LIMIT
-      : NON_AUTH_DAILY_MESSAGE_LIMIT
+    // Everyone uses the same limit now that we're not using auth
+    const dailyLimit = AUTH_DAILY_MESSAGE_LIMIT
     
     const dailyCount = userData.daily_message_count || 0
     const remaining = dailyLimit - dailyCount
     
-    return { dailyCount, dailyLimit, remaining }
+    return { dailyCount, dailyLimit, remaining, userData }
   } catch (err) {
     console.error("Error checking rate limits:", err)
     throw err
@@ -91,14 +91,33 @@ export async function checkRateLimits(
  */
 export async function incrementUsage(userId: string) {
   try {
-    const userData = JSON.parse(localStorage.getItem(`user_${userId}`) || '{}')
+    // Check current limits first
+    const { userData } = await checkRateLimits(userId)
     
+    // Increment counts
     userData.message_count = (userData.message_count || 0) + 1
     userData.daily_message_count = (userData.daily_message_count || 0) + 1
     
-    localStorage.setItem(`user_${userId}`, JSON.stringify(userData))
+    // Save updated user data
+    localStorage.setItem(`${USER_DATA_KEY_PREFIX}${userId}`, JSON.stringify(userData))
+    
+    // Return the updated user data
+    return userData
   } catch (err) {
     console.error("Error incrementing usage:", err)
+    throw err
+  }
+}
+
+/**
+ * Get the current user data from localStorage
+ */
+export async function getUserData(userId: string) {
+  try {
+    const { userData } = await checkRateLimits(userId)
+    return userData
+  } catch (err) {
+    console.error("Error getting user data:", err)
     throw err
   }
 }

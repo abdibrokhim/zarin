@@ -1,6 +1,7 @@
 // app/providers/user-provider.tsx
 "use client"
 
+import { getUserData, incrementUsage } from "@/lib/api"
 import { createContext, useContext, useEffect, useState } from "react"
 import { UserProfile } from "../types/user"
 
@@ -15,7 +16,7 @@ type UserContextType = {
 const UserContext = createContext<UserContextType | undefined>(undefined)
 
 // Local storage key for user data
-const USER_STORAGE_KEY = 'zarinchat_user'
+const USER_STORAGE_KEY = 'zarinchat_user_id'
 
 export function UserProvider({
   children,
@@ -27,31 +28,41 @@ export function UserProvider({
   const [user, setUser] = useState<UserProfile | null>(initialUser)
   const [isLoading, setIsLoading] = useState(false)
 
-  // Initialize user from local storage if available
+  // Initialize user from local storage or create a new one if needed
   useEffect(() => {
-    const storedUser = localStorage.getItem(USER_STORAGE_KEY)
-    if (storedUser && !initialUser) {
+    const initUser = async () => {
+      setIsLoading(true)
       try {
-        setUser(JSON.parse(storedUser))
-      } catch (e) {
-        console.error('Failed to parse stored user data:', e)
-        localStorage.removeItem(USER_STORAGE_KEY)
+        // Get the user ID from localStorage
+        let userId = localStorage.getItem(USER_STORAGE_KEY)
+        
+        // If no user ID exists, create one
+        if (!userId) {
+          userId = crypto.randomUUID()
+          localStorage.setItem(USER_STORAGE_KEY, userId)
+        }
+        
+        // Get the user data
+        const userData = await getUserData(userId)
+        setUser(userData as UserProfile)
+      } catch (error) {
+        console.error("Failed to initialize user:", error)
+      } finally {
+        setIsLoading(false)
       }
     }
+    
+    initUser()
   }, [initialUser])
 
   // Refresh user data from local storage
   const refreshUser = async () => {
-    if (!user?.id) return
-
-    // Since we're using local storage only, there's not much to refresh
-    // But we keep the function for API compatibility
     setIsLoading(true)
     try {
-      const storedUser = localStorage.getItem(USER_STORAGE_KEY)
-      if (storedUser) {
-        const parsedUser = JSON.parse(storedUser)
-        setUser(parsedUser)
+      const userId = localStorage.getItem(USER_STORAGE_KEY)
+      if (userId) {
+        const userData = await getUserData(userId)
+        setUser(userData as UserProfile)
       }
     } catch (err) {
       console.error("Failed to refresh user data:", err)
@@ -71,7 +82,7 @@ export function UserProvider({
       setUser(updatedUser)
       
       // Save to local storage
-      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(updatedUser))
+      localStorage.setItem(`user_${user.id}`, JSON.stringify(updatedUser))
     } catch (err) {
       console.error("Failed to update user:", err)
     } finally {
@@ -79,17 +90,19 @@ export function UserProvider({
     }
   }
 
-  // Sign out and reset user state
+  // Sign out by clearing user data
   const signOut = async () => {
     setIsLoading(true)
     try {
-      // Remove from local storage
-      localStorage.removeItem(USER_STORAGE_KEY)
+      // Create a new user ID
+      const userId = crypto.randomUUID()
+      localStorage.setItem(USER_STORAGE_KEY, userId)
       
-      // Reset user state
-      setUser(null)
+      // Initialize with fresh data
+      const userData = await getUserData(userId)
+      setUser(userData as UserProfile)
     } catch (err) {
-      console.error("Failed to sign out:", err)
+      console.error("Failed to reset user:", err)
     } finally {
       setIsLoading(false)
     }

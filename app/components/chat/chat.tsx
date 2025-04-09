@@ -110,7 +110,7 @@ export default function Chat({
 
   const checkLimitsAndNotify = async (uid: string): Promise<boolean> => {
     try {
-      const rateData = await checkRateLimits(uid, isAuthenticated)
+      const rateData = await checkRateLimits(uid)
 
       if (rateData.remaining === 0) {
         setHasDialogAuth(true)

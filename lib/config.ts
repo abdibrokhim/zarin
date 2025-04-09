@@ -175,6 +175,10 @@ export const MODELS = [
         id: "file-upload",
         enabled: true,
       },
+      {
+        id: "web-search",
+        enabled: true,
+      },
     ],
     api_sdk: customOpenAI("gpt-4o-mini"),
     icon: OpenAI,
@@ -187,6 +191,10 @@ export const MODELS = [
       {
         id: "file-upload",
         enabled: false,
+      },
+      {
+        id: "deep-reasoning",
+        enabled: true,
       },
     ],
     api_sdk: customOpenAI("o3-mini"),
@@ -201,6 +209,10 @@ export const MODELS = [
         id: "file-upload",
         enabled: false,
       },
+      {
+        id: "reasoning",
+        enabled: true,
+      },
     ],
     api_sdk: customOpenAI("o1"),
     icon: OpenAI,
@@ -212,6 +224,10 @@ export const MODELS = [
     features: [
       {
         id: "file-upload",
+        enabled: true,
+      },
+      {
+        id: "deeper-reasoning",
         enabled: true,
       },
     ],
@@ -241,6 +257,10 @@ export const MODELS = [
         id: "file-upload",
         enabled: false,
       },
+      {
+        id: "reasoning",
+        enabled: true,
+      },
     ],
     api_sdk: customMistral("mistralai/Mistral-7B-Instruct-v0.3"),
     icon: Mistral,
@@ -258,20 +278,6 @@ export const MODELS = [
     api_sdk: customMistral("mistralai/mistral-tiny"),
     icon: Mistral,
   },
-  // Original Mistral models using custom provider
-  {
-    id: "pixtral-large-latest",
-    name: "Pixtral Large",
-    provider: "mistral",
-    features: [
-      {
-        id: "file-upload",
-        enabled: true,
-      },
-    ],
-    api_sdk: customMistral("pixtral-large-latest"),
-    icon: Mistral,
-  },
   {
     id: "mistral-large-latest",
     name: "Mistral Large",
@@ -280,6 +286,10 @@ export const MODELS = [
       {
         id: "file-upload",
         enabled: false,
+      },
+      {
+        id: "reasoning",
+        enabled: true,
       },
     ],
     api_sdk: customMistral("mistral-large-latest"),

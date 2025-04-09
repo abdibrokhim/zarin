@@ -23,6 +23,7 @@ import {
   PencilSimple,
   TrashSimple,
   X,
+  Command as CommandIcon,
 } from "@phosphor-icons/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -44,6 +45,17 @@ export function CommandHistory({
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState("")
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  
+  // Listen for Command+K shortcut
+  useEffect(() => {
+    const handleToggleHistory = () => {
+      setOpen(prev => !prev); // Toggle the command dialog
+    };
+
+    // Listen for the custom event from the parent History component
+    document.addEventListener('toggleHistory', handleToggleHistory);
+    return () => document.removeEventListener('toggleHistory', handleToggleHistory);
+  }, []);
 
   const handleOpenChange = (open: boolean) => {
     setOpen(open)
@@ -99,7 +111,11 @@ export function CommandHistory({
             <ListMagnifyingGlass size={24} />
           </button>
         </TooltipTrigger>
-        <TooltipContent>History</TooltipContent>
+        <TooltipContent>
+          <div className="flex items-center gap-1">
+            History <CommandIcon className="size-4" /> K
+          </div>
+        </TooltipContent>
       </Tooltip>
 
       <CommandDialog

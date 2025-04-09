@@ -11,6 +11,7 @@ import { VisuallyHidden } from "@/components/ui/visually-hidden"
 import { ChatHistory } from "@/lib/chat-store/types"
 import {
   Check,
+  Command as CommandIcon,
   ListMagnifyingGlass,
   MagnifyingGlass,
   PencilSimple,
@@ -18,7 +19,7 @@ import {
   X,
 } from "@phosphor-icons/react"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 type DrawerHistoryProps = {
   chatHistory: ChatHistory[]
@@ -36,6 +37,17 @@ export function DrawerHistory({
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState("")
   const [deletingId, setDeletingId] = useState<string | null>(null)
+
+  // Listen for Command+K shortcut
+  useEffect(() => {
+    const handleToggleHistory = () => {
+      setOpen(prev => !prev); // Toggle the drawer
+    };
+
+    // Listen for the custom event from the parent History component
+    document.addEventListener('toggleHistory', handleToggleHistory);
+    return () => document.removeEventListener('toggleHistory', handleToggleHistory);
+  }, []);
 
   const handleOpenChange = (open: boolean) => {
     setOpen(open)
@@ -91,7 +103,11 @@ export function DrawerHistory({
             </button>
           </DrawerTrigger>
         </TooltipTrigger>
-        <TooltipContent>History</TooltipContent>
+        <TooltipContent>
+          <div className="flex items-center gap-1">
+            History <CommandIcon className="size-4" /> K
+          </div>
+        </TooltipContent>
       </Tooltip>
       <DrawerContent>
         <DrawerTitle>

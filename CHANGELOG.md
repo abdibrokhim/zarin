@@ -6,6 +6,10 @@ just to make sure i was not sleeping all the time.
 ## v0.1.1
 
 ### 9th April, 2025
+- ui/ux improvements
+- new design for model selector
+- added model selector keyboard shortcut
+- added history keyboard shortcut
 - other bug fixes and improvements
 - replaced sign out with reinitialize user experience
 - layout changes

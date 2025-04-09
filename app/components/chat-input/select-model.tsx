@@ -6,7 +6,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { CaretDown } from "@phosphor-icons/react"
+import { CaretDown, Command as CommandIcon } from "@phosphor-icons/react"
 import { MODELS_OPTIONS, PROVIDERS_OPTIONS } from "../../../lib/config"
 
 export type SelectModelProps = {
@@ -25,11 +25,32 @@ export function SelectModel({
     (provider) => provider.id === model?.provider
   )
 
+  // Handle keyboard shortcut manually
+  const handleModelSelectorKeyboard = () => {
+    document.dispatchEvent(new Event('toggleModelSelector'));
+  };
+
   return (
-    <ModelSelector
-      selectedModelId={selectedModel}
-      setSelectedModelId={onSelectModel}
-      className="rounded-full"
-    />
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <div 
+          className="cursor-pointer" 
+          onClick={handleModelSelectorKeyboard}
+          role="button"
+          aria-label="Select AI model"
+        >
+          <ModelSelector
+            selectedModelId={selectedModel}
+            setSelectedModelId={onSelectModel}
+            className="rounded-full"
+          />
+        </div>
+      </TooltipTrigger>
+      <TooltipContent>
+        <div className="flex items-center gap-1">
+          Select model <CommandIcon className="size-4" /> M
+        </div>
+      </TooltipContent>
+    </Tooltip>
   )
 }

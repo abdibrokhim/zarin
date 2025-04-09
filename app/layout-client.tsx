@@ -67,6 +67,26 @@ export function LayoutClient({
     // fetch("/api/csrf")
   }, []);
   
+  // Add keyboard shortcuts event handling
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Toggle history with Command+K / Ctrl+K
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        document.dispatchEvent(new Event('toggleHistory'))
+      }
+      
+      // Toggle model selector with Command+M / Ctrl+M
+      if ((e.metaKey || e.ctrlKey) && e.key === 'm') {
+        e.preventDefault()
+        document.dispatchEvent(new Event('toggleModelSelector'))
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
+  
   // Don't render providers until we have a Zarin User
   if (!guestUser) {
     return (

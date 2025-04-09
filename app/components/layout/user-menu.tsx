@@ -12,7 +12,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { GearSix, Info, Lifebuoy, Question, Sliders } from "@phosphor-icons/react"
+import { GearSix, Info, Lifebuoy, SlidersHorizontal } from "@phosphor-icons/react"
 import dynamic from "next/dynamic"
 import { APP_NAME, DISCORD_URL } from "../../../lib/config"
 
@@ -51,7 +51,7 @@ export function UserMenu() {
         <Settings
           trigger={
             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-              <Sliders className="size-4" />
+              <SlidersHorizontal className="size-4" />
               <span>Settings</span>
             </DropdownMenuItem>
           }

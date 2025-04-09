@@ -114,7 +114,7 @@ export function CommandHistory({
             value={searchQuery}
             onValueChange={(value) => setSearchQuery(value)}
           />
-          <CommandList className="max-h-[480px] min-h-[480px] flex-1">
+          <CommandList className="max-h-[480px] min-h-[480px] flex-1 w-full">
             {filteredChat.length === 0 && (
               <CommandEmpty>No chat history found.</CommandEmpty>
             )}

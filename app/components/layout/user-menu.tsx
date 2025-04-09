@@ -16,6 +16,10 @@ import { GearSix, Info, Lifebuoy, Question, Sliders } from "@phosphor-icons/reac
 import dynamic from "next/dynamic"
 import { APP_NAME, DISCORD_URL } from "../../../lib/config"
 
+const AppInfo = dynamic(() => import("./app-info").then((mod) => mod.AppInfo), {
+  ssr: false,
+})
+
 const Settings = dynamic(
   () => import("./settings").then((mod) => mod.Settings),
   { ssr: false }
@@ -39,7 +43,7 @@ export function UserMenu() {
         <TooltipContent>Settings</TooltipContent>
       </Tooltip>
       <DropdownMenuContent
-        className="w-56"
+        className="w-56 rounded-lg"
         align="end"
         forceMount
         onCloseAutoFocus={(e) => e.preventDefault()}
@@ -58,6 +62,14 @@ export function UserMenu() {
           <Lifebuoy className="size-4" />
           <span>Help & Feedback</span>
         </DropdownMenuItem>
+        <AppInfo
+          trigger={
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+              <Info className="size-4" />
+              About {APP_NAME}
+            </DropdownMenuItem>
+          }
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   )

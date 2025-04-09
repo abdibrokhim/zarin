@@ -150,11 +150,11 @@
   }
 
   ::selection {
-    @apply bg-primary text-primary-foreground;
+    @apply bg-primary/80 text-primary-foreground;
   }
   
   .dark ::selection {
-    @apply bg-primary text-primary-foreground;
+    @apply bg-primary/80 text-primary-foreground;
   }
 }
 code {

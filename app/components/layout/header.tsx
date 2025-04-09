@@ -19,7 +19,6 @@ export function Header() {
           <ButtonNewChat />
           <History />
           <UserMenu />
-          <AppInfo />
         </div>
       </div>
     </header>

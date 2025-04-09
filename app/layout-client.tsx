@@ -8,6 +8,7 @@ import { ThemeProvider } from "next-themes"
 import { Toaster } from "@/components/ui/sonner"
 import { readFromIndexedDB, writeToIndexedDB } from "@/lib/chat-store/persist"
 import { Analytics } from "@vercel/analytics/react"
+import { TextShimmer } from "@/components/motion-primitives/text-shimmer"
 
 // Create a default Zarin User
 function createGuestUser(): UserProfile {
@@ -69,8 +70,12 @@ export function LayoutClient({
   // Don't render providers until we have a Zarin User
   if (!guestUser) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div>Loading...</div>
+      <div className="flex bg-zinc-950 h-screen items-center justify-center">
+        <div className="text-zinc-100">
+        <TextShimmer className='font-mono text-sm' duration={1}>
+          initializing...
+        </TextShimmer>
+        </div>
       </div>
     );
   }

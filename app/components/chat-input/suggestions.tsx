@@ -5,6 +5,8 @@ import { TRANSITION_SUGGESTIONS } from "@/lib/motion"
 import { AnimatePresence, motion } from "motion/react"
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react"
 import { SUGGESTIONS as SUGGESTIONS_CONFIG } from "../../../lib/config"
+import { useTheme } from "next-themes"
+import { cn } from "@/lib/utils"
 
 type SuggestionsProps = {
   onValueChange: (value: string) => void
@@ -17,6 +19,8 @@ export const Suggestions = memo(function Suggestions({
   onSuggestion,
   value,
 }: SuggestionsProps) {
+  const { resolvedTheme } = useTheme()
+  const colorMode = resolvedTheme === "dark" ? "dark" : "light"
   const MotionPromptSuggestion = motion(PromptSuggestion)
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
 
@@ -86,13 +90,13 @@ export const Suggestions = memo(function Suggestions({
               exit: { opacity: 0, scale: 0.8 },
             }}
           >
-            <suggestion.icon className="size-4" />
+            <suggestion.icon className={cn("size-4", suggestion.colors?.[colorMode])} />
             {suggestion.label}
           </MotionPromptSuggestion>
         ))}
       </motion.div>
     ),
-    [handleCategoryClick]
+    [handleCategoryClick, colorMode]
   )
 
   const suggestionsList = useMemo(
@@ -135,7 +139,7 @@ export const Suggestions = memo(function Suggestions({
         ))}
       </motion.div>
     ),
-    [handleSuggestionClick]
+    [handleSuggestionClick, activeCategoryData, colorMode]
   )
 
   return (

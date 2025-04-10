@@ -1,13 +1,13 @@
 import { ModelSelector } from "@/components/common/model-selector"
 import { Button } from "@/components/ui/button"
-import { Popover, PopoverTrigger } from "@/components/ui/popover"
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { CaretDown, Command as CommandIcon } from "@phosphor-icons/react"
+import { Command as CommandIcon } from "@phosphor-icons/react"
 import { MODELS_OPTIONS, PROVIDERS_OPTIONS } from "../../../lib/config"
+import { useRef } from "react"
 
 export type SelectModelProps = {
   selectedModel: string
@@ -24,10 +24,24 @@ export function SelectModel({
   const provider = PROVIDERS_OPTIONS.find(
     (provider) => provider.id === model?.provider
   )
+  
+  // Use ref to directly access the model selector component
+  const modelSelectorRef = useRef<HTMLDivElement>(null);
 
-  // Handle keyboard shortcut manually
-  const handleModelSelectorKeyboard = () => {
-    document.dispatchEvent(new Event('toggleModelSelector'));
+  // Handle keyboard shortcut manually - modified to prevent event bubbling
+  const handleModelSelectorKeyboard = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Directly trigger the custom event
+    document.dispatchEvent(new CustomEvent('toggleModelSelector'));
+    
+    // Prevent any tooltip from remaining open
+    setTimeout(() => {
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    }, 100);
   };
 
   return (
@@ -38,6 +52,7 @@ export function SelectModel({
           onClick={handleModelSelectorKeyboard}
           role="button"
           aria-label="Select AI model"
+          ref={modelSelectorRef}
         >
           <ModelSelector
             selectedModelId={selectedModel}
@@ -46,7 +61,7 @@ export function SelectModel({
           />
         </div>
       </TooltipTrigger>
-      <TooltipContent>
+      <TooltipContent side="top">
         <div className="flex items-center gap-1">
           Select model <CommandIcon className="size-4" /> M
         </div>

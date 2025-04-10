@@ -42,8 +42,8 @@ export function ButtonFileUpload({
             <PopoverTrigger asChild>
               <Button
                 size="sm"
-                variant="secondary"
-                className="border-border dark:bg-secondary size-9 rounded-full border bg-transparent"
+                variant="outline"
+                className="border-border dark:bg-transparent size-9 rounded-full border bg-transparent dark:hover:bg-muted"
                 type="button"
                 aria-label="Add files"
               >
@@ -75,8 +75,8 @@ export function ButtonFileUpload({
           <FileUploadTrigger asChild>
             <Button
               size="sm"
-              variant="secondary"
-              className="border-border dark:bg-secondary size-9 rounded-full border bg-transparent"
+              variant="outline"
+              className="border-border dark:bg-transparent size-9 rounded-full border bg-transparent dark:hover:bg-muted"
               type="button"
               aria-label="Add files"
             >

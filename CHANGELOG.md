@@ -5,6 +5,9 @@ just to make sure i was not sleeping all the time.
 
 ## v0.1.1
 
+### 10th April, 2025
+- few ui/ux improvements
+
 ### 9th April, 2025
 - ui/ux improvements
 - new design for model selector

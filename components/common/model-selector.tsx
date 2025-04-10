@@ -118,14 +118,38 @@ export function ModelSelector({
     }
   };
 
+  // Prevent input clicks from closing the dialog by stopping event propagation
+  const handleInputClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  
+  // Better controlled open/close handling 
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      setIsOpen(true);
+    } else {
+      // Only handle close if we're currently open
+      if (isOpen) {
+        setIsOpen(false);
+      }
+    }
+  };
+
+  // Improved click handler for the dialog trigger button
+  const handleModelSelectorButtonClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Don't toggle the dialog here, let the DialogTrigger handle it
+  };
+
   return (
     <TooltipProvider>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogTrigger asChild>
+      <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+        <DialogTrigger asChild onClick={handleModelSelectorButtonClick}>
           <Button
             variant="outline"
             className={cn(
-              "dark:bg-secondary justify-between min-w-[160px] border border-zinc-200 dark:border-zinc-800",
+              "dark:bg-transparent justify-between min-w-[160px] border border-outline dark:border-outline dark:hover:bg-muted",
               !selectedModel?.available && "cursor-not-allowed opacity-50",
               className
             )}
@@ -138,27 +162,46 @@ export function ModelSelector({
           </Button>
         </DialogTrigger>
         
-        <DialogContent className="sm:max-w-[650px] p-0 gap-0 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
+        <DialogContent 
+          className="sm:max-w-3xl p-0 gap-0 overflow-hidden rounded-3xl border border-border dark:border-border"
+          onInteractOutside={(e) => {
+            // Prevent interactions with tooltip from closing the dialog
+            if ((e.target as HTMLElement)?.closest('[role="tooltip"]')) {
+              e.preventDefault();
+            }
+          }}
+          onPointerDownOutside={(e) => {
+            // Additional protection for outside clicks
+            const target = e.target as HTMLElement;
+            if (target.closest('[role="dialog"]') || target.closest('[role="tooltip"]')) {
+              e.preventDefault();
+            }
+          }}
+        >
           <DialogHeader className="px-6 py-6">
             <DialogTitle>
               Select AI Model
             </DialogTitle>
           </DialogHeader>
           
-          <div className="p-4 border-b border-zinc-100 dark:border-zinc-800 flex flex-col gap-4">
+          <div className="p-4 border-b border-border dark:border-border flex flex-col gap-4">
             {/* Search */}
-            <div className="relative group">
+            <div className="relative group" onClick={handleInputClick}>
               <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4 transition-all duration-300 group-focus-within:text-primary" />
               <Input 
                 ref={searchInputRef}
                 placeholder="Search models..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 h-11 bg-muted/40 border-zinc-200 dark:border-zinc-500 transition-all duration-300 rounded-lg"
+                className="pl-10 h-11 bg-muted/40 border-border dark:border-border transition-all duration-300 rounded-lg"
+                onClick={handleInputClick}
               />
               {searchQuery && (
                 <button 
-                  onClick={() => setSearchQuery("")}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSearchQuery("");
+                  }}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 >
                   <X className="size-4" />
@@ -172,7 +215,7 @@ export function ModelSelector({
                 <TabsTrigger 
                   value="all" 
                   className={`data-[state=active]:bg-accent data-[state=active]:text-accent-foreground px-3 py-1 h-auto rounded-full text-xs
-                    ${activeTab === "all" && "text-zinc-500 dark:text-zinc-400"}
+                    ${activeTab === "all" && "text-muted-foreground dark:text-muted-foreground"}
                   `}
                 >
                   All
@@ -237,10 +280,10 @@ export function ModelSelector({
                     role="button"
                     aria-pressed={isSelected}
                     className={cn(
-                      "flex flex-col p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-zinc-900",
+                      "flex flex-col p-4 rounded-xl border border-border dark:border-border transition-all duration-300 focus:outline-none",
                       isSelected 
-                        ? "border-zinc-500 dark:border-zinc-400 shadow-md" 
-                        : "hover:border-zinc-300 dark:hover:border-zinc-600 hover:shadow-sm hover:translate-y-[-2px]",
+                        ? "border-primary/70 dark:border-primary/70 shadow-md" 
+                        : "hover:border-border dark:hover:border-border hover:shadow-sm hover:translate-y-[-2px]",
                       !model.available && "opacity-50 cursor-not-allowed",
                       model.available && "cursor-pointer"
                     )}
@@ -248,7 +291,7 @@ export function ModelSelector({
                     <div className="flex items-center gap-3 mb-3">
                       <div className={cn(
                         "flex items-center justify-center p-2 rounded-lg",
-                        model.available ? "bg-zinc-100 dark:bg-zinc-800" : "bg-zinc-100/50 dark:bg-zinc-800/50"
+                        model.available ? "bg-muted/40 dark:bg-muted/40" : "bg-muted/40 dark:bg-muted/40"
                       )}>
                         {provider?.icon && <provider.icon className="size-6" />}
                       </div>
@@ -300,7 +343,7 @@ export function ModelSelector({
                     )}
                     
                     {!model.available && (
-                      <Badge className="w-fit mt-2 bg-zinc-200 hover:bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800 border-none">
+                      <Badge className="w-fit mt-2 bg-muted/40 hover:bg-muted/40 text-muted-foreground dark:bg-muted/40 dark:text-muted-foreground dark:hover:bg-muted/40 border-none">
                         Coming soon
                       </Badge>
                     )}

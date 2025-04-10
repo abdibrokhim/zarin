@@ -90,7 +90,7 @@ export const Suggestions = memo(function Suggestions({
               exit: { opacity: 0, scale: 0.8 },
             }}
           >
-            <suggestion.icon className={cn("size-4", suggestion.colors?.[colorMode])} />
+            <suggestion.icon className={cn("size-4", suggestion.colors?.[colorMode])} weight="fill"/>
             {suggestion.label}
           </MotionPromptSuggestion>
         ))}

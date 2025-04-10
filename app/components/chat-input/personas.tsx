@@ -48,7 +48,7 @@ const ButtonPersona = memo(function ButtonPersona({
       )}
       type="button"
     >
-      <Icon className={cn("size-4", colors?.[colorMode])} />
+      <Icon className={cn("size-4", colors?.[colorMode])} weight="fill"/>
       {label}
     </Button>
   )

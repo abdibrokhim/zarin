@@ -72,7 +72,7 @@ export const PromptSystem = memo(function PromptSystem({
               key={tab.id}
               className={cn(
                 "relative z-10 flex h-full flex-1 items-center justify-center rounded-md px-2 py-1 text-xs font-medium transition-colors active:scale-[0.98]",
-                !tab.isActive ? "text-muted-foreground" : "text-foreground"
+                !tab.isActive ? "text-muted-foreground" : "text-background dark:text-foreground"
               )}
               onClick={tab.onClick}
               type="button"
@@ -81,7 +81,7 @@ export const PromptSystem = memo(function PromptSystem({
                 {tab.isActive && (
                   <motion.div
                     layoutId={`background`}
-                    className={cn("bg-muted absolute inset-0 z-10 rounded-lg")}
+                    className={cn("bg-primary absolute inset-0 z-10 rounded-lg")}
                     transition={{
                       duration: 0.25,
                       type: "spring",

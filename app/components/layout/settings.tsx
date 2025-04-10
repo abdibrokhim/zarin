@@ -421,7 +421,7 @@ function SettingsContent({
                     variant="default"
                     size="sm"
                     onClick={handleSignOut}
-                    className="w-full cursor-pointer transition-all duration-300"
+                    className="w-full cursor-pointer transition-all duration-300 bg-rose-700 hover:bg-rose-700/90"
                   >
                     <SignOut className="mr-2 h-4 w-4" />
                     Clear History
@@ -508,7 +508,7 @@ function NavItem({
       className={cn(
         "flex items-center gap-2 text-sm px-4 py-3 w-full text-left rounded-xl transition-all duration-300 cursor-pointer",
         active 
-          ? "bg-accent/80 text-primary font-medium" 
+          ? "bg-accent/80 text-foreground font-medium" 
           : "text-foreground/70 hover:bg-accent/30"
       )}
       onClick={onClick}

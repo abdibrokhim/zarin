@@ -76,7 +76,7 @@ export function ButtonFileUpload({
             <Button
               size="sm"
               variant="secondary"
-              className="border-border dark:bg-secondary size-9 rounded-full border bg-transparent"
+              className="border-border size-9 rounded-full border bg-transparent bg-primary/10 hover:bg-primary/50"
               type="button"
               aria-label="Add files"
             >

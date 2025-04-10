@@ -43,7 +43,7 @@ function PromptSuggestion({
         size={size || "sm"}
         className={cn(
           "w-full justify-start rounded-xl py-2",
-          "hover:bg-accent",
+          "hover:bg-primary/10",
           className
         )}
         {...props}
@@ -64,7 +64,7 @@ function PromptSuggestion({
       size={size || "sm"}
       className={cn(
         "w-full justify-start gap-0 rounded-xl py-2",
-        "hover:bg-accent",
+        "hover:bg-primary/10",
         className
       )}
       {...props}

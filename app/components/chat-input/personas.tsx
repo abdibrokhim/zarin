@@ -6,6 +6,7 @@ import { TRANSITION_SUGGESTIONS } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 import { motion } from "motion/react"
 import { memo } from "react"
+import { useTheme } from "next-themes"
 
 type ButtonPersonaProps = {
   label: string
@@ -13,6 +14,10 @@ type ButtonPersonaProps = {
   onSelectSystemPrompt: (systemPrompt: string) => void
   systemPrompt?: string
   icon: React.ElementType
+  colors: {
+    light: string
+    dark: string
+  }
 }
 
 const ButtonPersona = memo(function ButtonPersona({
@@ -21,9 +26,12 @@ const ButtonPersona = memo(function ButtonPersona({
   onSelectSystemPrompt,
   systemPrompt,
   icon,
+  colors,
 }: ButtonPersonaProps) {
   const isActive = systemPrompt === prompt
   const Icon = icon
+  const { resolvedTheme } = useTheme()
+  const colorMode = resolvedTheme === "dark" ? "dark" : "light"
 
   return (
     <Button
@@ -34,13 +42,13 @@ const ButtonPersona = memo(function ButtonPersona({
         isActive ? onSelectSystemPrompt("") : onSelectSystemPrompt(prompt)
       }
       className={cn(
-        "rounded-full",
+        "rounded-full bg-primary/10 border-primary/20 hover:border-primary/70 hover:bg-primary/20",
         isActive &&
-          "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground transition-none"
+          "bg-primary/70 text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground transition-none"
       )}
       type="button"
     >
-      <Icon className="size-4" />
+      <Icon className={cn("size-4", colors?.[colorMode])} />
       {label}
     </Button>
   )
@@ -88,6 +96,7 @@ export const Personas = memo(function Personas({
             onSelectSystemPrompt={onSelectSystemPrompt}
             systemPrompt={systemPrompt}
             icon={persona.icon}
+            colors={persona.colors}
           />
         </motion.div>
       ))}

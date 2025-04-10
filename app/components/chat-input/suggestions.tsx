@@ -5,6 +5,8 @@ import { TRANSITION_SUGGESTIONS } from "@/lib/motion"
 import { AnimatePresence, motion } from "motion/react"
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react"
 import { SUGGESTIONS as SUGGESTIONS_CONFIG } from "../../../lib/config"
+import { useTheme } from "next-themes"
+import { cn } from "@/lib/utils"
 
 type SuggestionsProps = {
   onValueChange: (value: string) => void
@@ -19,6 +21,8 @@ export const Suggestions = memo(function Suggestions({
 }: SuggestionsProps) {
   const MotionPromptSuggestion = motion(PromptSuggestion)
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
+  const { resolvedTheme } = useTheme()
+  const colorMode = resolvedTheme === "dark" ? "dark" : "light"
 
   const activeCategoryData = SUGGESTIONS_CONFIG.find(
     (group) => group.label === activeCategory
@@ -72,7 +76,10 @@ export const Suggestions = memo(function Suggestions({
           <MotionPromptSuggestion
             key={suggestion.label}
             onClick={() => handleCategoryClick(suggestion)}
-            className="capitalize"
+            className={cn(
+              "capitalize", 
+              "rounded-full bg-primary/10 border-primary/20 hover:border-primary/70 hover:bg-primary/20"
+            )}
             initial="initial"
             animate="animate"
             exit="exit"
@@ -86,13 +93,13 @@ export const Suggestions = memo(function Suggestions({
               exit: { opacity: 0, scale: 0.8 },
             }}
           >
-            <suggestion.icon className="size-4" />
+            <suggestion.icon className={cn("size-4", suggestion.colors?.[colorMode])} />
             {suggestion.label}
           </MotionPromptSuggestion>
         ))}
       </motion.div>
     ),
-    [handleCategoryClick]
+    [handleCategoryClick, colorMode]
   )
 
   const suggestionsList = useMemo(
@@ -116,7 +123,7 @@ export const Suggestions = memo(function Suggestions({
             highlight={activeCategoryData.highlight}
             type="button"
             onClick={() => handleSuggestionClick(suggestion)}
-            className="block h-full text-left"
+            className={cn("block h-full text-left", activeCategoryData.colors?.[colorMode])}
             initial="initial"
             animate="animate"
             exit="exit"
@@ -135,7 +142,7 @@ export const Suggestions = memo(function Suggestions({
         ))}
       </motion.div>
     ),
-    [handleSuggestionClick]
+    [handleSuggestionClick, activeCategoryData, colorMode]
   )
 
   return (

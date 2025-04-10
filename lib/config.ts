@@ -26,7 +26,8 @@ export const NON_AUTH_DAILY_MESSAGE_LIMIT = 5
 export const AUTH_DAILY_MESSAGE_LIMIT = 100
 export const REMAINING_QUERY_ALERT_THRESHOLD = 2
 export const DAILY_FILE_UPLOAD_LIMIT = 10
-export const BASE_URL = "https://api.aimlapi.com/v1"
+export const AIML_API_BASE_URL = "https://api.aimlapi.com/v1"
+export const OPENAI_BASE_URL = "https://api.openai.com/v1"
 export const SUBSCRIPTION_URL = "https://www.patreon.com/abdibrokhim/membership"
 export const DISCORD_URL = "https://discord.gg/nUdcd9p8Ae"
 export const EMAIL_SUPPORT = "abdibrokhim@gmail.com"
@@ -47,14 +48,14 @@ export type Model = {
 
 // Create custom OpenAI provider with the correct baseURL
 const customOpenAI = createOpenAI({
-  baseURL: BASE_URL,
-  apiKey: process.env.AIML_API_KEY,
+  baseURL: OPENAI_BASE_URL,
+  apiKey: process.env.OPENAI_API_KEY,
   compatibility: 'strict',
 })
 
 // Create custom Mistral provider with the correct baseURL
 const customMistral = createMistral({
-  baseURL: BASE_URL,
+  baseURL: AIML_API_BASE_URL,
   apiKey: process.env.AIML_API_KEY,
 })
 

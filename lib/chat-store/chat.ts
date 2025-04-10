@@ -69,6 +69,8 @@ export async function createNewChat(
       system_prompt: systemPrompt || SYSTEM_PROMPT_DEFAULT,
     }
     
+    console.log("Creating new chat:", fullChat)
+    
     await writeToIndexedDB("chats", fullChat)
     return chat
   } catch (error) {

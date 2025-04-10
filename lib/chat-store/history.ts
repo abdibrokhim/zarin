@@ -3,9 +3,11 @@ import { readFromIndexedDB, writeToIndexedDB } from "./persist"
 
 export async function getCachedChats(): Promise<ChatHistory[]> {
   const all = await readFromIndexedDB<ChatHistory>("chats")
-  return (all as ChatHistory[]).sort(
-    (a, b) => +new Date(b.created_at || "") - +new Date(a.created_at || "")
-  )
+  return (all as ChatHistory[])
+    .filter(chat => !chat._deleted)
+    .sort(
+      (a, b) => +new Date(b.created_at || "") - +new Date(a.created_at || "")
+    )
 }
 
 export async function fetchAndCacheChats(
@@ -14,7 +16,7 @@ export async function fetchAndCacheChats(
   // With IndexedDB only, we just return the cached chats
   const all = await readFromIndexedDB<ChatHistory>("chats")
   return (all as ChatHistory[])
-    .filter((chat: any) => chat.user_id === userId)
+    .filter((chat: any) => chat.user_id === userId && !chat._deleted)
     .sort(
       (a, b) => +new Date(b.created_at || "") - +new Date(a.created_at || "")
     )

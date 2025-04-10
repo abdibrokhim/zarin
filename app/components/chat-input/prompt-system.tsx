@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react"
 import React, { memo, useMemo, useState } from "react"
 import { Personas } from "./personas"
 import { Suggestions } from "./suggestions"
+import { Lightbulb, Person, PersonSimpleSnowboard } from "@phosphor-icons/react"
 
 type PromptSystemProps = {
   onValueChange: (value: string) => void
@@ -33,6 +34,7 @@ export const PromptSystem = memo(function PromptSystem({
           setIsPersonaMode(true)
           onSelectSystemPrompt("")
         },
+        icon: <PersonSimpleSnowboard />,
       },
       {
         id: "suggestions",
@@ -42,6 +44,7 @@ export const PromptSystem = memo(function PromptSystem({
           setIsPersonaMode(false)
           onSelectSystemPrompt("")
         },
+        icon: <Lightbulb />,
       },
     ],
     [isPersonaMode]
@@ -100,7 +103,10 @@ export const PromptSystem = memo(function PromptSystem({
                   />
                 )}
               </AnimatePresence>
-              <span className="relative z-10">{tab.label}</span>
+              <div className="flex items-center gap-1">
+                <span className="relative z-10">{tab.icon}</span>
+                <span className="relative z-10">{tab.label}</span>
+              </div>
             </button>
           ))}
         </div>

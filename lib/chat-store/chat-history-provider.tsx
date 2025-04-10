@@ -77,6 +77,15 @@ export function ChatHistoryProvider({
     }
   }
 
+  // Load chats when the component mounts, regardless of userId
+  useEffect(() => {
+    const load = async () => {
+      await fetchData()
+    }
+    load()
+  }, []) // Empty dependency array ensures this runs only once on mount
+
+  // Also reload chats when userId changes
   useEffect(() => {
     if (!userId) return
 

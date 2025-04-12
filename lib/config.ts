@@ -4,8 +4,10 @@ import Gemini from "@/components/icons/gemini"
 import Grok from "@/components/icons/grok"
 import Mistral from "@/components/icons/mistral"
 import OpenAI from "@/components/icons/openai"
+import Llama from "@/components/icons/llama"
 import { createMistral } from "@ai-sdk/mistral"
 import { createOpenAI } from "@ai-sdk/openai"
+import { createGoogleGenerativeAI } from "@ai-sdk/google"
 import {
   BookOpenText,
   Brain,
@@ -48,13 +50,23 @@ export type Model = {
 
 // Create custom OpenAI provider with the correct baseURL
 const customOpenAI = createOpenAI({
-  baseURL: OPENAI_BASE_URL,
-  apiKey: process.env.OPENAI_API_KEY,
+  baseURL: AIML_API_BASE_URL,
+  apiKey: process.env.AIML_API_KEY,
   compatibility: 'strict',
 })
 
 // Create custom Mistral provider with the correct baseURL
 const customMistral = createMistral({
+  baseURL: AIML_API_BASE_URL,
+  apiKey: process.env.AIML_API_KEY,
+})
+
+const customGoogle = createOpenAI({
+  baseURL: AIML_API_BASE_URL,
+  apiKey: process.env.AIML_API_KEY,
+})
+
+const customLlama = createOpenAI({
   baseURL: AIML_API_BASE_URL,
   apiKey: process.env.AIML_API_KEY,
 })
@@ -70,19 +82,6 @@ export const MODELS_NOT_AVAILABLE = [
       {
         id: "file-upload",
         enabled: false,
-      },
-    ],
-  },
-  {
-    id: "gemini-1.5-pro",
-    name: "Gemini 1.5 Pro",
-    provider: "gemini",
-    available: false,
-    api_sdk: false,
-    features: [
-      {
-        id: "file-upload",
-        enabled: true,
       },
     ],
   },
@@ -116,32 +115,6 @@ export const MODELS_NOT_AVAILABLE = [
     id: "grok-2",
     name: "Grok 2",
     provider: "grok",
-    available: false,
-    api_sdk: false,
-    features: [
-      {
-        id: "file-upload",
-        enabled: true,
-      },
-    ],
-  },
-  {
-    id: "gemini-2.0-flash",
-    name: "Gemini 2.0 Flash",
-    provider: "gemini",
-    available: false,
-    api_sdk: false,
-    features: [
-      {
-        id: "file-upload",
-        enabled: true,
-      },
-    ],
-  },
-  {
-    id: "gemini-2.5-pro",
-    name: "Gemini 2.5 Pro",
-    provider: "gemini",
     available: false,
     api_sdk: false,
     features: [
@@ -243,7 +216,7 @@ export const MODELS = [
     features: [
       {
         id: "file-upload",
-        enabled: false,
+        enabled: true,
       },
     ],
     api_sdk: customMistral("mistralai/mistral-nemo"),
@@ -256,7 +229,7 @@ export const MODELS = [
     features: [
       {
         id: "file-upload",
-        enabled: false,
+        enabled: true,
       },
       {
         id: "reasoning",
@@ -273,7 +246,7 @@ export const MODELS = [
     features: [
       {
         id: "file-upload",
-        enabled: false,
+        enabled: true,
       },
     ],
     api_sdk: customMistral("mistralai/mistral-tiny"),
@@ -286,7 +259,7 @@ export const MODELS = [
     features: [
       {
         id: "file-upload",
-        enabled: false,
+        enabled: true,
       },
       {
         id: "reasoning",
@@ -295,6 +268,110 @@ export const MODELS = [
     ],
     api_sdk: customMistral("mistral-large-latest"),
     icon: Mistral,
+  },
+  // Google models from the API
+  {
+    id: "gemini-2.5-pro-preview",
+    name: "Gemini 2.5 Pro Preview",
+    provider: "gemini",
+    features: [
+      {
+        id: "file-upload",
+        enabled: true,
+      },
+      {
+        id: "deeper-reasoning",
+        enabled: true,
+      },
+    ],
+    api_sdk: customGoogle("gemini-2.5-pro-preview"),
+    icon: Gemini,
+  },
+  {
+    id: "gemini-2.0-flash",
+    name: "Gemini 2.0 Flash",
+    provider: "gemini",
+    features: [
+      {
+        id: "file-upload",
+        enabled: true,
+      },
+      {
+        id: "reasoning",
+        enabled: true,
+      },
+    ],
+    api_sdk: customGoogle("gemini-2.0-flash"),
+    icon: Gemini,
+  },
+  {
+    id: "gemini-2.0-flash-thinking-exp-01-21",
+    name: "Gemini 2.0 Flash Thinking",
+    provider: "gemini",
+    features: [
+      {
+        id: "file-upload",
+        enabled: true,
+      },
+      {
+        id: "deep-reasoning",
+        enabled: true,
+      },
+    ],
+    api_sdk: customGoogle("gemini-2.0-flash-thinking-exp-01-21"),
+    icon: Gemini,
+  },
+  {
+    id: "gemini-1.5-flash",
+    name: "Gemini 1.5 Flash",
+    provider: "gemini",
+    features: [
+      {
+        id: "file-upload",
+        enabled: true,
+      },
+      {
+        id: "reasoning",
+        enabled: true,
+      },
+    ],
+    api_sdk: customGoogle("gemini-1.5-flash"),
+    icon: Gemini,
+  },
+  // Llama models from the API
+  {
+    id: "llama-4-maverick",
+    name: "Llama 4 Maverick",
+    provider: "llama",
+    features: [
+      {
+        id: "file-upload",
+        enabled: true,
+      },
+      {
+        id: "deeper-reasoning",
+        enabled: true,
+      },
+    ],
+    api_sdk: customLlama("meta-llama/llama-4-maverick"),
+    icon: Llama,
+  },
+  {
+    id: "llama-4-scout",
+    name: "Llama 4 Scout",
+    provider: "llama",
+    features: [
+      {
+        id: "file-upload",
+        enabled: true,
+      },
+      {
+        id: "reasoning",
+        enabled: true,
+      },
+    ],
+    api_sdk: customLlama("meta-llama/llama-4-scout"),
+    icon: Llama,
   },
 ] as Model[]
 
@@ -321,12 +398,6 @@ const PROVIDERS_NOT_AVAILABLE = [
     icon: DeepSeek,
   },
   {
-    id: "gemini",
-    name: "Gemini",
-    icon: Gemini,
-    available: false,
-  },
-  {
     id: "claude",
     name: "Claude",
     available: false,
@@ -350,6 +421,16 @@ export const PROVIDERS = [
     id: "mistral",
     name: "Mistral",
     icon: Mistral,
+  },
+  {
+    id: "gemini",
+    name: "Gemini",
+    icon: Gemini,
+  },
+  {
+    id: "llama",
+    name: "Llama",
+    icon: Llama,
   },
 ] as Provider[]
 
@@ -563,6 +644,8 @@ export const SUGGESTIONS = [
   },
 ]
 
-export const SYSTEM_PROMPT_DEFAULT = `You are Zarin, a thoughtful and clear assistant. Your tone is calm, minimal, and human. You write with intention—never too much, never too little. You avoid clichés, speak simply, and offer helpful, grounded answers. When needed, you ask good questions. You don't try to impress—you aim to clarify. You may use metaphors if they bring clarity, but you stay sharp and sincere. You're here to help the user think clearly and move forward, not to overwhelm or overperform.`
+export const SYSTEM_PROMPT_DEFAULT = `You are ${APP_NAME}, a thoughtful and clear assistant. Your tone is calm, minimal, and human. You write with intention—never too much, never too little. You avoid clichés, speak simply, and offer helpful, grounded answers. When needed, you ask good questions. You don't try to impress—you aim to clarify. You may use metaphors if they bring clarity, but you stay sharp and sincere. You're here to help the user think clearly and move forward, not to overwhelm or overperform.`
 
 export const MESSAGE_MAX_LENGTH = 4000
+
+// example prompt: "write dijkstar algo in python"

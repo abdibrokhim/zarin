@@ -5,6 +5,14 @@ just to make sure i was not sleeping all the time.
 
 ## v0.1.1
 
+### 12nd April, 2025
+- New models are out on the platform!
+- google/gemini-2.5-pro-preview
+- meta-llama/llama-4-maverick
+- meta-llama/llama-4-scout
+- google/gemini-2.0-flash-thinking
+
+
 ### 10th April, 2025
 - few ui/ux improvements
 

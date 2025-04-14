@@ -7,7 +7,6 @@ import OpenAI from "@/components/icons/openai"
 import Llama from "@/components/icons/llama"
 import { createMistral } from "@ai-sdk/mistral"
 import { createOpenAI } from "@ai-sdk/openai"
-import { createGoogleGenerativeAI } from "@ai-sdk/google"
 import {
   BookOpenText,
   Brain,
@@ -71,6 +70,11 @@ const customLlama = createOpenAI({
   apiKey: process.env.AIML_API_KEY,
 })
 
+const customXAI = createOpenAI({
+  baseURL: AIML_API_BASE_URL,
+  apiKey: process.env.AIML_API_KEY,
+})
+
 export const MODELS_NOT_AVAILABLE = [
   {
     id: "deepseek-r1",
@@ -102,19 +106,6 @@ export const MODELS_NOT_AVAILABLE = [
     id: "claude-3.7-sonnet",
     name: "Claude 3.7 Sonnet",
     provider: "claude",
-    available: false,
-    api_sdk: false,
-    features: [
-      {
-        id: "file-upload",
-        enabled: true,
-      },
-    ],
-  },
-  {
-    id: "grok-2",
-    name: "Grok 2",
-    provider: "grok",
     available: false,
     api_sdk: false,
     features: [
@@ -373,6 +364,40 @@ export const MODELS = [
     api_sdk: customLlama("meta-llama/llama-4-scout"),
     icon: Llama,
   },
+  // XAI models from the API
+  {
+    id: "grok-3-mini-beta",
+    name: "XAI",
+    provider: "xai",
+    features: [
+      {
+        id: "deeper-reasoning",
+        enabled: true,
+      },
+    ],
+    api_sdk: customXAI("x-ai/grok-3-mini-beta"),
+    icon: Grok,
+  },
+  {
+    id: "grok-3-beta",
+    name: "XAI",
+    provider: "xai",
+    features: [
+      {
+        id: "reasoning",
+        enabled: true,
+      },
+    ],
+    api_sdk: customXAI("x-ai/grok-3-beta"),
+    icon: Grok,
+  },
+  {
+    id: "grok-beta",
+    name: "XAI",
+    provider: "xai",
+    api_sdk: customXAI("x-ai/grok-beta"),
+    icon: Grok,
+  },
 ] as Model[]
 
 export const MODELS_OPTIONS = [
@@ -403,12 +428,6 @@ const PROVIDERS_NOT_AVAILABLE = [
     available: false,
     icon: Claude,
   },
-  {
-    id: "grok",
-    name: "Grok",
-    available: false,
-    icon: Grok,
-  },
 ] as Provider[]
 
 export const PROVIDERS = [
@@ -431,6 +450,11 @@ export const PROVIDERS = [
     id: "llama",
     name: "Llama",
     icon: Llama,
+  },
+  {
+    id: "xai",
+    name: "XAI",
+    icon: Grok,
   },
 ] as Provider[]
 

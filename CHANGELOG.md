@@ -5,6 +5,9 @@ just to make sure i was not sleeping all the time.
 
 ## v0.1.1
 
+### 14th April, 2025
+- added grok by xAI
+
 ### 12nd April, 2025
 - New models are out on the platform!
 - google/gemini-2.5-pro-preview

@@ -38,12 +38,17 @@ export type Model = {
   id: string
   name: string
   provider: string
+  description?: string
   available?: boolean
   api_sdk?: any
   icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>
   features?: {
     id: string
     enabled: boolean
+  }[]
+  use_cases?: {
+    id: string
+    name: string
   }[]
 }
 
@@ -367,7 +372,7 @@ export const MODELS = [
   // XAI models from the API
   {
     id: "grok-3-mini-beta",
-    name: "XAI",
+    name: "Grok 3 Mini",
     provider: "xai",
     features: [
       {
@@ -380,7 +385,7 @@ export const MODELS = [
   },
   {
     id: "grok-3-beta",
-    name: "XAI",
+    name: "Grok 3",
     provider: "xai",
     features: [
       {
@@ -393,7 +398,7 @@ export const MODELS = [
   },
   {
     id: "grok-beta",
-    name: "XAI",
+    name: "Grok 3",
     provider: "xai",
     api_sdk: customXAI("x-ai/grok-beta"),
     icon: Grok,
@@ -453,7 +458,7 @@ export const PROVIDERS = [
   },
   {
     id: "xai",
-    name: "XAI",
+    name: "xAI",
     icon: Grok,
   },
 ] as Provider[]

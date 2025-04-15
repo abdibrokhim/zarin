@@ -8,7 +8,7 @@ export function HeaderGoBack({ href = "/" }: { href?: string }) {
         href={href}
         className="text-foreground hover:bg-muted inline-flex items-center gap-1 rounded-md px-2 py-1"
       >
-        <ArrowLeft className="text-foreground size-5" />
+        <ArrowLeft className="text-foreground size-4" />
         <span className="font-base ml-2 hidden text-sm sm:inline-block">
           Back to Chat
         </span>

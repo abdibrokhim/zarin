@@ -103,7 +103,7 @@ export function ChatInput({
             className="mt-2 ml-2 min-h-[44px] text-base leading-[1.3] sm:text-base md:text-base"
             disabled={isSubmitting}
           />
-          <PromptInputActions className="mt-5 w-full justify-between px-2">
+          <PromptInputActions className="mt-2 w-full justify-between px-2">
             <div className="flex gap-2">
               <ButtonFileUpload
                 onFileUpload={onFileUpload}

@@ -24,17 +24,21 @@ See [INSTALLATION.md](./INSTALLATION.md) for setup instructions.
 
 ## 🛠️ Built with
 
+- [ai/ml api](https://aimlapi.com) — 200+ AI models integration
 - [prompt-kit](https://prompt-kit.com/) — AI components
 - [shadcn/ui](https://ui.shadcn.com) — core components
 - [motion-primitives](https://motion-primitives.com) — animated components
 - [vercel ai sdk](https://vercel.com/blog/introducing-the-vercel-ai-sdk) — model integration, AI features
 - [indexdb](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) — local storage
+- [tweakcn](https://tweakcn.com/) - cool themes
+- [notlink](https://notl.ink/), [yaps[dot]chat](https://yaps.chat/) - design inspiration
 
 ## ⌛️ Coming next
 
 - integrating other 200+ models from [AI/ML API](https://aimlapi.com)
-- search, agent mode, memory, and etc.
-- of course, more cool and intersting stuff...
+- support for search, crawling, tool calling, agent mode, memory, and etc.
+- support for image, video, audio generation, code artifacts all in one platform.
+- and of course, more cool and interesting stuff...
 
 
 ## 💙 Contributors

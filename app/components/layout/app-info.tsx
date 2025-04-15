@@ -25,7 +25,7 @@ import { Info } from "@phosphor-icons/react"
 const InfoContent = () => (
   <div className="space-y-4">
     <p className="text-foreground leading-relaxed">
-      {APP_DESCRIPTION} Built with Vercel's AI SDK, IndexedDB, and shadcn/ui, motion-primitives, prompt-kit, components.
+      {APP_DESCRIPTION}
     </p>
     <p className="text-foreground leading-relaxed">
       The code is available on{" "}

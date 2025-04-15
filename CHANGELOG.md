@@ -6,6 +6,8 @@ just to make sure i was not sleeping all the time.
 ## v0.1.1
 
 ### 15th April, 2025
+- refactored settings file tree structure
+- new ui theme
 - way better design for model selector
 - added new models
 - refactored files structure and codebase

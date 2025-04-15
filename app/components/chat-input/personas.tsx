@@ -42,13 +42,13 @@ const ButtonPersona = memo(function ButtonPersona({
         isActive ? onSelectSystemPrompt("") : onSelectSystemPrompt(prompt)
       }
       className={cn(
-        "rounded-full",
+        "rounded-2xl",
         isActive &&
           "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground transition-none"
       )}
       type="button"
     >
-      <Icon className={cn("size-4", colors?.[colorMode])} weight="fill"/>
+      <Icon className={cn("size-4", colors?.[colorMode])} />
       {label}
     </Button>
   )

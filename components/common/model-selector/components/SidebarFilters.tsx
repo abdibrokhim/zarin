@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
-import { Star } from "@phosphor-icons/react"
+import { Star, ArrowCounterClockwise } from "@phosphor-icons/react"
 import { FeatureId, FEATURE_ICONS, UseCaseId, USE_CASE_ICONS } from "@/lib/models/types"
 import { PROVIDERS_OPTIONS } from "@/lib/models/config"
 
@@ -32,7 +32,17 @@ export function SidebarFilters({
 }: SidebarFiltersProps) {
   return (
     <div className="hidden lg:flex flex-col border-r border-border dark:border-border h-full overflow-y-auto">
-      <h3 className="text-lg font-medium p-4">Filters</h3>
+      <div className="flex items-center justify-between p-4">
+        <h3 className="text-lg font-medium">Filters</h3>
+        <Button 
+          size="icon"
+          variant="ghost" 
+          className=""
+          onClick={resetFilters}
+        >
+          <ArrowCounterClockwise className="size-4" />
+        </Button>
+      </div>
       
       {/* Filter by provider */}
       <div className="space-y-2 px-4 overflow-y-auto">
@@ -122,17 +132,6 @@ export function SidebarFilters({
             )
           })}
         </div>
-      </div>
-      
-      <div className="flex items-center mt-auto space-x-2 px-4 py-2">
-        <Button 
-          size="sm"
-          variant="outline" 
-          className="flex-1"
-          onClick={resetFilters}
-        >
-          Reset Filters
-        </Button>
       </div>
     </div>
   )

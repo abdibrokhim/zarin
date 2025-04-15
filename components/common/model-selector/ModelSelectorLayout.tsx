@@ -167,8 +167,14 @@ export function ModelSelectorLayout({
               </div>
               
               <div className="flex flex-col overflow-y-auto h-[calc(100vh-200px)]">
+                {/* total models count */}
+                <div className="flex items-center justify-end px-4 pt-2">
+                  <p className="text-sm text-muted-foreground justify-end">
+                    showing {filteredModels.length} models
+                  </p>
+                </div>
                 {/* Models Grid */}
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
                   <ModelList
                     models={filteredModels}
                     selectedModelId={selectedModel?.id || ""}

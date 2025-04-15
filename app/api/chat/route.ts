@@ -1,5 +1,5 @@
 // /chat/api/chat.ts
-import { MODELS } from "@/lib/config"
+import { ALL_MODELS } from "@/lib/models/config"
 import { sanitizeUserInput } from "@/lib/sanitize"
 import { Attachment } from "@ai-sdk/ui-utils"
 import { Message, streamText } from "ai"
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     }
 
     // Find the selected model
-    const selectedModel = MODELS.find((m) => m.id === model)
+    const selectedModel = ALL_MODELS.find((m) => m.id === model)
     
     if (!selectedModel || !selectedModel.api_sdk) {
       console.error(`Model not found or missing API SDK: ${model}`)

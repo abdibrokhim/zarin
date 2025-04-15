@@ -16,7 +16,7 @@ import {
   Attachment,
   checkFileUploadLimit,
   processFiles,
-} from "@/lib/file-handling"
+} from "@/lib/chat/file-handling"
 import { syncMessages, deleteMessage, updateMessage } from "@/lib/chat-store/message"
 import { API_ROUTE_CHAT } from "@/lib/routes"
 import { cn } from "@/lib/utils"

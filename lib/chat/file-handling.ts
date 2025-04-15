@@ -1,6 +1,6 @@
 import { toast } from "@/components/ui/toast"
 import * as fileType from "file-type"
-import { DAILY_FILE_UPLOAD_LIMIT } from "./config"
+import { DAILY_FILE_UPLOAD_LIMIT } from "../config"
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 const ALLOWED_FILE_TYPES = [

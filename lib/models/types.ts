@@ -30,6 +30,13 @@ import {
   MusicNote
 } from "@phosphor-icons/react/dist/ssr"
 
+export type Provider = {
+  id: string
+  name: string
+  available: boolean
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
+}
+
 export type Model = {
   id: string
   name: string

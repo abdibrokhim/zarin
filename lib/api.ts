@@ -1,8 +1,7 @@
 "use client"
 
 import {
-  AUTH_DAILY_MESSAGE_LIMIT,
-  NON_AUTH_DAILY_MESSAGE_LIMIT,
+  DEFAULT_DAILY_MESSAGE_LIMIT,
 } from "./config"
 
 export class UsageLimitError extends Error {
@@ -74,7 +73,7 @@ export async function checkRateLimits(userId: string) {
     }
     
     // Everyone uses the same limit now that we're not using auth
-    const dailyLimit = AUTH_DAILY_MESSAGE_LIMIT
+    const dailyLimit = DEFAULT_DAILY_MESSAGE_LIMIT
     
     const dailyCount = userData.daily_message_count || 0
     const remaining = dailyLimit - dailyCount

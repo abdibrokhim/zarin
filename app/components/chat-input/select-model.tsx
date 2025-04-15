@@ -6,7 +6,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Command as CommandIcon } from "@phosphor-icons/react"
-import { MODELS_OPTIONS, PROVIDERS_OPTIONS } from "../../../lib/config"
+import { MODELS_OPTIONS, PROVIDERS_OPTIONS } from "@/lib/models/config"
 import { useRef } from "react"
 
 export type SelectModelProps = {

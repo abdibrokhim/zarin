@@ -1,8 +1,6 @@
-import { readFromIndexedDB, writeToIndexedDB } from "@/lib/chat-store/persist"
-import type { Chat, ChatHistory } from "@/lib/chat-store/types"
-import { MODEL_DEFAULT, SYSTEM_PROMPT_DEFAULT } from "../config"
-import { fetchClient } from "../fetch"
-import { API_ROUTE_CREATE_CHAT } from "../routes"
+import { readFromIndexedDB, writeToIndexedDB } from "@/lib/chat/persist"
+import type { Chat, ChatHistory } from "@/lib/chat/types"
+import { MODEL_DEFAULT, SYSTEM_PROMPT_DEFAULT } from "@/lib/models/config"
 
 export async function getChat(chatId: string): Promise<Chat | null> {
   const all = await readFromIndexedDB<Chat>("chats")

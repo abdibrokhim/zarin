@@ -104,7 +104,7 @@ export function AppInfo({ trigger = defaultTrigger }: AppInfoProps) {
     <>
       <Dialog>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
-        <DialogContent className="[&>button:last-child]:bg-background gap-0 overflow-hidden rounded-3xl p-0 shadow-xs sm:max-w-md [&>button:last-child]:rounded-full [&>button:last-child]:p-1">
+        <DialogContent className="[&>button:last-child]:bg-background gap-0 overflow-hidden rounded-3xl p-0 shadow-xs sm:max-w-xl [&>button:last-child]:rounded-full [&>button:last-child]:p-1">
           <DialogHeader className="p-0">
             <img
               src="/banner_ocean.jpg"

@@ -1,4 +1,3 @@
-import type { Tables } from "@/app/types/database.types"
 import { Message } from "@ai-sdk/react"
 import { readFromIndexedDB, readMessagesByChatId, writeToIndexedDB } from "./persist"
 

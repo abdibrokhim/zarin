@@ -60,6 +60,7 @@ export const MODELS = [
         ],
         api_sdk: customXAI("x-ai/grok-3-mini-beta"),
         icon: Grok,
+        featured: true,
     },
     {
         id: "grok-3-beta",
@@ -82,5 +83,6 @@ export const MODELS = [
         ],
         api_sdk: customXAI("x-ai/grok-3-beta"),
         icon: Grok,
+        featured: true,
     },
 ] as Model[]

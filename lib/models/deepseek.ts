@@ -53,6 +53,7 @@ export const MODELS = [
     ],
     api_sdk: customDeepSeek("deepseek/deepseek-r1"),
     icon: DeepSeek,
+    featured: true,
   },
   {
     id: "deepseek-chat",

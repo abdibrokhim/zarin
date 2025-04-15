@@ -27,7 +27,8 @@ import {
   Microphone,
   VideoCamera,
   Cube as Cube3D,
-  MusicNote
+  MusicNote,
+  ChatCenteredText
 } from "@phosphor-icons/react/dist/ssr"
 
 export type Provider = {
@@ -47,6 +48,7 @@ export type Model = {
   icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>
   features?: Feature[]
   use_cases?: UseCase[]
+  featured?: boolean
 }
 
 export enum FeatureId {
@@ -63,14 +65,14 @@ export enum FeatureId {
 
 export const FEATURE_ICONS: Record<FeatureId, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
   [FeatureId.FILE_UPLOAD]: FileText,
-  [FeatureId.IMAGE_UPLOAD]: Camera,
+  [FeatureId.IMAGE_UPLOAD]: Image,
   [FeatureId.WEB_SEARCH]: Globe,
   [FeatureId.THINKING]: CircleWavyQuestion,
   [FeatureId.REASONING]: Brain,
   [FeatureId.DEEP_REASONING]: Gear,
   [FeatureId.DEEPER_REASONING]: LightbulbFilament,
   [FeatureId.MULTIMODAL]: Cube,
-  [FeatureId.CONVERSATIONAL]: ChatTeardropText
+  [FeatureId.CONVERSATIONAL]: ChatCenteredText
 }
 
 export enum UseCaseId {
@@ -87,7 +89,7 @@ export enum UseCaseId {
 export const USE_CASE_ICONS: Record<UseCaseId, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
   [UseCaseId.QUICK_RESEARCH]: MagnifyingGlass,
   [UseCaseId.ADVANCED_RESEARCH]: BookOpenText,
-  [UseCaseId.ADVANCED_ACADEMIC_RESEARCH]: ChalkboardTeacher,
+  [UseCaseId.ADVANCED_ACADEMIC_RESEARCH]: Sparkle,
   [UseCaseId.IMAGE_GENERATION]: Image,
   [UseCaseId.AUDIO_GENERATION]: Microphone,
   [UseCaseId.VIDEO_GENERATION]: VideoCamera,

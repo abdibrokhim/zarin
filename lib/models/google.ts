@@ -53,6 +53,7 @@ export const MODELS = [
     ],
     api_sdk: customGoogle("gemini-2.5-pro-preview"),
     icon: Gemini,
+    featured: true,
   },
   {
     id: "gemini-2.0-flash",

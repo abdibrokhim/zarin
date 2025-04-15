@@ -1,4 +1,4 @@
-import type { ChatHistory } from "@/lib/chat-store/types"
+import type { ChatHistory } from "@/lib/chat/types"
 import { readFromIndexedDB, writeToIndexedDB } from "./persist"
 
 export async function getCachedChats(): Promise<ChatHistory[]> {

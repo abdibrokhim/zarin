@@ -191,6 +191,7 @@ export const MODELS = [
     ],
     api_sdk: customOpenAI("o3-mini"),
     icon: OpenAI,
+    featured: true,
   },
   {
     id: "gpt-4.5-preview",
@@ -228,5 +229,6 @@ export const MODELS = [
     ],
     api_sdk: customOpenAI("gpt-4.5-preview"),
     icon: OpenAI,
+    featured: true,
   },
 ] as Model[]

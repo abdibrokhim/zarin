@@ -53,6 +53,7 @@ export const MODELS = [
     ],
     api_sdk: customClaude("claude-3-7-sonnet-20250219"),
     icon: Claude,
+    featured: true,
   },
   {
     id: "claude-3-5-haiku-20241022",

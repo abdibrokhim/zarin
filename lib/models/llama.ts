@@ -60,6 +60,7 @@ export const MODELS = [
     ],
     api_sdk: customLlama("meta-llama/llama-4-maverick"),
     icon: Llama,
+    featured: true,
   },
   {
     id: "llama-4-scout",
@@ -82,5 +83,6 @@ export const MODELS = [
     ],
     api_sdk: customLlama("meta-llama/llama-4-scout"),
     icon: Llama,
+    featured: true,
   },
 ] as Model[]

@@ -11,7 +11,7 @@ import {
 } from "./history"
 import { clearAllIndexedDBStores } from "./persist"
 import type { ChatHistory } from "./types"
-import { fetchAndCacheChats } from "@/lib/chat-store/history"
+import { fetchAndCacheChats } from "@/lib/chat/history"
 
 interface ChatHistoryContextType {
   chats: ChatHistory[]

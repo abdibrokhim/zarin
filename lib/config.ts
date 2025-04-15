@@ -14,7 +14,7 @@ export const SUBSCRIPTION_URL = "https://www.patreon.com/abdibrokhim/membership"
 
 export const DISCORD_URL = "https://discord.gg/nUdcd9p8Ae"
 
-export const EMAIL_SUPPORT = "abdibrokhim@gmail.com"
+export const EMAIL_SUPPORT = "mailto:abdibrokhim@gmail.com"
 
 export const MAKER_WEBSITE_URL = "https://yaps.gg"
 

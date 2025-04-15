@@ -15,7 +15,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import type { ChatHistory } from "@/lib/chat-store/types"
+import type { ChatHistory } from "@/lib/chat/types"
 import { cn } from "@/lib/utils"
 import {
   Check,

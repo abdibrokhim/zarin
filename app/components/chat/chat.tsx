@@ -5,19 +5,19 @@ import { Conversation } from "@/app/components/chat/conversation"
 import { useUser } from "@/app/providers/user-provider"
 import { toast } from "@/components/ui/toast"
 import { checkRateLimits, createGuestUser, updateChatModel } from "@/lib/api"
-import { useChatHistory } from "@/lib/chat-store/chat-history-provider"
+import { useChatHistory } from "@/lib/chat/chat-history-provider"
 import {
   MESSAGE_MAX_LENGTH,
   MODEL_DEFAULT,
-  REMAINING_QUERY_ALERT_THRESHOLD,
   SYSTEM_PROMPT_DEFAULT,
-} from "@/lib/config"
+} from "@/lib/models/config"
 import {
   Attachment,
   checkFileUploadLimit,
   processFiles,
 } from "@/lib/chat/file-handling"
-import { syncMessages, deleteMessage, updateMessage } from "@/lib/chat-store/message"
+import { FIFTY_REMAINING_QUERY_ALERT_THRESHOLD, TEN_REMAINING_QUERY_ALERT_THRESHOLD } from "@/lib/config"
+import { syncMessages, deleteMessage, updateMessage } from "@/lib/chat/message"
 import { API_ROUTE_CHAT } from "@/lib/routes"
 import { cn } from "@/lib/utils"
 import { Message, useChat } from "@ai-sdk/react"
@@ -27,11 +27,6 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 
 const FeedbackWidget = dynamic(
   () => import("./feedback-widget").then((mod) => mod.FeedbackWidget),
-  { ssr: false }
-)
-
-const DialogAuth = dynamic(
-  () => import("./dialog-auth").then((mod) => mod.DialogAuth),
   { ssr: false }
 )
 
@@ -117,7 +112,14 @@ export default function Chat({
         return false
       }
 
-      if (rateData.remaining === REMAINING_QUERY_ALERT_THRESHOLD) {
+      if (rateData.remaining === TEN_REMAINING_QUERY_ALERT_THRESHOLD) {
+        toast({
+          title: `Only ${rateData.remaining} query${rateData.remaining.toString() === "1" ? "" : "ies"} remaining today.`,
+          status: "info",
+        })
+      }
+
+      if (rateData.remaining === FIFTY_REMAINING_QUERY_ALERT_THRESHOLD) {
         toast({
           title: `Only ${rateData.remaining} query${rateData.remaining.toString() === "1" ? "" : "ies"} remaining today.`,
           status: "info",
@@ -468,7 +470,6 @@ export default function Chat({
         "@container/main relative flex h-full flex-col items-center justify-end md:justify-center"
       )}
     >
-      <DialogAuth open={hasDialogAuth} setOpen={setHasDialogAuth} />
       <AnimatePresence initial={false} mode="popLayout">
         {isFirstMessage ? (
           <motion.div
@@ -525,7 +526,6 @@ export default function Chat({
           onSelectModel={handleModelChange}
           onSelectSystemPrompt={handleSelectSystemPrompt}
           selectedModel={selectedModel}
-          isUserAuthenticated={isAuthenticated}
           systemPrompt={systemPrompt}
           stop={stop}
           status={status}

@@ -5,9 +5,9 @@ import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import Chat from "../../components/chat/chat"
 import LayoutApp from "../../components/layout/layout-app"
-import { getChat } from "@/lib/chat-store/chat"
-import { getMessages } from "@/lib/chat-store/message"
-import { SYSTEM_PROMPT_DEFAULT } from "@/lib/config"
+import { getChat } from "@/lib/chat/chat"
+import { getMessages } from "@/lib/chat/message"
+import { SYSTEM_PROMPT_DEFAULT } from "@/lib/models/config"
 
 export default function PrivatePage() {
   const params = useParams()

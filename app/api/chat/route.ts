@@ -1,7 +1,5 @@
 // /chat/api/chat.ts
 import { ALL_MODELS } from "@/lib/models/config"
-import { sanitizeUserInput } from "@/lib/sanitize"
-import { Attachment } from "@ai-sdk/ui-utils"
 import { Message, streamText } from "ai"
 
 // Maximum allowed duration for streaming (in seconds)

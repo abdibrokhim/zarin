@@ -1,4 +1,4 @@
-export const DEFAULT_DAILY_MESSAGE_LIMIT = 69
+export const DEFAULT_DAILY_MESSAGE_LIMIT = 100
 
 export const FIFTY_REMAINING_QUERY_ALERT_THRESHOLD = 50
 
@@ -26,7 +26,7 @@ export const APP_ONE_LINER = "The first open-source all-in-one AI platform."
 
 export const APP_ONE_LINER_2 = "Your favorite go-to AI platform."
 
-export const APP_TITLE = "Zarin"
+export const APP_TITLE = "Zarin - The first open-source all-in-one AI platform."
 
 export const APP_DESCRIPTION = 
 `Zarin is the first open-source AI platform that provides access to over 200+ popular and latest AI multi-models. 

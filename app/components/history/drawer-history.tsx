@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { VisuallyHidden } from "@/components/ui/visually-hidden"
-import { ChatHistory } from "@/lib/chat-store/types"
+import { ChatHistory } from "@/lib/chat/types"
 import {
   Check,
   Command as CommandIcon,

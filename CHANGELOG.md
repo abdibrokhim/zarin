@@ -5,6 +5,10 @@ just to make sure i was not sleeping all the time.
 
 ## v0.1.1
 
+### 15th April, 2025
+- added new models
+- refactored files structure and codebase
+
 ### 14th April, 2025
 - added grok by xAI
 
@@ -14,7 +18,6 @@ just to make sure i was not sleeping all the time.
 - meta-llama/llama-4-maverick
 - meta-llama/llama-4-scout
 - google/gemini-2.0-flash-thinking
-
 
 ### 10th April, 2025
 - few ui/ux improvements

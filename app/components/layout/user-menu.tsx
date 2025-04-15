@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/tooltip"
 import { GearSix, Info, Lifebuoy, SlidersHorizontal } from "@phosphor-icons/react"
 import dynamic from "next/dynamic"
-import { APP_NAME, DISCORD_URL } from "../../../lib/config"
+import { APP_NAME, DISCORD_URL } from "@/lib/config"
 
 const AppInfo = dynamic(() => import("./app-info").then((mod) => mod.AppInfo), {
   ssr: false,

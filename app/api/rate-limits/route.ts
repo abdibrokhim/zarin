@@ -1,6 +1,5 @@
 import {
-  AUTH_DAILY_MESSAGE_LIMIT,
-  NON_AUTH_DAILY_MESSAGE_LIMIT,
+  DEFAULT_DAILY_MESSAGE_LIMIT,
 } from "@/lib/config"
 import { getUserData } from "@/lib/api"
 
@@ -20,7 +19,7 @@ export async function GET(req: Request) {
     const userData = await getUserData(userId)
     
     // We use the same limit for all users now
-    const dailyLimit = AUTH_DAILY_MESSAGE_LIMIT
+    const dailyLimit = DEFAULT_DAILY_MESSAGE_LIMIT
     const dailyCount = userData.daily_message_count || 0
     const remaining = dailyLimit - dailyCount
     
@@ -38,8 +37,8 @@ export async function GET(req: Request) {
       JSON.stringify({ 
         error: "Failed to fetch rate limits",
         dailyCount: 0,
-        dailyLimit: AUTH_DAILY_MESSAGE_LIMIT,
-        remaining: AUTH_DAILY_MESSAGE_LIMIT
+        dailyLimit: DEFAULT_DAILY_MESSAGE_LIMIT,
+        remaining: DEFAULT_DAILY_MESSAGE_LIMIT
       }), 
       { status: 500 }
     )

@@ -1,5 +1,4 @@
 import { ModelSelector } from "@/components/common/model-selector"
-import { Button } from "@/components/ui/button"
 import {
   Tooltip,
   TooltipContent,
@@ -12,13 +11,11 @@ import { useRef } from "react"
 export type SelectModelProps = {
   selectedModel: string
   onSelectModel: (model: string) => void
-  isUserAuthenticated: boolean
 }
 
 export function SelectModel({
   selectedModel,
   onSelectModel,
-  isUserAuthenticated,
 }: SelectModelProps) {
   const model = MODELS_OPTIONS.find((model) => model.id === selectedModel)
   const provider = PROVIDERS_OPTIONS.find(

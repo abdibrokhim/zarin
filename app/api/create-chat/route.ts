@@ -1,4 +1,4 @@
-import { SYSTEM_PROMPT_DEFAULT } from "@/lib/config"
+import { SYSTEM_PROMPT_DEFAULT } from "@/lib/models/config"
 import crypto from "crypto"
 
 export async function POST(request: Request) {

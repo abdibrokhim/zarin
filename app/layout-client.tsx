@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react"
 import { UserProfile } from "./types/user"
 import { UserProvider } from "./providers/user-provider"
-import { ChatHistoryProvider } from "@/lib/chat-store/chat-history-provider"
+import { ChatHistoryProvider } from "@/lib/chat/chat-history-provider"
 import { ThemeProvider } from "next-themes"
 import { Toaster } from "@/components/ui/sonner"
-import { readFromIndexedDB, writeToIndexedDB } from "@/lib/chat-store/persist"
+import { readFromIndexedDB, writeToIndexedDB } from "@/lib/chat/persist"
 import { Analytics } from "@vercel/analytics/react"
 import { TextShimmer } from "@/components/motion-primitives/text-shimmer"
 

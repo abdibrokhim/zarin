@@ -4,7 +4,7 @@ import { PromptSuggestion } from "@/components/prompt-kit/prompt-suggestion"
 import { TRANSITION_SUGGESTIONS } from "@/lib/motion"
 import { AnimatePresence, motion } from "motion/react"
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react"
-import { SUGGESTIONS as SUGGESTIONS_CONFIG } from "../../../lib/config"
+import { SUGGESTIONS as SUGGESTIONS_CONFIG } from "@/lib/chat/config"
 import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
 

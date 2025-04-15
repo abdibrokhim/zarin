@@ -14,23 +14,20 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { MODELS_OPTIONS } from "@/lib/config"
-import { cn } from "@/lib/utils"
+import { ALL_MODELS } from "@/lib/models/config"
 import { FileArrowUp, Paperclip } from "@phosphor-icons/react"
 import React from "react"
 
 type ButtonFileUploadProps = {
   onFileUpload: (files: File[]) => void
-  isUserAuthenticated: boolean
   model: string
 }
 
 export function ButtonFileUpload({
   onFileUpload,
-  isUserAuthenticated,
   model,
 }: ButtonFileUploadProps) {
-  const isFileUploadAvailable = MODELS_OPTIONS.find(
+  const isFileUploadAvailable = ALL_MODELS.find(
     (m) => m.id === model
   )?.features?.find((f) => f.id === "file-upload")?.enabled
 

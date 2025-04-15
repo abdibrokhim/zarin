@@ -28,7 +28,6 @@ type ChatInputProps = {
   hasSuggestions?: boolean
   onSelectModel: (model: string) => void
   selectedModel: string
-  isUserAuthenticated: boolean
   onSelectSystemPrompt: (systemPrompt: string) => void
   systemPrompt?: string
   stop: () => void
@@ -47,7 +46,6 @@ export function ChatInput({
   hasSuggestions,
   onSelectModel,
   selectedModel,
-  isUserAuthenticated,
   onSelectSystemPrompt,
   systemPrompt,
   stop,
@@ -107,13 +105,11 @@ export function ChatInput({
             <div className="flex gap-2">
               <ButtonFileUpload
                 onFileUpload={onFileUpload}
-                isUserAuthenticated={isUserAuthenticated}
                 model={selectedModel}
               />
               <SelectModel
                 selectedModel={selectedModel}
                 onSelectModel={onSelectModel}
-                isUserAuthenticated={isUserAuthenticated}
               />
             </div>
             <PromptInputAction tooltip={isSubmitting ? "Sending..." : "Send"}>

@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { PERSONAS } from "@/lib/config"
+import { PERSONAS } from "@/lib/chat/config"
 import { TRANSITION_SUGGESTIONS } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 import { motion } from "motion/react"

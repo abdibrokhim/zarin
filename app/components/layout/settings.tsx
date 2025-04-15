@@ -15,10 +15,11 @@ import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "@/components/
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { toast } from "@/components/ui/toast"
 import { VisuallyHidden } from "@/components/ui/visually-hidden"
-import { useChatHistory } from "@/lib/chat-store/chat-history-provider"
-import { AUTH_DAILY_MESSAGE_LIMIT, MODEL_DEFAULT } from "@/lib/config"
+import { useChatHistory } from "@/lib/chat/chat-history-provider"
+import { DEFAULT_DAILY_MESSAGE_LIMIT } from "@/lib/config"
+import { MODEL_DEFAULT } from "@/lib/models/config"
 import { cn } from "@/lib/utils"
-import { ArrowLeft, ArrowRight, CaretRight, Gear, Moon, PaintBrush, SignOut, Sun, User, X } from "@phosphor-icons/react"
+import { ArrowLeft, CaretRight, Gear, PaintBrush, SignOut, User } from "@phosphor-icons/react"
 import { useTheme } from "next-themes"
 import { useRouter } from "next/navigation"
 import type React from "react"
@@ -209,7 +210,7 @@ function SettingsContent({
                   <div className="mb-2 flex justify-between">
                     <span className="text-secondary-foreground text-sm">Today</span>
                     <span className="text-sm font-medium">
-                      {user?.daily_message_count} / {AUTH_DAILY_MESSAGE_LIMIT}{" "}
+                      {user?.daily_message_count} / {DEFAULT_DAILY_MESSAGE_LIMIT}{" "}
                       messages
                     </span>
                   </div>
@@ -219,14 +220,14 @@ function SettingsContent({
                       style={{
                         width: `${
                           ((user?.daily_message_count || 0) /
-                            AUTH_DAILY_MESSAGE_LIMIT) *
+                            DEFAULT_DAILY_MESSAGE_LIMIT) *
                           100
                         }%`,
                       }}
                     ></div>
                   </div>
                   <p className="text-muted-foreground mt-2 text-xs">
-                    Limit of {AUTH_DAILY_MESSAGE_LIMIT} messages per day
+                    Limit of {DEFAULT_DAILY_MESSAGE_LIMIT} messages per day
                   </p>
                 </div>
               </div>
@@ -393,7 +394,7 @@ function SettingsContent({
                     <div className="mb-2 flex justify-between">
                       <span className="text-secondary-foreground text-sm">Today</span>
                       <span className="text-sm font-medium">
-                        {user?.daily_message_count} / {AUTH_DAILY_MESSAGE_LIMIT}{" "}
+                        {user?.daily_message_count} / {DEFAULT_DAILY_MESSAGE_LIMIT}{" "}
                         messages
                       </span>
                     </div>
@@ -403,14 +404,14 @@ function SettingsContent({
                         style={{
                           width: `${
                             ((user?.daily_message_count || 0) /
-                              AUTH_DAILY_MESSAGE_LIMIT) *
+                              DEFAULT_DAILY_MESSAGE_LIMIT) *
                             100
                           }%`,
                         }}
                       ></div>
                     </div>
                     <p className="text-muted-foreground mt-2 text-xs">
-                      Limit of {AUTH_DAILY_MESSAGE_LIMIT} messages per day
+                      Limit of {DEFAULT_DAILY_MESSAGE_LIMIT} messages per day
                     </p>
                   </div>
                 </div>

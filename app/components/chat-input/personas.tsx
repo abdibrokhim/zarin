@@ -42,7 +42,7 @@ const ButtonPersona = memo(function ButtonPersona({
         isActive ? onSelectSystemPrompt("") : onSelectSystemPrompt(prompt)
       }
       className={cn(
-        "rounded-2xl",
+        "rounded-full",
         isActive &&
           "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground transition-none"
       )}

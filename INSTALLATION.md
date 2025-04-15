@@ -1,24 +1,17 @@
 # Zarin Installation Guide
 
-Zarin is a free, open-source AI chat app with multi-model support. This guide covers how to install and run zarin on different platforms, including Docker deployment options.
-
-![Zarin screenshot](./public/cover-zarin.png)
-
 ## Prerequisites
 
 - Node.js 18.x or later
 - npm or yarn
 - Git
-- API keys for supported AI models (OpenAI, AI/ML API, etc.)
+- YOU NEED ONLY ONE API key from [AI/ML API](https://aimlapi.com) 🔥
 
 ## Environment Setup
 
 First, you'll need to set up your environment variables. Create a `.env.local` file in the root of the project with the following variables:
 
 ```bash
-# OpenAI
-OPENAI_API_KEY=your_openai_api_key
-
 # AI/ML API
 AIML_API_KEY=your_ai_ml_api_key
 ```
@@ -60,7 +53,4 @@ The application will be available at [http://localhost:3000](http://localhost:30
 
 - GitHub Issues: Report bugs or request features
 - GitHub Discussions: Ask questions and share ideas
-
-## License
-
-Apache License 2.0
+- Join our [Discord server](https://discord.gg/nUdcd9p8Ae) to get help and support

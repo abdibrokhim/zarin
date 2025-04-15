@@ -42,7 +42,7 @@ function PromptSuggestion({
         variant={variant || "ghost"}
         size={size || "sm"}
         className={cn(
-          "w-full justify-start rounded-xl py-2",
+          "w-full justify-start rounded-full py-2",
           "hover:bg-accent",
           className
         )}

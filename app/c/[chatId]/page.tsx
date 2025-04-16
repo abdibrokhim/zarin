@@ -1,6 +1,6 @@
 "use client"
 
-import { Message } from "ai"
+import { Message, UIMessage } from "ai"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import Chat from "../../components/chat/chat"
@@ -67,7 +67,7 @@ export default function PrivatePage() {
   return (
     <LayoutApp>
       <Chat
-        initialMessages={messages}
+        initialMessages={messages as Array<UIMessage>}
         chatId={chatId}
         preferredModel={chatData?.model || ""}
         systemPrompt={chatData?.system_prompt || SYSTEM_PROMPT_DEFAULT}

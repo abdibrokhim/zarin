@@ -90,20 +90,22 @@ export async function sendMessage(message: DBMessage): Promise<void> {
 }
 
 // Update a message in the database
-export async function updateMessage(id: string, content: string): Promise<void> {
-  const message = await readFromIndexedDB<DBMessage>("messages", id);
+export async function updateMessage(chatId: string, messageId: string, content: string): Promise<void> {
+  const message = await readFromIndexedDB<DBMessage>("messages", messageId);
   if (message) {
     await writeToIndexedDB("messages", {
       ...message,
+      chat_id: chatId,
       content
     });
   }
 }
 
 // Delete a message from the database
-export async function deleteMessage(id: string): Promise<void> {
+export async function deleteMessage(chatId: string, messageId: string): Promise<void> {
   await writeToIndexedDB("messages", {
-    id,
+    id: messageId,
+    chat_id: chatId,
     _deleted: true
   } as DBMessage);
 }

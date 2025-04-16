@@ -27,7 +27,6 @@ interface ChatHistoryContextType {
     userId: string,
     title?: string,
     model?: string,
-    isAuthenticated?: boolean,
     systemPrompt?: string
   ) => Promise<ChatHistory | undefined>
   resetHistory: () => Promise<void>
@@ -133,7 +132,6 @@ export function ChatHistoryProvider({
     userId: string,
     title?: string,
     model?: string,
-    isAuthenticated?: boolean,
     systemPrompt?: string
   ) => {
     if (!userId) return
@@ -155,7 +153,6 @@ export function ChatHistoryProvider({
         userId,
         title,
         model,
-        isAuthenticated,
         systemPrompt
       )
       setChats((prev) =>

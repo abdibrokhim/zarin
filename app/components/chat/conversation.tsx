@@ -2,8 +2,9 @@ import { ScrollButton } from "@/components/motion-primitives/scroll-button"
 import { ChatContainer } from "@/components/prompt-kit/chat-container"
 import { Loader } from "@/components/prompt-kit/loader"
 import { Message as MessageType } from "@ai-sdk/react"
-import { useRef } from "react"
+import { useRef, memo } from "react"
 import { Message } from "./message"
+import equal from 'fast-deep-equal';
 
 type ConversationProps = {
   messages: MessageType[]
@@ -11,14 +12,16 @@ type ConversationProps = {
   onDelete: (id: string) => void
   onEdit: (id: string, newText: string) => void
   onReload: () => void
+  isArtifactVisible: boolean;
 }
 
-export function Conversation({
+function PureConversation({
   messages,
   status = "ready",
   onDelete,
   onEdit,
   onReload,
+  isArtifactVisible,
 }: ConversationProps) {
   const initialMessageCount = useRef(messages.length)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -74,3 +77,14 @@ export function Conversation({
     </div>
   )
 }
+
+export const Conversation = memo(PureConversation, (prevProps, nextProps) => {
+  if (prevProps.isArtifactVisible && nextProps.isArtifactVisible) return true;
+
+  if (prevProps.status !== nextProps.status) return false;
+  if (!prevProps.status && nextProps.status) return false;
+  if (prevProps.messages.length !== nextProps.messages.length) return false;
+  if (!equal(prevProps.messages, nextProps.messages)) return false;
+
+  return true;
+});

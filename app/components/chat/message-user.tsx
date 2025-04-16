@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Message as MessageType } from "@ai-sdk/react"
 import { Check, Copy, PencilSimple, Trash } from "@phosphor-icons/react"
-import { useRef, useState } from "react"
+import { memo, useRef, useState } from "react"
 
 const getTextFromDataUrl = (dataUrl: string) => {
   const base64 = dataUrl.split(",")[1]
@@ -37,7 +37,7 @@ export type MessageUserProps = {
   id: string
 }
 
-export function MessageUser({
+export function PureMessageUser({
   hasScrollAnchor,
   attachments,
   children,
@@ -193,3 +193,6 @@ export function MessageUser({
     </MessageContainer>
   )
 }
+
+// Memo to prevent unnecessary re-renders
+export const MessageUser = memo(PureMessageUser);

@@ -6,6 +6,7 @@ import {
 } from "@/components/prompt-kit/message"
 import { cn } from "@/lib/utils"
 import { ArrowClockwise, Check, Copy } from "@phosphor-icons/react"
+import { memo } from "react"
 
 type MessageAssistantProps = {
   children: string
@@ -16,7 +17,7 @@ type MessageAssistantProps = {
   onReload?: () => void
 }
 
-export function MessageAssistant({
+export function PureMessageAssistant({
   children,
   isLast,
   hasScrollAnchor,
@@ -77,3 +78,6 @@ export function MessageAssistant({
     </Message>
   )
 }
+
+// Memo to prevent unnecessary re-renders
+export const MessageAssistant = memo(PureMessageAssistant);

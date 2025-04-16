@@ -1,4 +1,4 @@
-import { useUser } from "@/app/providers/user-provider"
+import { useUser } from "@/providers/user-provider"
 import { ModelSelector } from "@/components/common/model-selector"
 import { MODEL_DEFAULT } from "@/lib/models/config"
 import { useState, useEffect } from "react"

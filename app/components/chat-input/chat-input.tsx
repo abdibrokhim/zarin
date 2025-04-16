@@ -8,12 +8,13 @@ import {
 } from "@/components/prompt-kit/prompt-input"
 import { Button } from "@/components/ui/button"
 import { APP_NAME } from "@/lib/config"
-import { ArrowUp, Stop } from "@phosphor-icons/react"
-import React, { useCallback } from "react"
+import { ArrowUp, Stop, Code, Play } from "@phosphor-icons/react"
+import React, { memo, useCallback } from "react"
 import { ButtonFileUpload } from "./button-file-upload"
 import { FileList } from "./file-list"
 import { PromptSystem } from "./prompt-system"
 import { SelectModel } from "./select-model"
+import equal from 'fast-deep-equal';
 
 type ChatInputProps = {
   value: string
@@ -32,9 +33,12 @@ type ChatInputProps = {
   systemPrompt?: string
   stop: () => void
   status?: "submitted" | "streaming" | "ready" | "error"
+  toggleArtifactVisibility?: () => void
+  isCodeArtifactVisible?: boolean
+  runCodeArtifact?: () => void
 }
 
-export function ChatInput({
+function PureChatInput({
   value,
   onValueChange,
   onSend,
@@ -50,6 +54,9 @@ export function ChatInput({
   systemPrompt,
   stop,
   status,
+  toggleArtifactVisibility,
+  isCodeArtifactVisible,
+  runCodeArtifact,
 }: ChatInputProps) {
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -112,6 +119,30 @@ export function ChatInput({
                 selectedModel={selectedModel}
                 onSelectModel={onSelectModel}
               />
+              {toggleArtifactVisibility && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-9 rounded-lg"
+                  onClick={toggleArtifactVisibility}
+                  type="button"
+                  aria-label="Toggle artifact"
+                >
+                  <Code className="size-4" />
+                </Button>
+              )}
+              {isCodeArtifactVisible && runCodeArtifact && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-9 rounded-lg"
+                  onClick={runCodeArtifact}
+                  type="button"
+                  aria-label="Run code"
+                >
+                  <Play className="size-4" />
+                </Button>
+              )}
             </div>
             <PromptInputAction tooltip={isSubmitting ? "Sending..." : "Send"}>
               <Button
@@ -135,3 +166,14 @@ export function ChatInput({
     </div>
   )
 }
+
+export const ChatInput = memo(
+  PureChatInput,
+  (prevProps, nextProps) => {
+    if (prevProps.value !== nextProps.value) return false;
+    if (prevProps.status !== nextProps.status) return false;
+    if (!equal(prevProps.files, nextProps.files)) return false;
+
+    return true;
+  },
+);

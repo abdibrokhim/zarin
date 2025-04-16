@@ -47,7 +47,6 @@ export async function createNewChat(
   userId: string,
   title?: string,
   model?: string,
-  isAuthenticated?: boolean,
   systemPrompt?: string
 ): Promise<ChatHistory> {
   try {

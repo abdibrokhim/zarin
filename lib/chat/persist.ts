@@ -29,6 +29,15 @@ interface ZarinDB extends DBSchema {
     key: string;
     value: any;
   };
+  suggestions: {
+    key: string;
+    value: any;
+  };
+  documents: {
+    key: string;
+    value: any;
+    indexes: { 'by-id': string };
+  };
 }
 
 // Database instance
@@ -63,6 +72,15 @@ function getDB(): Promise<IDBPDatabase<ZarinDB>> {
         if (!db.objectStoreNames.contains('users')) {
           db.createObjectStore('users', { keyPath: 'id' });
         }
+        
+        if (!db.objectStoreNames.contains('suggestions')) {
+          db.createObjectStore('suggestions', { keyPath: 'id' });
+        }
+        
+        if (!db.objectStoreNames.contains('documents')) {
+          const documentStore = db.createObjectStore('documents', { keyPath: 'id' });
+          documentStore.createIndex('by-id', 'id');
+        }
       },
       blocked() {
         console.warn('Database blocked: Another connection is blocking the upgrade');
@@ -81,7 +99,7 @@ function getDB(): Promise<IDBPDatabase<ZarinDB>> {
 }
 
 // Store names
-const storeNames = ['chats', 'messages', 'sync', 'users'] as const;
+const storeNames = ['chats', 'messages', 'sync', 'users', 'suggestions', 'documents'] as const;
 type StoreName = typeof storeNames[number];
 
 // Read one item by key from a store
@@ -211,5 +229,52 @@ export async function clearAllIndexedDBStores(): Promise<void> {
   } catch (error) {
     console.error('Error clearing stores:', error);
     throw error;
+  }
+}
+
+// Simple utility to persist artifact data in IndexedDB
+export async function writeArtifactToIndexedDB(
+  storeName: string,
+  data: any,
+): Promise<void> {
+  if (!isBrowser) {
+    return;
+  }
+  
+  try {
+    const db = await getDB();
+    const tx = db.transaction(storeName as StoreName, 'readwrite');
+    const store = tx.objectStore(storeName as StoreName);
+    
+    await store.put(data);
+    await tx.done;
+  } catch (error) {
+    console.error(`Error writing to ${storeName}:`, error);
+    throw error;
+  }
+}
+
+// Read artifact data from IndexedDB
+export async function readArtifactFromIndexedDB<T>(
+  storeName: string,
+  key?: string
+): Promise<T | T[] | null> {
+  if (!isBrowser) {
+    return null;
+  }
+  
+  try {
+    const db = await getDB();
+    
+    if (key) {
+      // Get a single item by key
+      return await db.get(storeName as StoreName, key) as T;
+    } else {
+      // Get all items from the store
+      return await db.getAll(storeName as StoreName) as T[];
+    }
+  } catch (error) {
+    console.error(`Error reading from ${storeName}:`, error);
+    return null;
   }
 }

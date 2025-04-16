@@ -11,7 +11,7 @@ import {
     INTELLIGENCE_TYPES 
 } from "./types"
 
-const customOpenAI = createOpenAI({
+export const customOpenAI = createOpenAI({
   baseURL: AIML_API_BASE_URL,
   apiKey: process.env.AIML_API_KEY,
 })

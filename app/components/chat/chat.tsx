@@ -2,7 +2,7 @@
 
 import { ChatInput } from "@/app/components/chat-input/chat-input"
 import { Conversation } from "@/app/components/chat/conversation"
-import { useUser } from "@/app/providers/user-provider"
+import { useUser } from "@/providers/user-provider"
 import { toast } from "@/components/ui/toast"
 import { checkRateLimits, createGuestUser, updateChatModel } from "@/lib/api"
 import { useChatHistory } from "@/lib/chat/chat-history-provider"

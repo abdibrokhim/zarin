@@ -1,4 +1,4 @@
-import { useUser } from "@/app/providers/user-provider"
+import { useUser } from "@/providers/user-provider"
 import { Button } from "@/components/ui/button"
 import { useChatHistory } from "@/lib/chat/chat-history-provider"
 import { DEFAULT_DAILY_MESSAGE_LIMIT } from "@/lib/config"

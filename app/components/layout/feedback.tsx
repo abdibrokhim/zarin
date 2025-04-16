@@ -1,6 +1,6 @@
 "use client"
 
-import { useBreakpoint } from "@/app/hooks/use-breakpoint"
+import { useBreakpoint } from "@/hooks/use-breakpoint"
 import { FeedbackForm } from "@/components/common/feedback-form"
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"

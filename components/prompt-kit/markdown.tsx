@@ -3,8 +3,10 @@ import { marked } from "marked"
 import { memo, useId, useMemo } from "react"
 import ReactMarkdown, { Components } from "react-markdown"
 import remarkGfm from "remark-gfm"
-import { ButtonCopy } from "../common/button-copy"
+import { ButtonCopy } from "@/components/common/button-copy"
 import { CodeBlock, CodeBlockCode, CodeBlockGroup } from "./code-block"
+import { ButtonDevMode } from '@/components/common/button-dev-mode'
+import ButtonWithGlowEffect from "@/components/common/button-with-glow-effect"
 
 export type MarkdownProps = {
   children: string
@@ -55,6 +57,8 @@ const INITIAL_COMPONENTS: Partial<Components> = {
         </CodeBlockGroup>
         <div className="sticky top-16 lg:top-0">
           <div className="absolute right-0 bottom-0 flex h-9 items-center pr-1.5">
+            <ButtonDevMode code={children as string} language={language} />
+            <div className="w-1"></div>
             <ButtonCopy code={children as string} />
           </div>
         </div>

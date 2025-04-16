@@ -1,8 +1,8 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { UserProfile } from "./types/user"
-import { UserProvider } from "./providers/user-provider"
+import { UserProfile } from "@/types/user"
+import { UserProvider } from "@/providers/user-provider"
 import { ChatHistoryProvider } from "@/lib/chat/chat-history-provider"
 import { ThemeProvider } from "next-themes"
 import { Toaster } from "@/components/ui/sonner"

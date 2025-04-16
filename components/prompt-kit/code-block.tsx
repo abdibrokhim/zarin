@@ -44,6 +44,12 @@ function CodeBlockCode({
 
   useEffect(() => {
     async function highlight() {
+      // TODO: Remove this once we have a better way to handle code blocks
+      // if (!code || typeof code !== 'string') {
+      //   setHighlightedHtml('<pre><code>No code provided</code></pre>');
+      //   return;
+      // }
+      
       const html = await codeToHtml(code, {
         lang: language,
         theme: appTheme === "dark" ? "github-dark" : "github-light",

@@ -1,9 +1,8 @@
-// app/providers/user-provider.tsx
 "use client"
 
 import { getUserData, incrementUsage } from "@/lib/api"
 import { createContext, useContext, useEffect, useState } from "react"
-import { UserProfile } from "../types/user"
+import { UserProfile } from "@/types/user"
 
 type UserContextType = {
   user: UserProfile | null

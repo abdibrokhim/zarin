@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect, useRef, useCallback } from "react"
-import { useModels } from "./model-selector/hooks/useModels"
-import { useFilters } from "./model-selector/hooks/useFilters"
+import { useModels } from "../../hooks/useModels"
+import { useFilters } from "../../hooks/useFilters"
 import { ModelSelectorLayout } from "./model-selector/ModelSelectorLayout"
 import { FEATURE_FILTERS, USE_CASE_FILTERS, SORT_OPTIONS } from "./model-selector/constants"
 

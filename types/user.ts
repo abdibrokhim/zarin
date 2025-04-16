@@ -1,4 +1,4 @@
-import type { Tables } from "@/app/types/database.types"
+import type { Tables } from "@/types/database.types"
 
 export type UserProfile = {
   profile_image: string

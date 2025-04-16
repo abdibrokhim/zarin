@@ -1,6 +1,6 @@
 "use client"
 
-import { useBreakpoint } from "@/app/hooks/use-breakpoint"
+import { useBreakpoint } from "@/hooks/use-breakpoint"
 import { useChatHistory } from "@/lib/chat/chat-history-provider"
 import dynamic from "next/dynamic"
 import { useParams, useRouter } from "next/navigation"

@@ -1,6 +1,6 @@
 "use client"
 
-import { useUser } from "@/app/providers/user-provider"
+import { useUser } from "@/providers/user-provider"
 import {
   DropdownMenu,
   DropdownMenuContent,

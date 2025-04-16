@@ -1,6 +1,6 @@
 "use client"
 
-import useClickOutside from "@/app/hooks/use-click-outside"
+import useClickOutside from "@/hooks/use-click-outside"
 import { cn } from "@/lib/utils"
 import {
   AnimatePresence,

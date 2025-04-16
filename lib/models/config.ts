@@ -6,6 +6,7 @@ import Mistral from "@/components/icons/mistral"
 import OpenAI from "@/components/icons/openai"
 import Llama from "@/components/icons/llama"
 import Qwen from "@/components/icons/qwen"
+import Deepgram from "@/components/icons/deepgram"
 import { Provider, Model } from "./types"
 import { MODELS as OPENAI_MODELS } from "./openai"
 import { MODELS as MISTRAL_MODELS } from "./mistral"
@@ -15,6 +16,7 @@ import { MODELS as LLAMA_MODELS } from "./llama"
 import { MODELS as XAI_MODELS } from "./xai"
 import { MODELS as DEEPSEEK_MODELS } from "./deepseek"
 import { MODELS as ALIBABA_MODELS } from "./alibaba"
+import { MODELS as DEEPGRAM_MODELS } from "./deepgram"
 import { APP_NAME } from "@/lib/config"
 
 export const ALL_MODELS = [
@@ -26,6 +28,7 @@ export const ALL_MODELS = [
   ...MISTRAL_MODELS,
   ...DEEPSEEK_MODELS,
   ...ALIBABA_MODELS,
+  ...DEEPGRAM_MODELS,
 ] as Model[]
 
 export const MODELS_OPTIONS = [
@@ -75,6 +78,11 @@ export const PROVIDERS = [
     id: "alibaba-cloud",
     name: "Alibaba Cloud",
     icon: Qwen,
+  },
+  {
+    id: "deepgram",
+    name: "Deepgram",
+    icon: Deepgram,
   },
 ] as Provider[]
 

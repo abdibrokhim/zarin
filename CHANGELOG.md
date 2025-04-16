@@ -5,6 +5,14 @@ just to make sure i was not sleeping all the time.
 
 ## v0.1.1
 
+### 17th April, 2025
+- added deepgram models to the platform; generate human-like voices
+
+### 16th April, 2025
+- added `dev mode` to the platform. edit and run the generated code directly from the platform. pushed changes to the new branch: `feat/devmode`
+- worked so hard to bring Artifacts to the platform, but looks not really cool tbh. anyway pushed changes to the new branch: `feat/artifacts`
+
+
 ### 15th April, 2025
 - refactored settings file tree structure
 - new ui theme

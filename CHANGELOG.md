@@ -6,6 +6,9 @@ just to make sure i was not sleeping all the time.
 ## v0.1.1
 
 ### 17th April, 2025
+- added support for audio generation and display right in the chat
+- refactored the codebase to use AI Agents
+- implemented AI Agents SDK from scratch
 - added deepgram models to the platform; generate human-like voices
 
 ### 16th April, 2025

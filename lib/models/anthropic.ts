@@ -21,6 +21,7 @@ export const MODELS = [
     id: "claude-3-7-sonnet-20250219",
     name: "Claude 3.7 Sonnet",
     provider: "claude",
+    type: "text",
     description: INTELLIGENCE_TYPES[IntelligenceId.ADVANCED_INTELLIGENT].description,
     features: [
       {
@@ -60,6 +61,7 @@ export const MODELS = [
     name: "Claude 3.5 Haiku",
     description: INTELLIGENCE_TYPES[IntelligenceId.ADVANCED_INTELLIGENT].description,
     provider: "claude",
+    type: "text",
     features: [
       {
         id: FeatureId.FILE_UPLOAD,
@@ -97,6 +99,7 @@ export const MODELS = [
     name: "Claude 3.5 Sonnet",
     description: INTELLIGENCE_TYPES[IntelligenceId.ADVANCED_INTELLIGENT].description,
     provider: "claude",
+    type: "text",
     features: [
       {
         id: FeatureId.FILE_UPLOAD,
@@ -134,6 +137,7 @@ export const MODELS = [
     name: "Claude 3 Haiku",
     description: INTELLIGENCE_TYPES[IntelligenceId.FAST_INTELLIGENT].description,
     provider: "claude",
+    type: "text",
     features: [
       {
         id: FeatureId.FILE_UPLOAD,
@@ -171,6 +175,7 @@ export const MODELS = [
     name: "Claude 3 Sonnet",
     description: INTELLIGENCE_TYPES[IntelligenceId.FAST_INTELLIGENT].description,
     provider: "claude",
+    type: "text",
     features: [
       {
         id: FeatureId.FILE_UPLOAD,
@@ -208,6 +213,7 @@ export const MODELS = [
     name: "Claude 3 Opus",
     description: INTELLIGENCE_TYPES[IntelligenceId.HIGH_INTELLIGENCE].description,
     provider: "claude",
+    type: "text",
     features: [
       {
         id: FeatureId.FILE_UPLOAD,

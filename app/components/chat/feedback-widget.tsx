@@ -28,11 +28,7 @@ const TRANSITION_CONTENT = {
   duration: 0.2,
 }
 
-type FeedbackWidgetProps = {
-  authUserId?: string
-}
-
-export function FeedbackWidget({ authUserId }: FeedbackWidgetProps) {
+export function FeedbackWidget() {
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle")
@@ -60,8 +56,7 @@ export function FeedbackWidget({ authUserId }: FeedbackWidgetProps) {
     try {
       // Create a mailto link with the feedback content
       const subject = encodeURIComponent("Feedback for Zarin Chat")
-      const userId = authUserId ? encodeURIComponent(`User ID: ${authUserId}`) : "Zarin User"
-      const emailBody = encodeURIComponent(`${feedback}\n\n${userId}`)
+      const emailBody = encodeURIComponent(`${feedback}`)
       
       // Open the email client
       window.location.href = `mailto:abdibrokhim@gmail.com?subject=${subject}&body=${emailBody}`

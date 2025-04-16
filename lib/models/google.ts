@@ -21,6 +21,7 @@ export const MODELS = [
     id: "gemini-2.5-pro-preview",
     name: "Gemini 2.5 Pro Preview",
     provider: "gemini",
+    type: "text",
     description: INTELLIGENCE_TYPES[IntelligenceId.ADVANCED_INTELLIGENT].description,
     features: [
       {
@@ -60,6 +61,7 @@ export const MODELS = [
     name: "Gemini 2.0 Flash",
     description: INTELLIGENCE_TYPES[IntelligenceId.FAST_INTELLIGENT].description,
     provider: "gemini",
+    type: "text",
     features: [
       {
         id: FeatureId.FILE_UPLOAD,
@@ -97,6 +99,7 @@ export const MODELS = [
     name: "Gemini 2.0 Flash Thinking",
     description: INTELLIGENCE_TYPES[IntelligenceId.HIGH_INTELLIGENCE].description,
     provider: "gemini",
+    type: "text",
     features: [
       {
         id: FeatureId.FILE_UPLOAD,
@@ -134,6 +137,7 @@ export const MODELS = [
     name: "Gemini 1.5 Flash",
     description: INTELLIGENCE_TYPES[IntelligenceId.FAST_INTELLIGENT].description,
     provider: "gemini",
+    type: "text",
     features: [
       {
         id: FeatureId.FILE_UPLOAD,

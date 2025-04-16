@@ -11,7 +11,7 @@ import {
     AUDIO_MODELS_SUPPORTED_LANGUAGES
 } from "./types"
 
-async function customDeepgram(modelId: string) {
+function customDeepgram(modelId: string) {
   return async function(text: string) {
     try {
       const response = await fetch(`${AIML_API_BASE_URL}/tts`, {
@@ -31,8 +31,7 @@ async function customDeepgram(modelId: string) {
         throw new Error(error.message || 'Failed to generate audio');
       }
 
-      const audioBlob = await response.blob();
-      return audioBlob;
+      return response.blob();
 
     } catch (error: any) {
       console.error('Error generating audio:', error);
@@ -61,9 +60,10 @@ export const MODELS = deepgramModels.map(modelId => {
   const voiceName = parts[1].charAt(0).toUpperCase() + parts[1].slice(1)
   
   return {
-    id: `deepgram-${parts[1]}`,
+    id: `deepgram-${modelId.split('-')[1]}`,
     name: `Deepgram ${voiceName}`,
     provider: "deepgram",
+    type: "audio",
     description: AUDIO_MODELS_INTELLIGENCE_TYPES[IntelligenceId.FAST_FLEXIBLE].description,
     features: [
       {
@@ -87,7 +87,7 @@ export const MODELS = deepgramModels.map(modelId => {
     languages: [
       AUDIO_MODELS_SUPPORTED_LANGUAGES["en"],
     ],
-    api_sdk: customDeepgram(`#${modelId}`),
+    api_sdk: customDeepgram(modelId),
     icon: Deepgram,
     featured: true,
   }

@@ -21,6 +21,7 @@ export const MODELS = [
     id: "deepseek-r1",
     name: "DeepSeek R1",
     provider: "deepseek",
+    type: "text",
     description: INTELLIGENCE_TYPES[IntelligenceId.ADVANCED_INTELLIGENT].description,
     features: [
       {
@@ -60,6 +61,7 @@ export const MODELS = [
     name: "DeepSeek V3",
     description: INTELLIGENCE_TYPES[IntelligenceId.FAST_INTELLIGENT].description,
     provider: "deepseek",
+    type: "text",
     features: [
       {
         id: FeatureId.FILE_UPLOAD,

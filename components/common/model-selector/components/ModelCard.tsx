@@ -81,13 +81,20 @@ export function ModelCard({
               </Badge>
             )}
           </div>
-          <span className="font-medium truncate">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="font-medium truncate">
             {model.available ? (
               <TextShimmer>{model.name}</TextShimmer>
             ) : (
               model.name
             )}
-          </span>
+            </span>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{model.description}</p>
+          </TooltipContent>
+          </Tooltip>
         </div>
       </div>
       

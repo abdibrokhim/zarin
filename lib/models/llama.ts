@@ -21,6 +21,7 @@ export const MODELS = [
     id: "Llama-3.3",
     name: "Llama 3.3",
     provider: "llama",
+    type: "text",
     description: INTELLIGENCE_TYPES[IntelligenceId.FAST_FLEXIBLE].description,
     features: [
       {
@@ -43,6 +44,7 @@ export const MODELS = [
     id: "llama-4-maverick",
     name: "Llama 4 Maverick",
     provider: "llama",
+    type: "text",
     description: INTELLIGENCE_TYPES[IntelligenceId.ADVANCED_INTELLIGENT].description,
     features: [
       {
@@ -66,6 +68,7 @@ export const MODELS = [
     id: "llama-4-scout",
     name: "Llama 4 Scout",
     provider: "llama",
+    type: "text",
     description: INTELLIGENCE_TYPES[IntelligenceId.FAST_INTELLIGENT].description,
     features: [
       {

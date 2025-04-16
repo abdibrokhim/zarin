@@ -21,6 +21,7 @@ export const MODELS = [
         id: "mistralai/mistral-nemo",
         name: "Mistral Nemo",
         provider: "mistral",
+        type: "text",
         description: INTELLIGENCE_TYPES[IntelligenceId.FAST_FLEXIBLE].description,
         features: [
             {
@@ -43,6 +44,7 @@ export const MODELS = [
         id: "mistralai/Mistral-7B-Instruct-v0.3",
         name: "Mistral 7B",
         provider: "mistral",
+        type: "text",
         description: INTELLIGENCE_TYPES[IntelligenceId.FAST_FLEXIBLE].description,
         features: [
           {
@@ -65,6 +67,7 @@ export const MODELS = [
         id: "mistralai/mistral-tiny",
         name: "Mistral Tiny",
         provider: "mistral",
+        type: "text",
         description: INTELLIGENCE_TYPES[IntelligenceId.FAST_FLEXIBLE].description,
         features: [
           {
@@ -87,6 +90,7 @@ export const MODELS = [
         id: "mistral-large-latest",
         name: "Mistral Large",
         provider: "mistral",
+        type: "text",
         description: INTELLIGENCE_TYPES[IntelligenceId.FAST_FLEXIBLE].description,
         features: [
           {

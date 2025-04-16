@@ -9,6 +9,7 @@ import { useChatHistory } from "@/lib/chat/chat-history-provider"
 import {
   MESSAGE_MAX_LENGTH,
   MODEL_DEFAULT,
+  MODELS_OPTIONS,
   SYSTEM_PROMPT_DEFAULT,
 } from "@/lib/models/config"
 import {
@@ -17,13 +18,14 @@ import {
   processFiles,
 } from "@/lib/chat/file-handling"
 import { FIFTY_REMAINING_QUERY_ALERT_THRESHOLD, TEN_REMAINING_QUERY_ALERT_THRESHOLD } from "@/lib/config"
-import { syncMessages, deleteMessage, updateMessage } from "@/lib/chat/message"
+import { syncMessages, deleteMessage, updateMessage, ExtendedMessage } from "@/lib/chat/message"
 import { API_ROUTE_CHAT } from "@/lib/routes"
 import { cn } from "@/lib/utils"
 import { Message, useChat } from "@ai-sdk/react"
 import { AnimatePresence, motion } from "motion/react"
 import dynamic from "next/dynamic"
 import { useCallback, useEffect, useMemo, useState } from "react"
+import { AudioAttachment } from "@/lib/chat/message"
 
 const FeedbackWidget = dynamic(
   () => import("./feedback-widget").then((mod) => mod.FeedbackWidget),
@@ -45,7 +47,6 @@ export default function Chat({
 }: ChatProps) {
   const { user } = useUser()
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [hasDialogAuth, setHasDialogAuth] = useState(false)
   const [chatId, setChatId] = useState<string | null>(propChatId || null)
   const [files, setFiles] = useState<File[]>([])
   const [selectedModel, setSelectedModel] = useState(
@@ -53,7 +54,6 @@ export default function Chat({
   )
   const [systemPrompt, setSystemPrompt] = useState(propSystemPrompt)
   const { createNewChat } = useChatHistory()
-  const isAuthenticated = false // Always false since we don't use authentication
 
   const {
     messages,
@@ -108,7 +108,6 @@ export default function Chat({
       const rateData = await checkRateLimits(uid)
 
       if (rateData.remaining === 0) {
-        setHasDialogAuth(true)
         return false
       }
 
@@ -140,7 +139,6 @@ export default function Chat({
           userId,
           input,
           selectedModel,
-          isAuthenticated,
           systemPrompt
         )
         if (!newChat) return null
@@ -301,13 +299,80 @@ export default function Chat({
         return
       }
     }
-
+    
+    // Check if the message is requesting audio generation
+    const isAudioRequest = MODELS_OPTIONS.find(m => m.id === selectedModel)?.type === "audio"
+      
+    if (isAudioRequest) {
+      try {
+        // Use a simple loading message to show progress
+        toast({
+          title: "Generating audio...",
+          status: "info",
+        });
+        
+        // Instead of duplicating agent logic, use the /api/audio/ endpoint
+        const response = await fetch("/api/audio", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            prompt: input,
+            userId: uid,
+            selectedModel,
+          }),
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Failed to generate audio");
+        }
+        
+        const data = await response.json();
+        
+        // Check if the API returned audio data
+        if (data.audio && data.audio.success !== false) {
+          // Create the response message with audio
+          const assistantMessage = {
+            id: `audio-${Date.now()}`,
+            role: "assistant" as const,
+            content: data.response || `I've generated audio from the text.`,
+            audio: {
+              base64Audio: data.audio.audio,
+              model: data.audio.model,
+              text: data.audio.text
+            },
+            modelType: "audio" as const
+          };
+          
+          // Add the message to the chat
+          setMessages(prev => [...prev.filter(m => m.id !== optimisticId), assistantMessage as any]);
+          
+          setIsSubmitting(false);
+          return;
+        } else if (data.audio && data.audio.success === false) {
+          // Handle error from audio generation
+          throw new Error(data.audio.error || "Failed to generate audio");
+        }
+      } catch (error: any) {
+        console.error("Error processing audio request:", error);
+        toast({
+          title: error.message || "Error generating audio",
+          status: "error",
+        });
+        setIsSubmitting(false);
+        setMessages((prev) => prev.filter((msg) => msg.id !== optimisticId));
+        return;
+      }
+    }
+    
+    // Regular chat processing
     const options = {
       body: {
         chatId: currentChatId,
         userId: uid,
         model: selectedModel,
-        isAuthenticated,
         systemPrompt: systemPrompt || SYSTEM_PROMPT_DEFAULT,
       },
       experimental_attachments: attachments || undefined,
@@ -320,14 +385,6 @@ export default function Chat({
       handleSubmit(undefined, options)
       setMessages((prev) => prev.filter((msg) => msg.id !== optimisticId))
       cleanupOptimisticAttachments(optimisticMessage.experimental_attachments)
-      
-      // Sync messages with IndexedDB after the AI responds
-      setTimeout(() => {
-        if (currentChatId) {
-          syncMessages(currentChatId, messages)
-            .catch(err => console.error("Failed to sync messages:", err));
-        }
-      }, 1000); // Give a slight delay to ensure the AI response is included
     } catch (error) {
       setMessages((prev) => prev.filter((msg) => msg.id !== optimisticId))
       cleanupOptimisticAttachments(optimisticMessage.experimental_attachments)
@@ -339,15 +396,6 @@ export default function Chat({
 
   const handleDelete = async (id: string) => {
     setMessages(messages.filter((message) => message.id !== id))
-    
-    // If we have a chatId, also delete from IndexedDB
-    if (chatId) {
-      try {
-        await deleteMessage(id);
-      } catch (err) {
-        console.error("Failed to delete message from database:", err);
-      }
-    }
   }
 
   const handleEdit = async (id: string, newText: string) => {
@@ -356,15 +404,6 @@ export default function Chat({
         message.id === id ? { ...message, content: newText } : message
       )
     )
-    
-    // If we have a chatId, also update in IndexedDB
-    if (chatId) {
-      try {
-        await updateMessage(id, newText);
-      } catch (err) {
-        console.error("Failed to update message in database:", err);
-      }
-    }
   }
 
   const handleInputChange = useCallback(
@@ -423,7 +462,6 @@ export default function Chat({
           chatId: currentChatId,
           userId: uid,
           model: selectedModel,
-          isAuthenticated,
           systemPrompt: SYSTEM_PROMPT_DEFAULT,
         },
       }
@@ -456,7 +494,6 @@ export default function Chat({
         chatId,
         userId: uid,
         model: selectedModel,
-        isAuthenticated,
         systemPrompt: systemPrompt || "You are a helpful assistant.",
       },
     }
@@ -531,7 +568,7 @@ export default function Chat({
           status={status}
         />
       </motion.div>
-      <FeedbackWidget authUserId={user?.id} />
+      <FeedbackWidget />
     </div>
   )
 }

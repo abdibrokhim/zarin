@@ -6,6 +6,8 @@ import {
 } from "@/components/prompt-kit/message"
 import { cn } from "@/lib/utils"
 import { ArrowClockwise, Check, Copy } from "@phosphor-icons/react"
+import { AudioPlayer } from "./AudioPlayer"
+import { AudioAttachment } from "@/lib/chat/message"
 
 type MessageAssistantProps = {
   children: string
@@ -14,6 +16,7 @@ type MessageAssistantProps = {
   copied?: boolean
   copyToClipboard?: () => void
   onReload?: () => void
+  audio?: AudioAttachment
 }
 
 export function MessageAssistant({
@@ -23,6 +26,7 @@ export function MessageAssistant({
   copied,
   copyToClipboard,
   onReload,
+  audio
 }: MessageAssistantProps) {
   return (
     <Message
@@ -38,6 +42,10 @@ export function MessageAssistant({
         >
           {children}
         </MessageContent>
+
+        {audio && (
+          <AudioPlayer audio={audio} />
+        )}
 
         <MessageActions
           className={cn(

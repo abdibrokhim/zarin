@@ -21,6 +21,7 @@ export const MODELS = [
     id: "qwq-32b",
     name: "QwQ 32B",
     provider: "alibaba-cloud",
+    type: "text",
     description: INTELLIGENCE_TYPES[IntelligenceId.ADVANCED_INTELLIGENT].description,
     features: [
       {
@@ -44,6 +45,7 @@ export const MODELS = [
     name: "Qwen Turbo",
     description: INTELLIGENCE_TYPES[IntelligenceId.FAST_INTELLIGENT].description,
     provider: "alibaba-cloud",
+    type: "text",
     features: [
       {
         id: FeatureId.REASONING,
@@ -66,6 +68,7 @@ export const MODELS = [
     name: "Qwen 2.5 Coder",
     description: INTELLIGENCE_TYPES[IntelligenceId.FAST_INTELLIGENT].description,
     provider: "alibaba-cloud",
+    type: "text",
     features: [
       {
         id: FeatureId.REASONING,

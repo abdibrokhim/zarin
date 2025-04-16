@@ -21,6 +21,7 @@ export const MODELS = [
         id: "grok-beta",
         name: "Grok",
         provider: "xai",
+        type: "text",
         description: INTELLIGENCE_TYPES[IntelligenceId.FAST_FLEXIBLE].description,
         features: [
           {
@@ -43,6 +44,7 @@ export const MODELS = [
         id: "grok-3-mini-beta",
         name: "Grok 3 Mini",
         provider: "xai",
+        type: "text",
         description: INTELLIGENCE_TYPES[IntelligenceId.HIGH_INTELLIGENCE].description,
         features: [
           {
@@ -66,6 +68,7 @@ export const MODELS = [
         id: "grok-3-beta",
         name: "Grok 3",
         provider: "xai",
+        type: "text",
         description: INTELLIGENCE_TYPES[IntelligenceId.HIGH_INTELLIGENCE].description,
         features: [
           {

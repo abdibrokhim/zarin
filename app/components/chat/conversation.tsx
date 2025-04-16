@@ -4,14 +4,26 @@ import { Loader } from "@/components/prompt-kit/loader"
 import { Message as MessageType } from "@ai-sdk/react"
 import { useRef } from "react"
 import { Message } from "./message"
+import { ExtendedMessage, MessageAttachment } from "@/lib/chat/message"
 
 type ConversationProps = {
-  messages: MessageType[]
+  messages: MessageType[] | ExtendedMessage[]
   status?: "streaming" | "ready" | "submitted" | "error"
   onDelete: (id: string) => void
   onEdit: (id: string, newText: string) => void
   onReload: () => void
 }
+
+// Helper function to convert AI SDK attachment to our MessageAttachment type
+const convertAttachments = (attachments: any[] | undefined): MessageAttachment[] | undefined => {
+  if (!attachments) return undefined;
+  
+  return attachments.map(attachment => ({
+    name: attachment.name || "",
+    contentType: attachment.contentType || "",
+    url: attachment.url || ""
+  }));
+};
 
 export function Conversation({
   messages,
@@ -39,18 +51,23 @@ export function Conversation({
           const isLast = index === messages.length - 1 && status !== "submitted"
           const hasScrollAnchor =
             isLast && messages.length > initialMessageCount.current
+          
+          // Check if the message is an ExtendedMessage with audio content
+          const extendedMessage = message as ExtendedMessage
+          const hasAudio = extendedMessage.audio !== undefined
 
           return (
             <Message
               key={message.id}
               id={message.id}
               variant={message.role}
-              attachments={message.experimental_attachments}
+              attachments={convertAttachments(message.experimental_attachments)}
               isLast={isLast}
               onDelete={onDelete}
               onEdit={onEdit}
               onReload={onReload}
               hasScrollAnchor={hasScrollAnchor}
+              audio={hasAudio ? extendedMessage.audio : undefined}
             >
               {message.content}
             </Message>

@@ -3,11 +3,11 @@
 import { TextShimmer } from "@/components/motion-primitives/text-shimmer"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-import { Check, Sparkle, Star, Flask } from "@phosphor-icons/react/dist/ssr"
+import { Check, Sparkle, Star, Flask, Question } from "@phosphor-icons/react/dist/ssr"
 import { FEATURE_ICONS } from "@/lib/models/types"
 import { FeatureId } from "@/lib/models/types"
 import { Model, Provider } from "@/lib/models/types"
-import { FEATURE_COLORS } from "../constants"
+import { FEATURE_COLORS, STATUS_COLORS } from "../constants"
 import {
   Tooltip,
   TooltipContent,
@@ -62,16 +62,20 @@ export function ModelCard({
     >
     {model.status && (
       <div className={cn(
-        "absolute top-0 left-0 -translate-x-1/3 -translate-y-1/3 p-1 rounded-md z-10",
-        model.status === 'new' && "bg-pink-100/30 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300 border-pink-200 dark:border-pink-800/50",
-        model.status === 'experimental' && "bg-violet-100/30 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300 border-violet-200 dark:border-violet-800/50"
+        "absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4 p-1 rounded-md z-10",
+        model.status === 'new' && STATUS_COLORS.new.mainColor,
+        model.status === 'experimental' && STATUS_COLORS.experimental.mainColor,
+        model.status === 'idk' && STATUS_COLORS.idk.mainColor
         )}
       >
         {model.status === 'new' && (
-          <Sparkle weight="fill" className="size-5 text-pink-500" />
+          <STATUS_COLORS.new.icon weight="fill" className="size-5 text-pink-500" />
         )}
         {model.status === 'experimental' && (
-          <Flask weight="fill" className="size-5 text-violet-500" />
+          <STATUS_COLORS.experimental.icon weight="fill" className="size-5 text-violet-500" />
+        )}
+        {model.status === 'idk' && (
+          <STATUS_COLORS.idk.icon weight="fill" className="size-5 text-teal-500" />
         )}
       </div>
     )}

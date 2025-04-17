@@ -94,6 +94,15 @@ export function useModels({
         // If both have same featured status, sort alphabetically
         return a.name.localeCompare(b.name)
       })
+    } else if (sortBy === "idk") {
+      filtered = [...filtered].sort((a, b) => {
+        // First by featured status (featured first)
+        if (a.status === "idk" && b.status !== "idk") return -1
+        if (a.status !== "idk" && b.status === "idk") return 1
+        
+        // If both have same featured status, sort alphabetically
+        return a.name.localeCompare(b.name)
+      })
     } else {
       // Default sorting (relevance) - by name
       filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name))

@@ -7,6 +7,7 @@ import OpenAI from "@/components/icons/openai"
 import Llama from "@/components/icons/llama"
 import Qwen from "@/components/icons/qwen"
 import Deepgram from "@/components/icons/deepgram"
+import Bagoodex from "@/components/icons/bagoodex"
 import { Provider, Model } from "./types"
 import { MODELS as OPENAI_MODELS } from "./openai"
 import { MODELS as MISTRAL_MODELS } from "./mistral"
@@ -17,6 +18,7 @@ import { MODELS as XAI_MODELS } from "./xai"
 import { MODELS as DEEPSEEK_MODELS } from "./deepseek"
 import { MODELS as ALIBABA_MODELS } from "./alibaba"
 import { MODELS as DEEPGRAM_MODELS } from "./deepgram"
+import { MODELS as BAGOOD_MODELS } from "./bagoodex"
 import { APP_NAME } from "@/lib/config"
 
 export const ALL_MODELS = [
@@ -29,6 +31,7 @@ export const ALL_MODELS = [
   ...DEEPSEEK_MODELS,
   ...ALIBABA_MODELS,
   ...DEEPGRAM_MODELS,
+  ...BAGOOD_MODELS,
 ] as Model[]
 
 export const MODELS_OPTIONS = [
@@ -83,6 +86,11 @@ export const PROVIDERS = [
     id: "deepgram",
     name: "Deepgram",
     icon: Deepgram,
+  },
+  {
+    id: "bagoodex",
+    name: "Bagoodex",
+    icon: Bagoodex,
   },
 ] as Provider[]
 

@@ -1,5 +1,5 @@
 import { FeatureId, UseCaseId } from "@/lib/models/types"
-import { Star } from "@phosphor-icons/react"
+import { Sparkle, Flask, Question, Star } from "@phosphor-icons/react/dist/ssr"
 
 // Define features for filtering based on the types.ts file
 export const FEATURE_FILTERS = [
@@ -46,3 +46,29 @@ export const FEATURE_COLORS: Record<string, string> = {
   [FeatureId.CONVERSATIONAL]: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300 border-purple-200 dark:border-purple-800",
   default: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border-blue-200 dark:border-blue-800",
 } 
+
+export type Status = "new" | "experimental" | "idk"
+
+export type StatusColorsMetadata = {
+  mainColor: string,
+  icon: React.ElementType,
+  textColor: string,
+}
+
+export const STATUS_COLORS: Record<Status, StatusColorsMetadata> = {
+  "new": {
+    mainColor: "bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300 border-pink-200 dark:border-pink-800",
+    icon: Sparkle,
+    textColor: "text-pink-700 dark:text-pink-300",
+  },
+  "experimental": {
+    mainColor: "bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300 border-violet-200 dark:border-violet-800",
+    icon: Flask,
+    textColor: "text-violet-700 dark:text-violet-300",
+  },
+  "idk": {
+    mainColor: "bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300 border-teal-200 dark:border-teal-800",
+    icon: Question,
+    textColor: "text-teal-700 dark:text-teal-300",
+  },
+}

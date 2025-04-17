@@ -52,9 +52,11 @@ export function Conversation({
           const hasScrollAnchor =
             isLast && messages.length > initialMessageCount.current
           
-          // Check if the message is an ExtendedMessage with audio content
+          // Check if the message is an ExtendedMessage with audio or bagoodex content
           const extendedMessage = message as ExtendedMessage
           const hasAudio = extendedMessage.audio !== undefined
+          const hasBagoodex = extendedMessage.bagoodex !== undefined
+          const modelType = extendedMessage.modelType
 
           return (
             <Message
@@ -68,6 +70,7 @@ export function Conversation({
               onReload={onReload}
               hasScrollAnchor={hasScrollAnchor}
               audio={hasAudio ? extendedMessage.audio : undefined}
+              bagoodex={hasBagoodex ? extendedMessage.bagoodex : undefined}
             >
               {message.content}
             </Message>

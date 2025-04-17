@@ -87,13 +87,6 @@ export default function SearchDynamicButton({
     }
   };
 
-  const handleBackClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent event bubbling
-    setIsOpen(false);
-    setSearchQuery("");
-    onSearch?.("");
-  };
-
   const handleOpenClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent event bubbling
     setIsOpen(true);
@@ -121,12 +114,6 @@ export default function SearchDynamicButton({
               </div>
             ) : (
               <div className='flex space-x-1 items-center'>
-                <Button
-                  onClick={handleBackClick}
-                  ariaLabel='Back'
-                >
-                  <ArrowLeft className='h-4 w-4' />
-                </Button>
                 <div className='relative w-full' onClick={e => e.stopPropagation()}>
                   <input
                     ref={inputRef}

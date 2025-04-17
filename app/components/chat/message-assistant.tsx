@@ -7,7 +7,8 @@ import {
 import { cn } from "@/lib/utils"
 import { ArrowClockwise, Check, Copy } from "@phosphor-icons/react"
 import { AudioPlayer } from "./AudioPlayer"
-import { AudioAttachment } from "@/lib/chat/message"
+import { AudioAttachment, BagoodexAttachment } from "@/lib/chat/message"
+import { BagoodexStreamingResults } from "@/components/bagoodex"
 
 type MessageAssistantProps = {
   children: string
@@ -17,6 +18,7 @@ type MessageAssistantProps = {
   copyToClipboard?: () => void
   onReload?: () => void
   audio?: AudioAttachment
+  bagoodex?: BagoodexAttachment
 }
 
 export function MessageAssistant({
@@ -26,7 +28,8 @@ export function MessageAssistant({
   copied,
   copyToClipboard,
   onReload,
-  audio
+  audio,
+  bagoodex
 }: MessageAssistantProps) {
   return (
     <Message
@@ -45,6 +48,12 @@ export function MessageAssistant({
 
         {audio && (
           <AudioPlayer audio={audio} />
+        )}
+
+        {bagoodex && (
+          <div className="mt-4 pt-2 border-t">
+            <BagoodexStreamingResults query={bagoodex.query} />
+          </div>
         )}
 
         <MessageActions

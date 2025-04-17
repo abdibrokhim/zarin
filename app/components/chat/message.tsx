@@ -1,7 +1,7 @@
 import { MessageAssistant } from "@/app/components/chat/message-assistant"
 import { MessageUser } from "@/app/components/chat/message-user"
 import { useState } from "react"
-import { AudioAttachment } from "@/lib/chat/message"
+import { AudioAttachment, BagoodexAttachment } from "@/lib/chat/message"
 
 type Attachment = {
   name: string
@@ -20,6 +20,7 @@ type MessageProps = {
   onReload?: () => void
   attachments?: Attachment[]
   audio?: AudioAttachment
+  bagoodex?: BagoodexAttachment
 }
 
 export function Message({
@@ -32,7 +33,8 @@ export function Message({
   onEdit,
   onReload,
   attachments,
-  audio
+  audio,
+  bagoodex
 }: MessageProps) {
   const [copying, setCopying] = useState(false)
   
@@ -58,6 +60,7 @@ export function Message({
         copyToClipboard={copyContentToClipboard}
         onReload={onReload}
         audio={audio}
+        bagoodex={bagoodex}
       >
         {children}
       </MessageAssistant>

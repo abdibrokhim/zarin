@@ -38,7 +38,7 @@ export const MODELS: Model[] = [
     ],
     icon: Bagoodex,
     featured: true,
-    status: "idk",
+    status: "experimental",
     api_sdk: async (query: string) => {
       const client = new BagoodexClient();
       const bestEndpoint = detectBestEndpoint(query);

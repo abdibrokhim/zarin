@@ -1,5 +1,5 @@
 import { OpenAI } from 'openai';
-import { AIML_API_BASE_URL } from '../../config';
+import { AIML_API_BASE_CHAT_URL, AIML_API_BASE_URL } from '../../config';
 import {
   BagoodexSearchParams,
   BagoodexLink,
@@ -15,15 +15,15 @@ import { SYSTEM_PROMPT_DEFAULT } from '../config';
 export class BagoodexClient {
   private baseUrl: string;
   private apiKey: string;
-  private openai: OpenAI;
 
-  constructor(baseUrl: string = AIML_API_BASE_URL, apiKey: string = process.env.AIML_API_KEY || '') {
+  constructor(baseUrl: string = AIML_API_BASE_CHAT_URL, apiKey: string = process.env.AIML_API_KEY || '') {
     this.baseUrl = baseUrl;
     this.apiKey = apiKey;
-    this.openai = new OpenAI({
-      baseURL: this.baseUrl,
-      apiKey: this.apiKey,
-    });
+    
+    // Debug logging to help identify auth issues
+    console.log("Bagoodex client initialized with API URL:", this.baseUrl);
+    console.log("API key exists:", !!this.apiKey);
+    
   }
 
   /**
@@ -32,25 +32,91 @@ export class BagoodexClient {
    * @returns A promise resolving to the chat completion response
    */
   async createChatCompletion(query: string): Promise<string> {
-    try {
-      const response = await this.openai.chat.completions.create({
+    const requestBody = {
         model: "bagoodex/bagoodex-search-v1",
         messages: [
-          {
-            role: "system",
-            content: SYSTEM_PROMPT_DEFAULT,
-          },
-          {
-            role: "user",
-            content: query,
-          },
-        ],
-      });
-      
-      return response.id;
+            {
+                role: "assistant",
+                content: SYSTEM_PROMPT_DEFAULT
+            },
+            {
+                role: "user",
+                content: query
+            }
+        ]
+    };
+
+    try {
+        console.log("Sending API request to:", this.baseUrl);
+        console.log("Request body:", JSON.stringify(requestBody));
+        
+        const response = await fetch(AIML_API_BASE_CHAT_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${process.env.AIML_API_KEY}`
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        // Check if response is ok
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`API Error (${response.status}):`, errorText);
+            throw new Error(`API returned ${response.status}: ${errorText}`);
+        }
+
+        const data = await response.json();
+        
+        // Log the complete response structure for debugging
+        console.log("Complete API response:", JSON.stringify(data));
+        
+        // Handle the response differently based on its structure
+        
+        // Case 1: If we have choices with messages (standard OpenAI format)
+        if (data.choices && data.choices.length > 0 && data.choices[0].message) {
+            return data.choices[0].message.content;
+        }
+        
+        // Case 2: If we have a direct message property
+        if (data.message && typeof data.message === 'string') {
+            return data.message;
+        }
+        
+        // Case 3: If we have an id property (could be used as followupId)
+        if (data.id && typeof data.id === 'string') {
+            return data.id;
+        }
+        
+        // Case 4: If we have a content property
+        if (data.content && typeof data.content === 'string') {
+            return data.content;
+        }
+        
+        // Case 5: If we have a text property
+        if (data.text && typeof data.text === 'string') {
+            return data.text;
+        }
+        
+        // Case 6: If we have any usable string property
+        for (const key in data) {
+            if (typeof data[key] === 'string' && data[key].length > 0) {
+                console.log(`Using '${key}' property as followupId:`, data[key]);
+                return data[key];
+            }
+        }
+        
+        console.error("Unexpected API response format:", data);
+        
+        // Last resort: return the query itself as a fallback
+        console.warn("Using query as fallback ID:", query);
+        return query;
     } catch (error) {
-      console.error('Error creating chat completion:', error);
-      throw error;
+        console.error("Error fetching completion:", error);
+        
+        // Return the query as a fallback to avoid breaking the application flow
+        console.warn("Using query as fallback ID due to error:", query);
+        return query;
     }
   }
 
@@ -63,11 +129,11 @@ export class BagoodexClient {
   private async fetchFromEndpoint<T>(endpoint: BagoodexSearchResultType, followupId: string): Promise<T> {
     try {
       const params = new URLSearchParams({ followup_id: followupId });
-      const response = await fetch(`${this.baseUrl}/v1/bagoodex/${endpoint}?${params}`, {
+      const response = await fetch(`${AIML_API_BASE_URL}/bagoodex/${endpoint}?${params}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`,
+          'Authorization': `Bearer ${process.env.AIML_API_KEY}`,
         },
       });
 

@@ -12,6 +12,16 @@ const nextConfig: NextConfig = withBundleAnalyzer({
     // @todo: remove before going live
     ignoreDuringBuilds: true,
   },
+  env: {
+    AIML_API_KEY: process.env.AIML_API_KEY,
+  },
+  images: {
+    remotePatterns: [
+      {
+        hostname: "**",
+      },
+    ],
+  },
 })
 
 export default nextConfig

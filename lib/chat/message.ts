@@ -123,6 +123,11 @@ export interface AudioAttachment {
   text: string;
 }
 
+export interface BagoodexAttachment {
+  query: string;
+  modelType: 'search';
+}
+
 export interface ExtendedMessage {
   id: string;
   content: string;
@@ -130,8 +135,10 @@ export interface ExtendedMessage {
   createdAt?: Date;
   experimental_attachments?: MessageAttachment[];
   audio?: AudioAttachment;
-  modelType?: ModelType;
+  bagoodex?: BagoodexAttachment;
+  modelType?: ModelType | 'search' | 'audio';
   timestamp?: number; // Adding timestamp as it's used in sorting
+  chatId?: string;
 }
 
 // New methods for ExtendedMessage handling with separate storage

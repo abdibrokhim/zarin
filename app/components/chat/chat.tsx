@@ -18,7 +18,15 @@ import {
   processFiles,
 } from "@/lib/chat/file-handling"
 import { FIFTY_REMAINING_QUERY_ALERT_THRESHOLD, TEN_REMAINING_QUERY_ALERT_THRESHOLD } from "@/lib/config"
-import { syncMessages, deleteMessage, updateMessage, ExtendedMessage } from "@/lib/chat/message"
+import { 
+  syncMessages, 
+  deleteMessage, 
+  updateMessage, 
+  ExtendedMessage, 
+  sendMessage,
+  saveMessageToIndexedDB,
+  syncExtendedMessages
+} from "@/lib/chat/message"
 import { API_ROUTE_CHAT } from "@/lib/routes"
 import { cn } from "@/lib/utils"
 import { Message, useChat } from "@ai-sdk/react"
@@ -26,6 +34,9 @@ import { AnimatePresence, motion } from "motion/react"
 import dynamic from "next/dynamic"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { AudioAttachment } from "@/lib/chat/message"
+import { createBagoodexMessage } from "@/lib/chat/create-bagoodex-message"
+import { useBagoodexMessage } from "@/lib/hooks/useBagoodexMessage"
+import { Model } from "@/lib/models/types"
 
 const FeedbackWidget = dynamic(
   () => import("./feedback-widget").then((mod) => mod.FeedbackWidget),
@@ -54,6 +65,13 @@ export default function Chat({
   )
   const [systemPrompt, setSystemPrompt] = useState(propSystemPrompt)
   const { createNewChat } = useChatHistory()
+  
+  // Add the useBagoodexMessage hook
+  const { createMessage: createBagoodexSearchMessage, isSearching: isBagoodexSearching } = useBagoodexMessage({
+    onMessageCreated: (message) => {
+      console.log("Bagoodex message created:", message);
+    }
+  });
 
   const {
     messages,
@@ -302,6 +320,9 @@ export default function Chat({
     
     // Check if the message is requesting audio generation
     const isAudioRequest = MODELS_OPTIONS.find(m => m.id === selectedModel)?.type === "audio"
+    
+    // Check if the message is for search (Bagoodex)
+    const isSearchRequest = MODELS_OPTIONS.find(m => m.id === selectedModel)?.type === "search"
       
     if (isAudioRequest) {
       try {
@@ -359,6 +380,71 @@ export default function Chat({
         console.error("Error processing audio request:", error);
         toast({
           title: error.message || "Error generating audio",
+          status: "error",
+        });
+        setIsSubmitting(false);
+        setMessages((prev) => prev.filter((msg) => msg.id !== optimisticId));
+        return;
+      }
+    } else if (isSearchRequest) {
+      try {
+        // Show searching progress
+        toast({
+          title: "Searching...",
+          status: "info",
+        });
+        
+        // Create a placeholder message while waiting for results
+        const searchResponseText = `Searching for information about "${input}"...`;
+        console.log("searchResponseText", searchResponseText);
+        
+        try {
+          // Use the hook to create a Bagoodex message instead of directly using the client
+          const bagoodexMessage = await createBagoodexSearchMessage(input);
+          console.log("bagoodexMessage", bagoodexMessage);
+          
+          // Add the message to the chat
+          setMessages(prev => [
+            ...prev.filter(m => m.id !== optimisticId), 
+            bagoodexMessage as any
+          ]);
+          
+          // Save the message to IndexedDB for persistence
+          try {
+            // First save the user message
+            const userMessage = {
+              id: crypto.randomUUID(),
+              chat_id: currentChatId,
+              content: input,
+              role: "user" as "user" | "assistant" | "system" | "data",
+              created_at: new Date().toISOString(),
+            };
+            await sendMessage(userMessage);
+            
+            // no sync for now!!
+            // Then save the Bagoodex message
+            // if (bagoodexMessage && bagoodexMessage.id) {
+            //   await saveMessageToIndexedDB(currentChatId, bagoodexMessage);
+              
+            //   // Update chat history
+            //   await syncExtendedMessages(currentChatId, [bagoodexMessage]);
+            // }
+          } catch (dbError) {
+            console.error("Error saving Bagoodex message to database:", dbError);
+            // Continue even if DB saving fails - the message will still be in the UI
+          }
+          
+        } catch (err) {
+          console.error("Error performing search:", err);
+          throw new Error("Failed to retrieve search results");
+        }
+        
+        setIsSubmitting(false);
+        return;
+      } catch (error: any) {
+        console.error("Error processing search request:", error);
+        toast({
+          title: error.message || "Error performing search",
           status: "error",
         });
         setIsSubmitting(false);

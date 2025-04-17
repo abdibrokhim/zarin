@@ -93,7 +93,7 @@ const BagoodexResults: React.FC<BagoodexResultsProps> = ({ data, isLoading, quer
                   <CardHeader className="p-4">
                     <CardTitle className="text-sm font-medium">
                       <a 
-                        href={formatUrl(link.url)} 
+                        href={link.url} 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-primary hover:underline"
@@ -201,7 +201,7 @@ const BagoodexResults: React.FC<BagoodexResultsProps> = ({ data, isLoading, quer
                   {data.weather.thumbnail && (
                     <div className="relative size-16">
                       <Image
-                        src={data.weather.thumbnail}
+                        src='https://ssl.gstatic.com/onebox/weather/64/sunny_s_cloudy.png'
                         alt={data.weather.weather}
                         width={64}
                         height={64}
@@ -236,7 +236,7 @@ const BagoodexResults: React.FC<BagoodexResultsProps> = ({ data, isLoading, quer
                           {day.thumbnail && (
                             <div className="relative size-10 mx-auto my-1">
                               <Image
-                                src={day.thumbnail}
+                                src='https://ssl.gstatic.com/onebox/weather/64/sunny_s_cloudy.png'
                                 alt={day.weather}
                                 width={40}
                                 height={40}

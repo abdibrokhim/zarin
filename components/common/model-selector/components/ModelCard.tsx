@@ -3,7 +3,7 @@
 import { TextShimmer } from "@/components/motion-primitives/text-shimmer"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-import { Check, Star } from "@phosphor-icons/react"
+import { Check, Sparkle, Star, Flask } from "@phosphor-icons/react/dist/ssr"
 import { FEATURE_ICONS } from "@/lib/models/types"
 import { FeatureId } from "@/lib/models/types"
 import { Model, Provider } from "@/lib/models/types"
@@ -51,6 +51,7 @@ export function ModelCard({
       role="button"
       aria-pressed={isSelected}
       className={cn(
+        "relative overflow-visible",
         "flex flex-col p-4 rounded-xl border border-border dark:border-border transition-all duration-300 focus:outline-none hover:bg-muted/20",
         isSelected 
           ? "border-primary/70 dark:border-primary/70 shadow-md bg-primary/5" 
@@ -59,6 +60,21 @@ export function ModelCard({
         model.available && "cursor-pointer"
       )}
     >
+    {model.status && (
+      <div className={cn(
+        "absolute top-0 left-0 -translate-x-1/3 -translate-y-1/3 p-1 rounded-md z-10",
+        model.status === 'new' && "bg-pink-100/30 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300 border-pink-200 dark:border-pink-800/50",
+        model.status === 'experimental' && "bg-violet-100/30 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300 border-violet-200 dark:border-violet-800/50"
+        )}
+      >
+        {model.status === 'new' && (
+          <Sparkle weight="fill" className="size-5 text-pink-500" />
+        )}
+        {model.status === 'experimental' && (
+          <Flask weight="fill" className="size-5 text-violet-500" />
+        )}
+      </div>
+    )}
       <div className="flex items-center gap-3 mb-3">
         <div className={cn(
           "flex items-center justify-center p-2 rounded-lg",
@@ -69,7 +85,9 @@ export function ModelCard({
         
         <div className="flex flex-col flex-1 min-w-0">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">{provider?.name}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-muted-foreground">{provider?.name}</span>
+            </div>
             {isSelected && (
               <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
                 <Check className="size-3 mr-1" /> Current

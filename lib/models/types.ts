@@ -58,6 +58,7 @@ export type Model = {
   use_cases?: UseCase[]
   featured?: boolean
   languages?: LanguageMetadata[]
+  status?: "new" | "experimental" | "stable"
 }
 
 export enum FeatureId {

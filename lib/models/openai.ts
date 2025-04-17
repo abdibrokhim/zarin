@@ -275,6 +275,7 @@ export const MODELS = [
     api_sdk: customOpenAI("gpt-4.5-preview"),
     icon: OpenAI,
     featured: true,
+    status: "new",
   },
   {
     id: "gpt-4.1-nano-2025-04-14",
@@ -314,6 +315,7 @@ export const MODELS = [
     api_sdk: customOpenAI("openai/gpt-4.1-nano-2025-04-14"),
     icon: OpenAI,
     featured: true,
+    status: "new",
   },
   {
     id: "gpt-4.1-mini-2025-04-14",
@@ -353,5 +355,6 @@ export const MODELS = [
     api_sdk: customOpenAI("openai/gpt-4.1-mini-2025-04-14"),
     icon: OpenAI,
     featured: true,
+    status: "new",
   },
 ] as Model[]

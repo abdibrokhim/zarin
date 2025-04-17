@@ -30,12 +30,14 @@ export const USE_CASE_FILTERS = [
 export const SORT_OPTIONS = [
   { value: "relevance", label: "Relevance" },
   { value: "featured", label: "Featured First" },
+  { value: "new", label: "New First" },
+  { value: "experimental", label: "Experimental First" },
 ]
 
 // Color mappings for feature badges
 export const FEATURE_COLORS: Record<string, string> = {
   [FeatureId.FILE_UPLOAD]: "bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300 border-pink-200 dark:border-pink-800",
-  [FeatureId.IMAGE_UPLOAD]: "bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300 border-pink-200 dark:border-pink-800",
+  [FeatureId.IMAGE_UPLOAD]: "bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300 border-rose-200 dark:border-rose-800",
   [FeatureId.WEB_SEARCH]: "bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300 border-sky-200 dark:border-sky-800",
   [FeatureId.REASONING]: "bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300 border-violet-200 dark:border-violet-800",
   [FeatureId.DEEP_REASONING]: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 border-amber-200 dark:border-amber-800",

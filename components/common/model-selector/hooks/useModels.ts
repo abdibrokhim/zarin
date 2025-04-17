@@ -76,6 +76,24 @@ export function useModels({
         // If both have same featured status, sort alphabetically
         return a.name.localeCompare(b.name)
       })
+    } else if (sortBy === "new") {
+      filtered = [...filtered].sort((a, b) => {
+        // First by featured status (featured first)
+        if (a.status === "new" && b.status !== "new") return -1
+        if (a.status !== "new" && b.status === "new") return 1
+        
+        // If both have same featured status, sort alphabetically
+        return a.name.localeCompare(b.name)
+      })
+    } else if (sortBy === "experimental") {
+      filtered = [...filtered].sort((a, b) => {
+        // First by featured status (featured first)
+        if (a.status === "experimental" && b.status !== "experimental") return -1
+        if (a.status !== "experimental" && b.status === "experimental") return 1
+        
+        // If both have same featured status, sort alphabetically
+        return a.name.localeCompare(b.name)
+      })
     } else {
       // Default sorting (relevance) - by name
       filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name))

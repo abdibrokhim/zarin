@@ -90,5 +90,6 @@ export const MODELS = deepgramModels.map(modelId => {
     api_sdk: customDeepgram(modelId),
     icon: Deepgram,
     featured: true,
+    status: "experimental",
   }
 }) as Model[]

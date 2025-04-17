@@ -6,6 +6,7 @@ just to make sure i was not sleeping all the time.
 ## v0.1.1
 
 ### 17th April, 2025
+- added dynamic search to each sidebar filters
 - added support for audio generation and display right in the chat
 - refactored the codebase to use AI Agents
 - implemented AI Agents SDK from scratch

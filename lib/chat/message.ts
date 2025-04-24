@@ -128,6 +128,11 @@ export interface BagoodexAttachment {
   modelType: 'search';
 }
 
+export interface ImageAttachment {
+  base64: string;
+  mimeType: string;
+}
+
 export interface ExtendedMessage {
   id: string;
   content: string;
@@ -136,7 +141,8 @@ export interface ExtendedMessage {
   experimental_attachments?: MessageAttachment[];
   audio?: AudioAttachment;
   bagoodex?: BagoodexAttachment;
-  modelType?: ModelType | 'search' | 'audio';
+  image?: ImageAttachment;
+  modelType?: ModelType | 'search' | 'audio' | 'image';
   timestamp?: number; // Adding timestamp as it's used in sorting
   chatId?: string;
 }

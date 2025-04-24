@@ -10,6 +10,8 @@ export const AIML_API_BASE_URL = "https://api.aimlapi.com/v1"
 
 export const AIML_API_BASE_CHAT_URL = "https://api.aimlapi.com/v1/chat/completions"
 
+export const AIML_API_BASE_IMAGE_URL = "https://api.aimlapi.com/v1/images/generations"
+
 export const OPENAI_BASE_URL = "https://api.openai.com/v1"
 
 export const SUBSCRIPTION_URL = "https://www.patreon.com/abdibrokhim/membership"

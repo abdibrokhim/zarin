@@ -9,6 +9,7 @@ import { ArrowClockwise, Check, Copy } from "@phosphor-icons/react"
 import { AudioPlayer } from "./AudioPlayer"
 import { AudioAttachment, BagoodexAttachment } from "@/lib/chat/message"
 import { BagoodexStreamingResults } from "@/components/bagoodex"
+import { convertBase64ToImageSrc } from "@/lib/chat/image-utils"
 
 type MessageAssistantProps = {
   children: string
@@ -19,6 +20,10 @@ type MessageAssistantProps = {
   onReload?: () => void
   audio?: AudioAttachment
   bagoodex?: BagoodexAttachment
+  image?: {
+    base64: string
+    mimeType: string
+  }
 }
 
 export function MessageAssistant({
@@ -29,7 +34,8 @@ export function MessageAssistant({
   copyToClipboard,
   onReload,
   audio,
-  bagoodex
+  bagoodex,
+  image
 }: MessageAssistantProps) {
   return (
     <Message
@@ -45,6 +51,16 @@ export function MessageAssistant({
         >
           {children}
         </MessageContent>
+
+        {image && (
+          <div className="mt-4 overflow-hidden rounded-lg border border-border">
+            <img 
+              src={convertBase64ToImageSrc(image.base64, image.mimeType)} 
+              alt="Generated image" 
+              className="w-full object-contain max-h-[500px]" 
+            />
+          </div>
+        )}
 
         {audio && (
           <AudioPlayer audio={audio} />

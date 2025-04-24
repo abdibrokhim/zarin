@@ -56,6 +56,7 @@ export function Conversation({
           const extendedMessage = message as ExtendedMessage
           const hasAudio = extendedMessage.audio !== undefined
           const hasBagoodex = extendedMessage.bagoodex !== undefined
+          const hasImage = extendedMessage.image !== undefined
           const modelType = extendedMessage.modelType
 
           return (
@@ -71,6 +72,7 @@ export function Conversation({
               hasScrollAnchor={hasScrollAnchor}
               audio={hasAudio ? extendedMessage.audio : undefined}
               bagoodex={hasBagoodex ? extendedMessage.bagoodex : undefined}
+              image={hasImage ? extendedMessage.image : undefined}
             >
               {message.content}
             </Message>

@@ -1,6 +1,6 @@
 import OpenAI from "@/components/icons/openai"
 import { createOpenAI } from "@ai-sdk/openai"
-import { AIML_API_BASE_URL } from "../config"
+import { AIML_API_BASE_IMAGE_URL, AIML_API_BASE_URL } from "../config"
 import { 
     Model, 
     FeatureId, 
@@ -13,6 +13,11 @@ import {
 
 const customOpenAI = createOpenAI({
   baseURL: AIML_API_BASE_URL,
+  apiKey: process.env.AIML_API_KEY,
+})
+
+const customOpenAiImage = createOpenAI({
+  baseURL: AIML_API_BASE_IMAGE_URL,
   apiKey: process.env.AIML_API_KEY,
 })
 
@@ -353,6 +358,56 @@ export const MODELS = [
       },
     ],
     api_sdk: customOpenAI("openai/gpt-4.1-mini-2025-04-14"),
+    icon: OpenAI,
+    featured: true,
+    status: "new",
+  },
+  {
+    id: "dall-e-2",
+    name: "Dall-E 2",
+    provider: "openai",
+    type: "image",
+    description: INTELLIGENCE_TYPES[IntelligenceId.FAST_AFFORDABLE].description,
+    features: [
+      {
+        id: FeatureId.MULTIMODAL,
+        enabled: true,
+        icon: FEATURE_ICONS[FeatureId.MULTIMODAL],
+      },
+    ],
+    use_cases: [
+      {
+        id: UseCaseId.IMAGE_GENERATION,
+        enabled: true,
+        icon: USE_CASE_ICONS[UseCaseId.IMAGE_GENERATION],
+      },
+    ],
+    api_sdk: customOpenAiImage("dall-e-2"),
+    icon: OpenAI,
+    featured: true,
+    status: "new",
+  },
+  {
+    id: "dall-e-3",
+    name: "Dall-E 3",
+    provider: "openai",
+    type: "image",
+    description: INTELLIGENCE_TYPES[IntelligenceId.FAST_AFFORDABLE].description,
+    features: [
+      {
+        id: FeatureId.MULTIMODAL,
+        enabled: true,
+        icon: FEATURE_ICONS[FeatureId.MULTIMODAL],
+      },
+    ],
+    use_cases: [
+      {
+        id: UseCaseId.IMAGE_GENERATION,
+        enabled: true,
+        icon: USE_CASE_ICONS[UseCaseId.IMAGE_GENERATION],
+      },
+    ],
+    api_sdk: customOpenAiImage("dall-e-3"),
     icon: OpenAI,
     featured: true,
     status: "new",

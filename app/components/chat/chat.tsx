@@ -27,7 +27,7 @@ import {
   saveMessageToIndexedDB,
   syncExtendedMessages
 } from "@/lib/chat/message"
-import { API_ROUTE_CHAT } from "@/lib/routes"
+import { API_ROUTE_CHAT, API_ROUTE_IMAGE } from "@/lib/routes"
 import { cn } from "@/lib/utils"
 import { Message, useChat } from "@ai-sdk/react"
 import { AnimatePresence, motion } from "motion/react"
@@ -37,6 +37,7 @@ import { AudioAttachment } from "@/lib/chat/message"
 import { createBagoodexMessage } from "@/lib/chat/create-bagoodex-message"
 import { useBagoodexMessage } from "@/lib/hooks/useBagoodexMessage"
 import { Model } from "@/lib/models/types"
+import { convertBase64ToImageSrc } from "@/lib/chat/image-utils"
 
 const FeedbackWidget = dynamic(
   () => import("./feedback-widget").then((mod) => mod.FeedbackWidget),
@@ -87,6 +88,55 @@ export default function Chat({
   } = useChat({
     api: API_ROUTE_CHAT,
     initialMessages,
+    onResponse: async (response) => {
+      // Check if the response contains image data
+      try {
+        // Clone the response before reading it as JSON to avoid consumption errors
+        const clonedResponse = response.clone();
+        const data = await clonedResponse.json();
+        
+        if (data.image && data.image.base64) {
+          // This response contains image data
+          toast({
+            title: "Image generated successfully",
+            status: "success",
+          });
+          
+          // Make sure the base64 is properly formatted
+          const imageBase64 = data.image.base64;
+          const imageMimeType = data.image.mimeType || "image/png";
+          
+          // Create the response message with image
+          const assistantMessage = {
+            id: `image-${Date.now()}`,
+            role: "assistant" as const,
+            content: "Here's the image I generated based on your description:",
+            image: {
+              base64: imageBase64,
+              mimeType: imageMimeType
+            }
+          };
+          
+          // Add the message to the chat
+          setMessages(prev => [
+            ...prev,
+            assistantMessage as any
+          ]);
+          
+          // Save the message to IndexedDB if we have a chatId
+          // if (chatId) {
+          //   try {
+          //     await saveMessageToIndexedDB(chatId, assistantMessage);
+          //   } catch (dbError) {
+          //     console.error("Error saving image message to database:", dbError);
+          //   }
+          // }
+        }
+      } catch (error) {
+        // This isn't JSON or doesn't have image data, just let normal processing continue
+        console.log("Response is not JSON or doesn't contain image data");
+      }
+    }
   })
 
   const isFirstMessage = useMemo(() => {
@@ -467,6 +517,15 @@ export default function Chat({
     try {
       // Logging to help debug model selection
       console.log(`Submitting message with model: ${selectedModel}`);
+      
+      // Show loading toast for image models
+      const isImageModel = MODELS_OPTIONS.find(m => m.id === selectedModel)?.type === "image";
+      if (isImageModel) {
+        toast({
+          title: "Generating image...",
+          status: "info",
+        });
+      }
       
       handleSubmit(undefined, options)
       setMessages((prev) => prev.filter((msg) => msg.id !== optimisticId))
